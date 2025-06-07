@@ -7,7 +7,7 @@ import { AuthState } from '../../models/AppUser';
 export function createInitialAuthState(): AuthState {
     return { } as AuthState;
   }
-  
+
   @Injectable({ providedIn: 'root' })
   @StoreConfig({
     name: 'auth'

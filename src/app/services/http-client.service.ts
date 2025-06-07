@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class HttpClientService {
 
-  constructor(private httpClient: HttpClient, @Inject("baseUrll") private baseUrl: string) {
+  constructor(private httpClient: HttpClient, @Inject("baseUrl") private baseUrl: string) {
 
   }
 
@@ -22,7 +22,7 @@ export class HttpClientService {
       url = reqParam.fullPath;
     else
       url = `${this.getUrl(reqParam)}${id ? `/${id}` : ""}`;
-      
+
     return this.httpClient.get<T>(url, {
       headers: reqParam.headers,
       params:reqParam.params
@@ -31,7 +31,7 @@ export class HttpClientService {
   }
 
   post<T, R>(
-    requestParameter: Partial<RequestParametr>, 
+    requestParameter: Partial<RequestParametr>,
     body: Partial<T>,
     successCallBack?:()=>void,
     errorCallBack?:(errorMsg:string)=>void
@@ -43,7 +43,7 @@ export class HttpClientService {
     else
       url = `${this.getUrl(requestParameter)}${requestParameter.queryString ? `?${requestParameter.queryString}` : ""}`
 
-    return this.httpClient.post<R>(url, body, { headers: requestParameter.headers });        
+    return this.httpClient.post<R>(url, body, { headers: requestParameter.headers });
   }
 
   postRouter<T>(reqParam: Partial<RequestParametr>, id: number): Observable<T> {
@@ -59,7 +59,7 @@ export class HttpClientService {
   }
 
   postEvent<T, R>(
-    requestParameter: Partial<RequestParametr>, 
+    requestParameter: Partial<RequestParametr>,
     body: Partial<T>,
     successCallBack?:()=>void,
     errorCallBack?:(errorMsg:string)=>void
@@ -71,7 +71,7 @@ export class HttpClientService {
     else
       url = `${this.getUrl(requestParameter)}${requestParameter.queryString ? `?${requestParameter.queryString}` : ""}`
 
-    return this.httpClient.post<R>(url, body, { headers: requestParameter.headers,observe:"events",reportProgress: true });        
+    return this.httpClient.post<R>(url, body, { headers: requestParameter.headers,observe:"events",reportProgress: true });
   }
 
   put<T>(reqParam: Partial<RequestParametr>, body: Partial<T>): Observable<T> {
@@ -80,7 +80,7 @@ export class HttpClientService {
       url = reqParam.fullPath;
     else
       url = `${this.getUrl(reqParam)}`;
-    
+
     return this.httpClient.put<T>(url, body, {
       headers: reqParam.headers
     });
@@ -98,13 +98,13 @@ export class HttpClientService {
     })
   }
 
-  
+
   ToHttpParams(request: any): HttpParams {
     let httpParams = new HttpParams();
     Object.keys(request).forEach(function (key) {
       httpParams = httpParams.append(key, request[key]);
     });
-   
+
     return httpParams;
   }
 

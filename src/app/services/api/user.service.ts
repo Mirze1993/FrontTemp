@@ -13,7 +13,7 @@ export class UserService {
 
   loginByRefreshToken(refToken: string, id: number) {
     let req = new LoginByRefTokReq(refToken, id);
-    return this.httpservice.post<LoginByRefTokReq, Result<Session>>({ path: 'user/loginByRefreshToken', }, req);
+    return this.httpservice.post<LoginByRefTokReq, Result<Session>>({ path: 'auth/loginByRefreshToken', }, req);
   }
 
   async login(
@@ -21,11 +21,11 @@ export class UserService {
     successCallBack?: () => void,
     errorCallBack?: (errorMessage: string) => void): Promise<Result<Session>> {
     try {
-      const observable = this.httpservice.post<LoginUserReq, Result<Session>>({ path: 'user/login', }, user, successCallBack, errorCallBack);
+      const observable = this.httpservice.post<LoginUserReq, Result<Session>>({ path: 'auth/login', }, user, successCallBack, errorCallBack);
 
       return await firstValueFrom(observable);
     } catch (e) {
-      //errorCallBack(e.message)      
+      //errorCallBack(e.message)
       return new Promise<Result<Session>>((resolve, reject) => {
         resolve(
           new Result<Session>().errorResult("errorrr: " + e)
@@ -36,22 +36,22 @@ export class UserService {
 
   updateProfil(req: UpdateProfilReq): Promise<Result<boolean>> {
 
-    return firstValueFrom(this.httpservice.post<UpdateProfilReq, Result<boolean>>({ path: 'user/UpdateProfil', }, req));
+    return firstValueFrom(this.httpservice.post<UpdateProfilReq, Result<boolean>>({ path: 'auth/UpdateProfil', }, req));
   }
 
 
   setClaim(req: SetClaimReq): Promise<Result<number>> {
-    let r = this.httpservice.post<SetClaimReq, Result<number>>({ path: 'user/SetClaim', }, req);
+    let r = this.httpservice.post<SetClaimReq, Result<number>>({ path: 'auth/SetClaim', }, req);
     return firstValueFrom(r);
   }
 
   register(req: Register): Promise<Result<number>> {
-    let r = this.httpservice.post<Register, Result<number>>({ path: 'user/register', }, req);
+    let r = this.httpservice.post<Register, Result<number>>({ path: 'auth/register', }, req);
     return firstValueFrom(r);
   }
 
   removeClaimByType(req: SetClaimReq): Promise<Result<number>> {
-    let r = this.httpservice.post<SetClaimReq, Result<number>>({ path: 'user/RemoveClaimByType', }, req);
+    let r = this.httpservice.post<SetClaimReq, Result<number>>({ path: 'auth/RemoveClaimByType', }, req);
     return firstValueFrom(r);
   }
 
@@ -59,7 +59,7 @@ export class UserService {
   getRoleValue(): Promise<Result<RoleValue[]>> {
 
     const r = this.httpservice.get<Result<RoleValue[]>>({
-      path: "user/GetRoleValue"
+      path: "auth/GetRoleValue"
     });
     return firstValueFrom(r);
   }
@@ -68,7 +68,7 @@ export class UserService {
   getProfil(): Promise<Result<UserClaim[]>> {
 
     const r = this.httpservice.get<Result<UserClaim[]>>({
-      path: "user/GetProfil"
+      path: "auth/GetProfil"
     });
     return firstValueFrom(r);
   }
@@ -76,7 +76,7 @@ export class UserService {
   getProfilById(id: number): Promise<Result<UserClaim[]>> {
     let params = { id: id };
     const r = this.httpservice.get<Result<UserClaim[]>>({
-      path: "user/GetProfil", params: params
+      path: "auth/GetProfil", params: params
     });
     return firstValueFrom(r);
   }
@@ -89,23 +89,23 @@ export class UserService {
 
 
     const r = this.httpservice.get<Result<SearchUserResp[]>>({
-      path: "user/SearchUsers",
+      path: "auth/SearchUsers",
       params: httpParams
     });
     return firstValueFrom(r);
   }
-  
+
 
   //---------notif-----------
 
   getNotif(): Promise<Result<NotifResp[]>> {
     const r = this.httpservice.get<Result<NotifResp[]>>({
-      path: "user/GetNotif",
+      path: "auth/GetNotif",
     });
     return firstValueFrom(r);
   }
 
-  getUnreadNotifCount(): Promise<Result<number>> {    
+  getUnreadNotifCount(): Promise<Result<number>> {
     const r = this.httpservice.get<Result<number>>({
       path: "user/GetUnReadNotifCount",
     });
@@ -120,7 +120,7 @@ export class UserService {
     return firstValueFrom(r);
   }
   //--------------------------
-  InstPosition(value: position): Promise<SimpleResult> {    
+  InstPosition(value: position): Promise<SimpleResult> {
     const r = this.httpservice.post<position,SimpleResult>({
       path: "user/InstPosition"
     },value);
@@ -128,7 +128,7 @@ export class UserService {
   }
 
 
-  GetPosition(): Promise<Result<position[]>> {    
+  GetPosition(): Promise<Result<position[]>> {
     const r = this.httpservice.get<Result<position[]>>({
       path: "user/GetPosition",
     });

@@ -1,0 +1,53 @@
+<div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-4">
+  <!-- Select Box -->
+  <nz-select
+    class="w-full sm:w-72"
+    nzShowSearch
+    nzAllowClear
+    nzPlaceHolder="Select a person"
+    [(ngModel)]="compileName"
+  >
+    <nz-option
+      *ngFor="let item of compileNameList"
+      [nzLabel]="item"
+      [nzValue]="item"
+    ></nz-option>
+  </nz-select>
+
+  <!-- Search Button -->
+  <button
+    nz-button
+    nzType="primary"
+    (click)="getCompilesByName()"
+    class="w-full sm:w-auto h-10 px-6"
+  >
+    Search
+  </button>
+</div>
+<nz-row>
+  <nz-col nzSpan="10">
+    <h5>1-ci</h5>
+    <nz-radio-group [(ngModel)]="compare1Id" [style.width.%]="100" >
+      <nz-row>
+        <nz-col nzSpan="20" *ngFor="let item of compileList ">
+          <label  nz-radio [nzValue]="item.id">{{item.ts|date :'yyyy-MM-dd hh:mm'}} {{item.name}} </label>
+        </nz-col>
+      </nz-row>
+    </nz-radio-group>
+  </nz-col>
+  <nz-col nzSpan="10">
+    <h5>2-ci</h5>
+    <nz-radio-group [(ngModel)]="compare2Id" [style.width.%]="100" >
+      <nz-row>
+        <nz-col nzSpan="20" *ngFor="let item of compileList ">
+          <label  nz-radio [nzValue]="item.id">{{item.ts|date :'yyyy-MM-dd hh:mm'}} {{item.name}} </label>
+        </nz-col>
+      </nz-row>
+    </nz-radio-group>
+  </nz-col>
+  <nz-col nzSpan="10">
+    <button nz-button nzType="primary" (click)="findDiff()">Muqayise et</button>
+  </nz-col>
+</nz-row>
+<ngx-unified-diff class="ngx-diff-light-theme" [before]="compare1?.body" [after]="compare2?.body" [lineContextSize]="4" />
+<ngx-side-by-side-diff class="ngx-diff-dark-theme" [before]="compare1?.body" [after]="compare2?.body" [lineContextSize]="4" />

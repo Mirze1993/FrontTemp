@@ -27,20 +27,22 @@ export class AuthService {
           refToken: session.refreshToken,
           photo: "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1593253478/trung-vo_bioxmc.png",
           id: ju.Id,
-          name: ju.Name
+          name: ju.Name,
+          email: ju.Email,
+
         }
       };
     });
 
     this._store.setLoading(false);
-    this.setPhoto();
+    // this.setPhoto();
     //this._store.setError(err);
   }
 
   exit(){
-   
-    resetStores(); 
-  }; 
+    resetStores();
+    localStorage.removeItem('AkitaStores');
+  };
 
   setPhoto() {
 
@@ -57,8 +59,8 @@ export class AuthService {
         });
       }
     });
-    //this._store.setLoading(true);   
-    
+    //this._store.setLoading(true);
+
 
     // this._store.setLoading(false);
     //this._store.setError(err);

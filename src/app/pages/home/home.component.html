@@ -1,0 +1,62 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzTheme]="'light'">
+    <div class="logo">MyTemp</div>
+    <ul nz-menu nzTheme="light" nzMode="inline">
+      <li nz-submenu nzTitle="Admin" nzIcon="user">
+        <ul>
+          <li nz-menu-item  [routerLink]="['admin/db-compile']"> DbCompiles</li>
+          <li nz-menu-item>DbTables</li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Team" nzIcon="team">
+        <ul>
+          <li nz-menu-item>Team 1</li>
+          <li nz-menu-item>Team 2</li>
+        </ul>
+      </li>
+      <li nz-menu-item>
+        <nz-icon nzType="file"></nz-icon>
+        <span>File</span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <ul nz-menu nzTheme="light" nzMode="horizontal" class="header-menu">
+        <li nz-menu-item nzSelected>
+          <nz-icon
+            class="trigger"
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"
+          ></nz-icon>
+        </li>
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <ul nz-menu nzTheme="light" nzMode="horizontal" class="left-menu">
+            <li nz-menu-item>Nav 1</li>
+            <li nz-menu-item>Nav 2</li>
+            <li nz-menu-item>Nav 3</li>
+          </ul>
+
+          <ul nz-menu nzTheme="light" nzMode="horizontal" class="right-menu">
+            <li nz-submenu nzPlacement="bottomRight">
+              <span title>
+                <nz-icon nzType="user"></nz-icon> User
+              </span>
+              <ul>
+                <li nz-menu-item>Profile</li>
+                <li nz-menu-item>Settings</li>
+                <li nz-menu-item (click)="logout()">Logout</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+      </ul>
+
+    </nz-header>
+    <nz-content  class="m-6 p-6 min-h-[280px] bg-white rounded shadow">
+      <router-outlet></router-outlet>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+  </nz-layout>
+</nz-layout>
