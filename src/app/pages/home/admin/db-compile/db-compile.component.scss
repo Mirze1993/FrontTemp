@@ -1,1 +1,5 @@
 @use 'ngx-diff/styles/default-theme';
+.editor {
+  height: 300px;
+  display: block; /* bəzən bu da vacib olur */
+}

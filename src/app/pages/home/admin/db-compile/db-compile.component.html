@@ -15,11 +15,11 @@
   </nz-select>
 
   <!-- Search Button -->
-  <button
-    nz-button
-    nzType="primary"
-    (click)="getCompilesByName()"
-    class="w-full sm:w-auto h-10 px-6"
+  <button [disabled]="!compileName"
+          nz-button
+          nzType="primary"
+          (click)="getCompilesByName()"
+          class="w-full sm:w-auto h-10 px-6"
   >
     Search
   </button>
@@ -27,27 +27,62 @@
 <nz-row>
   <nz-col nzSpan="10">
     <h5>1-ci</h5>
-    <nz-radio-group [(ngModel)]="compare1Id" [style.width.%]="100" >
+    <nz-radio-group [(ngModel)]="compare1Id" [style.width.%]="100">
       <nz-row>
         <nz-col nzSpan="20" *ngFor="let item of compileList ">
-          <label  nz-radio [nzValue]="item.id">{{item.ts|date :'yyyy-MM-dd hh:mm'}} {{item.name}} </label>
+          <label nz-radio [nzValue]="item.id">{{ item.ts|date :'yyyy-MM-dd hh:mm' }} {{ item.name }} </label>
         </nz-col>
       </nz-row>
     </nz-radio-group>
   </nz-col>
   <nz-col nzSpan="10">
     <h5>2-ci</h5>
-    <nz-radio-group [(ngModel)]="compare2Id" [style.width.%]="100" >
+    <nz-radio-group [(ngModel)]="compare2Id" [style.width.%]="100">
       <nz-row>
         <nz-col nzSpan="20" *ngFor="let item of compileList ">
-          <label  nz-radio [nzValue]="item.id">{{item.ts|date :'yyyy-MM-dd hh:mm'}} {{item.name}} </label>
+          <label nz-radio [nzValue]="item.id">{{ item.ts|date :'yyyy-MM-dd hh:mm' }} {{ item.name }} </label>
         </nz-col>
       </nz-row>
     </nz-radio-group>
   </nz-col>
+  <br>
   <nz-col nzSpan="10">
     <button nz-button nzType="primary" (click)="findDiff()">Muqayise et</button>
   </nz-col>
 </nz-row>
-<ngx-unified-diff class="ngx-diff-light-theme" [before]="compare1?.body" [after]="compare2?.body" [lineContextSize]="4" />
-<ngx-side-by-side-diff class="ngx-diff-dark-theme" [before]="compare1?.body" [after]="compare2?.body" [lineContextSize]="4" />
+<br>
+<nz-divider nzText="Code diff"></nz-divider>
+<div *ngIf="compare1?.body&&compare2?.body">
+  <nz-radio-group [(ngModel)]="showType">
+    <label nz-radio nzValue="UnifiedDiff">UnifiedDiff</label>
+    <label nz-radio nzValue="SideBySideDiff">SideBySideDiff</label>
+  </nz-radio-group>
+  <ngx-unified-diff *ngIf="showType=='UnifiedDiff'" class="ngx-diff-dark-theme" [before]="compare1?.body"
+                    [after]="compare2?.body" [lineContextSize]="4"/>
+  <ngx-side-by-side-diff *ngIf="showType=='SideBySideDiff'" class="ngx-diff-dark-theme" [before]="compare1?.body"
+                         [after]="compare2?.body" [lineContextSize]="4"/>
+
+</div>
+<br><br>
+<nz-divider nzText="Full code"></nz-divider>
+<!--<nz-code-editor class="editor"-->
+<!--                [nzEditorMode]="'diff'"-->
+<!--                [nzOriginalText]="compare1?.body"-->
+<!--                [ngModel]="compare2?.body"-->
+<!--                [nzEditorOption]="{ language: 'sql',-->
+<!--                 readOnly: true,-->
+<!--                 theme: 'vs-dark'}"></nz-code-editor>-->
+
+
+<div *ngIf="compare1?.body&&compare2?.body">
+  <nz-radio-group [(ngModel)]="showCode">
+    <label nz-radio nzValue="one">1-ci code</label>
+    <label nz-radio nzValue="two">2-ci code</label>
+  </nz-radio-group>
+  <nz-code-editor class="editor" *ngIf="compare1?.body"
+                  [nzEditorMode]="'normal'"
+                  [ngModel]="showCode=='two'?compare2?.body:compare1?.body"
+                  [nzEditorOption]="{ language: 'sql',
+                 readOnly: true,
+                 theme: 'vs-dark'}"></nz-code-editor>
+</div>

@@ -3,13 +3,15 @@ import {Router, RouterModule} from '@angular/router';
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {FormsModule} from '@angular/forms';
 import {AdminService} from '../../../../services/api/admin.service';
-import {DatePipe, NgForOf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {CompileLog} from '../../../../models/Admin';
 import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {SideBySideDiffComponent, UnifiedDiffComponent} from 'ngx-diff';
+import {NzDividerComponent} from 'ng-zorro-antd/divider';
+import {NzCodeEditorComponent} from 'ng-zorro-antd/code-editor';
 
 @Component({
   selector: 'app-db-compile',
@@ -23,7 +25,7 @@ import {SideBySideDiffComponent, UnifiedDiffComponent} from 'ngx-diff';
     DatePipe,
     NzRadioModule,
     UnifiedDiffComponent,
-    SideBySideDiffComponent
+    SideBySideDiffComponent, NgIf, NzCodeEditorComponent, NzDividerComponent
   ],
   templateUrl: './db-compile.component.html',
   styleUrl: './db-compile.component.scss'
@@ -38,6 +40,11 @@ export class DbCompileComponent implements OnInit {
 
   compare1: CompileLog;
   compare2: CompileLog;
+
+  showType:string;
+  showCode:string;
+
+  code = `console.log("Hello, TypeScript!");`;
 
   constructor(private router: Router, private adminService: AdminService) {
   }
@@ -58,8 +65,6 @@ export class DbCompileComponent implements OnInit {
   }
 
   findDiff() {
-    console.log('wd');
-    console.log(this.compare1Id);
     this.adminService.GetById(this.compare1Id).then(m => {
       this.compare1 = m.value
     })
