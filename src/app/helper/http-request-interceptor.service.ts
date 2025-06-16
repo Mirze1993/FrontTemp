@@ -24,7 +24,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    this.token = this._store.getValue().token;  
+    this.token = this._store.currentStateValue.token;
+
     if (this.token) {
       return next.handle(this.copyReq(req, this.token)).pipe(map(event => {
         if (event instanceof HttpResponse) {
@@ -34,7 +35,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         return event;
       })
         , catchError(response => {
-         
+
           if (response instanceof HttpErrorResponse) {
             if (response.status === 401) {
               return this.handle401Error(req, next);
@@ -47,13 +48,13 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(map(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
-          
+
         }
       }
       return event;
     })
       , catchError(response => {
-       
+
         if (response instanceof HttpErrorResponse) {
           if (response.status === 401) {
             this.router.navigate(['/login']);
@@ -64,10 +65,10 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   }
 
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {    
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
-      this.isRefreshing = true;     
-      const state = this._store.getValue();      
+      this.isRefreshing = true;
+      const state = this._store.currentStateValue;
       return this.userService.loginByRefreshToken(state.refToken, Number(state.id)).pipe(
         switchMap((mm) => {
           if (!mm.success) {
@@ -80,7 +81,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
           this.authService.login(mm.value);
           return next.handle(this.copyReq(request, mm.value.token));
         }),
-        catchError((error) => {          
+        catchError((error) => {
           this.isRefreshing = false;
           if (error as HttpErrorResponse) {
             if (error.status === '401') {
@@ -88,14 +89,14 @@ export class HttpRequestInterceptor implements HttpInterceptor {
               //window.location.href = environment.mainAngular;
               this.router.createUrlTree(['/login']);
             }
-          } 
+          }
           //window.location.href = environment.mainAngular;
           this.router.createUrlTree(['/login'])
           return throwError(() => error);
         })
       );
-    }  
-   
+    }
+
     return next.handle(request);
   }
 

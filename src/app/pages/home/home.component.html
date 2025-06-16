@@ -4,7 +4,7 @@
     <ul nz-menu nzTheme="light" nzMode="inline">
       <li nz-submenu nzTitle="Admin" nzIcon="user">
         <ul>
-          <li nz-menu-item  [routerLink]="['admin/db-compile']"> DbCompiles</li>
+          <li nz-menu-item [routerLink]="['admin/db-compile']"> DbCompiles</li>
           <li nz-menu-item>DbTables</li>
         </ul>
       </li>
@@ -39,13 +39,28 @@
 
           <ul nz-menu nzTheme="light" nzMode="horizontal" class="right-menu">
             <li nz-submenu nzPlacement="bottomRight">
-              <span title>
-                <nz-icon nzType="user"></nz-icon> User
-              </span>
-              <ul>
-                <li nz-menu-item>Profile</li>
-                <li nz-menu-item>Settings</li>
-                <li nz-menu-item (click)="logout()">Logout</li>
+            <span title>
+              <nz-avatar
+                [nzSrc]="user?.photo || defaultAvatar"
+                nzSize="small"
+                [nzAlt]="user?.name"
+                style="margin-right: 8px;"
+              ></nz-avatar>
+              {{ user?.name || 'User' }}
+            </span>
+              <ul class="custom-submenu">
+                <li nz-menu-item [routerLink]="['user/profile']" >
+                  <nz-icon nzType="idcard" class="menu-icon"></nz-icon>
+                  Profile
+                </li>
+                <li nz-menu-item>
+                  <nz-icon nzType="setting" class="menu-icon"></nz-icon>
+                  Settings
+                </li>
+                <li nz-menu-item (click)="logout()">
+                  <nz-icon nzType="logout" class="menu-icon"></nz-icon>
+                  Logout
+                </li>
               </ul>
             </li>
           </ul>
@@ -54,7 +69,7 @@
       </ul>
 
     </nz-header>
-    <nz-content  class="m-6 p-6 min-h-[280px] bg-white rounded shadow">
+    <nz-content class="m-6 p-6 min-h-[280px] bg-white rounded shadow">
       <router-outlet></router-outlet>
     </nz-content>
     <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>

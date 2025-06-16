@@ -6,15 +6,16 @@ export interface AuthState  {
     email?: string;
     photo?: string;
     claims?:UserClaim[];
+    loading?: boolean;
   }
-  
+
   export interface User  {
     id: number;
     name: string;
     email?: string;
     avatarUrl?: string;
   }
-  
+
   export class Session{
     token?:string;
     refreshToken?:string
@@ -23,13 +24,13 @@ export interface AuthState  {
       this.token=token;
   }
   }
-  
-  
+
+
   export class LoginUserReq {
     email?: string
     password?: string
   }
-  
+
   export class LoginByRefTokReq {
     refreshToken?: string
     id?  :number
@@ -38,9 +39,9 @@ export interface AuthState  {
         this.id=id;
     }
   }
-  
-  
-  
+
+
+
   export class Token_Decode {
     Name?: string
     Email?: string
@@ -53,28 +54,28 @@ export interface AuthState  {
     Id?: number;
   }
   export class UserClaim{
-  
+
     type? :ClaimType;
     value? : string;
     valueType? : string;
     issuer? : string;
     id? : number;
   }
-  
+
   export interface UserInfoResp{
     id:number;
     name?:string;
     email?:string;
     photo?:string;
   }
-  
+
   export class SearchUserResp{
     name?:string;
     photo?:string;
     appUserId?:number;
     email?:string
   }
-  
+
   export class UpdateProfilReq{
     columnName? :ClaimType;
     newValue? : string;
@@ -85,28 +86,28 @@ export interface AuthState  {
   export enum EditType{
     Insert = "Insert",
     Update = "Update",
-    Delete = "Delete"   
+    Delete = "Delete"
   }
-  
+
   export class RoleValue{
     name?:string;
     id?:string;
     typeName?:number
   }
-  
+
   export class SetClaimReq{
     UserId?:number;
      ClaimType?: string ;
-     Value?: string[] 
+     Value?: string[]
   }
-  
+
   export interface Register {
     name: string
     email: string
     password: string
   }
-  
-  
+
+
   export enum ClaimType{
     Name = "Name",
     Role = "Role",
@@ -119,15 +120,15 @@ export interface AuthState  {
     Bio = "Bio",
     AdditionalDetails = "AdditionalDetails",
     Experience = "Experience",
-  
+
     GoogleLogin = "GoogleLogin",
     GoogleId = "GoogleId",
     ServerAuthCode = "ServerAuthCode"
-  
+
   }
-  
+
   export interface NotifResp{
-  
+
   id:number;
   title:string;
   body :string;
@@ -137,11 +138,11 @@ export interface AuthState  {
   type :number;
   userId:number
   }
-  
+
   export interface intList{
     values:number[]
   }
-  
+
   export interface  position{
     id?: number,
     parentId?: number,

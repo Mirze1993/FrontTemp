@@ -8,7 +8,7 @@ import {registerLocaleData} from '@angular/common';
 import en from '@angular/common/locales/en';
 import {FormsModule} from '@angular/forms';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import {provideHttpClient, withFetch} from '@angular/common/http';
+import {provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/common/http';
 import {httpInterceptorProviders, HttpRequestInterceptor} from './helper/http-request-interceptor.service';
 import {NZ_ICONS} from 'ng-zorro-antd/icon';
 import {icons} from './icons';
@@ -18,7 +18,7 @@ registerLocaleData(en);
 
 const baseUrl = typeof window !== 'undefined'
   ? `${location.protocol}//${location.hostname}:${environment.port}`
-  : 'http://localhost:4200'+environment.port;
+  : 'http://localhost:'+environment.port;
 
 
 
@@ -28,7 +28,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), provideClientHydration(withEventReplay()),
     provideNzI18n(en_US), importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptorsFromDi() ),
     { provide: NZ_ICONS, useValue: icons },
     httpInterceptorProviders,
     {
