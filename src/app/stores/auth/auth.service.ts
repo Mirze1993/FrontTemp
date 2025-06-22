@@ -21,7 +21,6 @@ export class AuthService {
       refToken: session.refreshToken,
       photo: "https://res.cloudinary.com/dvujyxh7e/image/upload/c_scale,w_48/v1593253478/trung-vo_bioxmc.png",
       id: ju.Id,
-      name: ju.Name,
       email: ju.Email,
       loading: false
     }) ;
@@ -41,9 +40,12 @@ export class AuthService {
     this.userService.getProfile().then(mm=>{
       if(mm.success){
         const url= this.userService.getImg(mm.value);
+        const name= this.userService.getName(mm.value);
+        console.log(name)
         this._store.setAuthState({
           ...this._store.currentStateValue,
           photo: url,
+          name:name,
           claims: mm.value
         });
       }

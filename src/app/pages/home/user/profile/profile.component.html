@@ -19,10 +19,7 @@
 
 
 
-  <nz-descriptions [nzColumn]="2" nzTitle="Personal">
-    <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">qqq</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Email" [nzSpan]="1">wwwww</nz-descriptions-item>
-  </nz-descriptions>
+
   <nz-divider></nz-divider>
 
   <!-- Name Edit Section -->
@@ -41,7 +38,7 @@
     </div>
 
     <div *ngIf="!isEditingName" class="text-gray-600">
-      {{ profileForm.get('name')?.value }}
+      {{ user.name }}
     </div>
 
     <div *ngIf="isEditingName">
@@ -57,7 +54,7 @@
               <button
                 nz-button
                 nzType="primary"
-                (click)="saveField('name')"
+                (click)="updateName()"
                 [disabled]="profileForm.get('name')?.invalid"
                 class="!px-2 !h-8"
               >
@@ -84,66 +81,67 @@
   </div>
 
   <!-- Email Edit Section -->
-  <div class="mb-6 p-4 border rounded-lg">
-    <div class="flex justify-between items-center mb-2">
-      <h3 class="text-lg font-medium text-gray-700">Email</h3>
-      <button
-        *ngIf="!isEditingEmail"
-        nz-button
-        nzType="text"
-        (click)="toggleEdit('email')"
-        class="flex items-center text-blue-500 hover:text-blue-700"
-      >
-        <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Edit
-      </button>
-    </div>
+<!--  <div class="mb-6 p-4 border rounded-lg" >-->
+<!--    <div class="flex justify-between items-center mb-2">-->
+<!--      <h3 class="text-lg font-medium text-gray-700">Email</h3>-->
+<!--      <button-->
+<!--        *ngIf="!isEditingEmail"-->
+<!--        nz-button-->
+<!--        nzType="text"-->
+<!--        (click)="toggleEdit('email')"-->
+<!--        class="flex items-center text-blue-500 hover:text-blue-700"-->
+<!--        disabled="true"-->
+<!--      >-->
+<!--        <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Edit-->
+<!--      </button>-->
+<!--    </div>-->
 
-    <div *ngIf="!isEditingEmail" class="text-gray-600">
-      {{ profileForm.get('email')?.value }}
-    </div>
+<!--    <div *ngIf="!isEditingEmail" class="text-gray-600">-->
+<!--      {{ user.email}}-->
+<!--    </div>-->
 
-    <div *ngIf="isEditingEmail">
-      <form nz-form [formGroup]="profileForm">
-        <nz-form-item>
-          <nz-form-control [nzErrorTip]="emailErrorTpl">
-            <div class="flex items-center gap-2">
-              <input
-                nz-input
-                formControlName="email"
-                placeholder="Enter your email"
-                type="email"
-              >
-              <button
-                nz-button
-                nzType="primary"
-                (click)="saveField('email')"
-                [disabled]="profileForm.get('email')?.invalid"
-                class="!px-2 !h-8"
-              >
-                <i nz-icon nzType="save" nzTheme="outline"></i>
-              </button>
-              <button
-                nz-button
-                nzDanger
-                (click)="cancelEdit('email')"
-                class="!px-2 !h-8"
-              >
-                <i nz-icon nzType="close" nzTheme="outline"></i>
-              </button>
-            </div>
-            <ng-template #emailErrorTpl let-control>
-              <ng-container *ngIf="control.hasError('required')">
-                Email is required
-              </ng-container>
-              <ng-container *ngIf="control.hasError('email')">
-                Please enter a valid email
-              </ng-container>
-            </ng-template>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-    </div>
-  </div>
+<!--    <div *ngIf="isEditingEmail">-->
+<!--      <form nz-form [formGroup]="profileForm">-->
+<!--        <nz-form-item>-->
+<!--          <nz-form-control [nzErrorTip]="emailErrorTpl">-->
+<!--            <div class="flex items-center gap-2">-->
+<!--              <input-->
+<!--                nz-input-->
+<!--                formControlName="email"-->
+<!--                placeholder="Enter your email"-->
+<!--                type="email"-->
+<!--              >-->
+<!--              <button-->
+<!--                nz-button-->
+<!--                nzType="primary"-->
+<!--                (click)="saveField('email')"-->
+<!--                [disabled]="profileForm.get('email')?.invalid"-->
+<!--                class="!px-2 !h-8"-->
+<!--              >-->
+<!--                <i nz-icon nzType="save" nzTheme="outline"></i>-->
+<!--              </button>-->
+<!--              <button-->
+<!--                nz-button-->
+<!--                nzDanger-->
+<!--                (click)="cancelEdit('email')"-->
+<!--                class="!px-2 !h-8"-->
+<!--              >-->
+<!--                <i nz-icon nzType="close" nzTheme="outline"></i>-->
+<!--              </button>-->
+<!--            </div>-->
+<!--            <ng-template #emailErrorTpl let-control>-->
+<!--              <ng-container *ngIf="control.hasError('required')">-->
+<!--                Email is required-->
+<!--              </ng-container>-->
+<!--              <ng-container *ngIf="control.hasError('email')">-->
+<!--                Please enter a valid email-->
+<!--              </ng-container>-->
+<!--            </ng-template>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
 
   <!-- Password Edit Section -->
   <div class="mb-6 p-4 border rounded-lg">

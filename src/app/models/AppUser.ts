@@ -2,7 +2,7 @@ export interface AuthState  {
     token: string;
     refToken:string;
     id: number;
-    name: string;
+    name?: string;
     email?: string;
     photo?: string;
     claims?:UserClaim[];

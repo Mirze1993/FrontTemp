@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NzIconDirective, NzIconModule} from 'ng-zorro-antd/icon';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzUploadComponent, NzUploadFile, NzUploadModule} from 'ng-zorro-antd/upload';
+import {NzUploadModule} from 'ng-zorro-antd/upload';
 import {NzFormControlComponent, NzFormItemComponent, NzFormModule} from 'ng-zorro-antd/form';
 import {CommonModule, NgIf} from '@angular/common';
 import {NzButtonComponent, NzButtonModule} from 'ng-zorro-antd/button';
@@ -10,7 +10,7 @@ import {NzInputDirective, NzInputModule} from 'ng-zorro-antd/input';
 import {UserService} from '../../../../services/api/user.service';
 import {Router} from '@angular/router';
 import {AuthStore} from '../../../../stores/auth/auth.store';
-import {NzImageDirective, NzImageModule} from 'ng-zorro-antd/image';
+import {NzImageModule} from 'ng-zorro-antd/image';
 import {ImageUploadComponent} from '../../../../components/image-upload/image-upload.component';
 import {NzDescriptionsComponent, NzDescriptionsItemComponent} from 'ng-zorro-antd/descriptions';
 import {NzDividerComponent} from 'ng-zorro-antd/divider';
@@ -66,12 +66,18 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this.authStore.currentStateValue;
-    this.authStore.user$.subscribe(mm=>{
-      this.user = mm;
-      this.picture=environment.fileUrl+this.user.claims.find(mm => mm.type == ClaimType.ProfilPictur)?.value;
+    this.setValue(this.authStore.currentStateValue)
+    this.authStore.user$.subscribe(mm=>{;
+      this.setValue(mm);
     });
 
+
+  }
+
+  setValue(user:AuthState){
+    this.user = user;
+    if(this.user.claims)
+      this.picture=environment.fileUrl+this.user.claims.find(mm => mm.type == ClaimType.ProfilPictur)?.value;
     this.profileForm = this.fb.group({
       name: [this.user.name, [Validators.required]],
       email: [this.user.email, [Validators.required, Validators.email]],
@@ -99,7 +105,7 @@ export class ProfileComponent implements OnInit {
   // Save functions
   saveField(field: string) {
     this.toggleEdit(field);
-    // Here you would typically call an API to save the changes
+
     this.msg.success(`${field} updated successfully!`);
   }
 
@@ -109,31 +115,43 @@ export class ProfileComponent implements OnInit {
     // Reset form field to original value if needed
   }
 
+  updateName(){
+    this.toggleEdit("name");
+    this.updateByType(this.profileForm.get('name').value,ClaimType.Name);
+    this.msg.success(`$name updated successfully!`);
+  }
+  uploadImage(imgPath: string){
+    this.updateByType(imgPath,ClaimType.ProfilPictur);
+  }
 
-  uploadImage(imgPath: string) {
-    const oldImg = this.authStore.currentStateValue.claims.find(mm => mm.type == ClaimType.ProfilPictur);
+  updateByType(value: string,claimType:ClaimType) {
 
-    if (oldImg) {
+    const old = this.authStore.currentStateValue.claims.find(mm => mm.type == claimType);
+
+    if (old) {
       this.userService.updateProfile(
         {
-          columnName: ClaimType.ProfilPictur,
+          columnName: claimType,
           editType: EditType.Update,
-          oldId: oldImg.id,
-          newValue: imgPath
+          oldId: old.id,
+          newValue: value
         }).then(mm => {
           this.getUserProfile();
         }
       );
     } else {
       this.userService.updateProfile({
-        columnName: ClaimType.ProfilPictur,
+        columnName: claimType,
         editType: EditType.Insert,
-        newValue: imgPath
+        newValue: value
       }).then(mm => {
         this.getUserProfile();
       });
     }
+
   }
+
+
 
   isVisible: boolean = false;
 
@@ -152,18 +170,6 @@ export class ProfileComponent implements OnInit {
 
 
   private getUserProfile() {
-
     this.authService.setProfile();
-      // .then(mm => {
-      // this.authStore.
-      // this.picture = environment.fileUrl+this.userService.getImg(this.authStore.userClaims);
-      // this.listOfUserRole = this.userClaims.filter(c => c.type == ClaimType.Role).map(map => map.value);
-      // this.positionOld = Number(this.userService.getPosition(this.userClaims));
-      // if (this.positionOld )
-      //   this.position.setValue(this.positionOld);
-      // console.log(this.listOfUserRole)
-    //}
-    // );
-
   }
 }
