@@ -1,0 +1,223 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <!-- Profile Image Section -->
+  <div>
+    <label class="hoverable" for="fileInput">
+      <img [src]="picture ? picture : 'https://www.w3schools.com/howto/img_avatar.png'">
+      <div class="hover-text">Choose file</div>
+      <div class="background"></div>
+    </label>
+    <br />
+
+    <button nz-button [nzType]="'primary'" (click)="showModal()" id="fileInput">  <i nz-icon nzType="edit" nzTheme="outline"></i></button>
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Edit image" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+      <ng-container *nzModalContent>
+        <app-image-upload requiredFileType="image/png, image/jpeg, imgae/gif"
+                          (imgUrl)="uploadImage($event)"></app-image-upload>
+      </ng-container>
+    </nz-modal>
+  </div>
+
+
+
+  <nz-descriptions [nzColumn]="2" nzTitle="Personal">
+    <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">qqq</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Email" [nzSpan]="1">wwwww</nz-descriptions-item>
+  </nz-descriptions>
+  <nz-divider></nz-divider>
+
+  <!-- Name Edit Section -->
+  <div class="mb-6 p-4 border rounded-lg">
+    <div class="flex justify-between items-center mb-2">
+      <h3 class="text-lg font-medium text-gray-700">Name</h3>
+      <button
+        *ngIf="!isEditingName"
+        nz-button
+        nzType="text"
+        (click)="toggleEdit('name')"
+        class="flex items-center text-blue-500 hover:text-blue-700"
+      >
+        <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Edit
+      </button>
+    </div>
+
+    <div *ngIf="!isEditingName" class="text-gray-600">
+      {{ profileForm.get('name')?.value }}
+    </div>
+
+    <div *ngIf="isEditingName">
+      <form nz-form [formGroup]="profileForm">
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="nameErrorTpl">
+            <div class="flex items-center gap-2">
+              <input
+                nz-input
+                formControlName="name"
+                placeholder="Enter your name"
+              >
+              <button
+                nz-button
+                nzType="primary"
+                (click)="saveField('name')"
+                [disabled]="profileForm.get('name')?.invalid"
+                class="!px-2 !h-8"
+              >
+                <i nz-icon nzType="save" nzTheme="outline"></i>
+              </button>
+              <button
+                nz-button
+                nzDanger
+                (click)="cancelEdit('name')"
+                class="!px-2 !h-8"
+              >
+                <i nz-icon nzType="close" nzTheme="outline"></i>
+              </button>
+            </div>
+            <ng-template #nameErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Name is required
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+
+  <!-- Email Edit Section -->
+  <div class="mb-6 p-4 border rounded-lg">
+    <div class="flex justify-between items-center mb-2">
+      <h3 class="text-lg font-medium text-gray-700">Email</h3>
+      <button
+        *ngIf="!isEditingEmail"
+        nz-button
+        nzType="text"
+        (click)="toggleEdit('email')"
+        class="flex items-center text-blue-500 hover:text-blue-700"
+      >
+        <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Edit
+      </button>
+    </div>
+
+    <div *ngIf="!isEditingEmail" class="text-gray-600">
+      {{ profileForm.get('email')?.value }}
+    </div>
+
+    <div *ngIf="isEditingEmail">
+      <form nz-form [formGroup]="profileForm">
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="emailErrorTpl">
+            <div class="flex items-center gap-2">
+              <input
+                nz-input
+                formControlName="email"
+                placeholder="Enter your email"
+                type="email"
+              >
+              <button
+                nz-button
+                nzType="primary"
+                (click)="saveField('email')"
+                [disabled]="profileForm.get('email')?.invalid"
+                class="!px-2 !h-8"
+              >
+                <i nz-icon nzType="save" nzTheme="outline"></i>
+              </button>
+              <button
+                nz-button
+                nzDanger
+                (click)="cancelEdit('email')"
+                class="!px-2 !h-8"
+              >
+                <i nz-icon nzType="close" nzTheme="outline"></i>
+              </button>
+            </div>
+            <ng-template #emailErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Email is required
+              </ng-container>
+              <ng-container *ngIf="control.hasError('email')">
+                Please enter a valid email
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </div>
+
+  <!-- Password Edit Section -->
+  <div class="mb-6 p-4 border rounded-lg">
+    <div class="flex justify-between items-center mb-2">
+      <h3 class="text-lg font-medium text-gray-700">Password</h3>
+      <button
+        *ngIf="!isEditingPassword"
+        nz-button
+        nzType="text"
+        (click)="toggleEdit('password')"
+        class="flex items-center text-blue-500 hover:text-blue-700"
+      >
+        <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Change Password
+      </button>
+    </div>
+
+    <div *ngIf="!isEditingPassword" class="text-gray-600">
+      ********
+    </div>
+
+    <div *ngIf="isEditingPassword">
+      <form nz-form [formGroup]="profileForm">
+        <nz-form-item>
+          <nz-form-control>
+            <input
+              nz-input
+              formControlName="currentPassword"
+              placeholder="Current Password"
+              type="password"
+            >
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control>
+            <input
+              nz-input
+              formControlName="newPassword"
+              placeholder="New Password"
+              type="password"
+            >
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control>
+            <input
+              nz-input
+              formControlName="confirmPassword"
+              placeholder="Confirm New Password"
+              type="password"
+            >
+          </nz-form-control>
+        </nz-form-item>
+
+        <div class="flex justify-end gap-2 mt-2">
+          <button
+            nz-button
+            nzType="primary"
+            (click)="saveField('password')"
+            class="!px-2 !h-8"
+          >
+            <i nz-icon nzType="save" nzTheme="outline"></i>
+          </button>
+          <button
+            nz-button
+            nzDanger
+            (click)="cancelEdit('password')"
+            class="!px-2 !h-8"
+          >
+            <i nz-icon nzType="close" nzTheme="outline"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div>
+  <div>
+    <button color="primary" class="upload-btn" (click)="fileUpload.click()">
+      <span nz-icon nzType="file-add" nzTheme="outline"></span>
+    </button>
+    <button color="warn" *ngIf="imgChangeEvt||imageFile" (click)="deleteImg()">
+      <span nz-icon nzType="delete" nzTheme="outline"></span>
+    </button>
+    <button color="accent" *ngIf="imgChangeEvt||imageFile" (click)="uploadImg()">
+      <span nz-icon nzType="save" nzTheme="outline"></span>
+    </button>
+    <input type="file" class="file-input" [accept]="requiredFileType" (change)="onFileSelected($event)" #fileUpload>
+    {{fileName }}
+  </div>
+
+
+  <div *ngIf="imgChangeEvt||imageFile">
+    <image-cropper [imageChangedEvent]="imgChangeEvt" [maintainAspectRatio]="false" [output]="'base64'"
+                   [imageFile]="imageFile" (imageCropped)="cropImg($event)" (imageLoaded)="imgLoad()"
+                   (cropperReady)="initCropper()" (loadImageFailed)="imgFailed()">
+    </image-cropper>
+  </div>
+
+  <div *ngIf="imgChangeEvt||imageFile">
+    <img [src]="cropImgPreview" />
+  </div>
+
+  <div class="progress" *ngIf="uploadProgress">
+    <nz-progress [nzPercent]="uploadProgress" nzStatus="active" *ngIf="uploadProgress"></nz-progress>
+    <!--
+    <mat-icon class="cancel-upload" (click)="cancelUpload()" *ngIf="uploadProgress">delete_forever</mat-icon> -->
+  </div>
+
+
+</div>
+
+
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  <div *ngFor="let item of avatars">
+    <img (click)="onImageSelect(item)" class="h-auto max-w-full rounded-lg" [src]=item>
+  </div>
+
+
+</div>

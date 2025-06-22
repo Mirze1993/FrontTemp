@@ -1,0 +1,14 @@
+/* Add transition for smoother image changes */
+img {
+  transition: all 0.3s ease;
+}
+
+/* Style for the action buttons container */
+.relative > div {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Hover effects for buttons */
+button:hover {
+  transform: scale(1.05);
+}

@@ -4,5 +4,5 @@ export const environment: EnvironmentModel = {
     production: false,
     apiUrl: '/assets/data' ,
     port:5197,
-    fileUrl:"http://localhost:5016",
+    fileUrl:"http://localhost:5163",
   };

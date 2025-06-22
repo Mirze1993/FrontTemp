@@ -8,8 +8,9 @@ import {AuthService} from '../../stores/auth/auth.service';
 import {UserService} from '../../services/api/user.service';
 import {Router, RouterModule} from '@angular/router';
 import {AuthStore} from '../../stores/auth/auth.store';
-import {AuthState} from '../../models/AppUser';
+import {AuthState, ClaimType} from '../../models/AppUser';
 import {NzAvatarComponent} from 'ng-zorro-antd/avatar';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
   isCollapsed = false;
   user: AuthState;
   defaultAvatar = 'https://www.gravatar.com/avatar/?d=mp'
+  picture: string;
 
   constructor(
     private authService: AuthService,
@@ -32,6 +34,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authStore.currentStateValue;
+    this.authStore.user$.subscribe(mm=>{
+      this.user = mm;
+      this.picture=this.user.photo?environment.fileUrl+this.user.photo:this.defaultAvatar;
+    });
   }
 
   isLogin: boolean;

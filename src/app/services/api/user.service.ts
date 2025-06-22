@@ -34,9 +34,9 @@ export class UserService {
     }
   }
 
-  updateProfil(req: UpdateProfilReq): Promise<Result<boolean>> {
+  updateProfile(req: UpdateProfilReq): Promise<Result<boolean>> {
 
-    return firstValueFrom(this.httpservice.post<UpdateProfilReq, Result<boolean>>({ path: 'auth/UpdateProfil', }, req));
+    return firstValueFrom(this.httpservice.post<UpdateProfilReq, Result<boolean>>({ path: 'user/UpdateProfile', }, req));
   }
 
 
