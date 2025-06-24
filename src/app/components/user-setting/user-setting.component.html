@@ -1,0 +1,22 @@
+<div class="mt-3 mb-6 text-2xl font-medium">User Settings</div>
+<div class="mt-3 mb-6 text-2xl font-medium">
+  <nz-card class="w-3/6" nzTitle="All users" [nzExtra]="extraTemplate">
+    <nz-table #basicTable [nzData]="users">
+
+      <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td class="flex items-center mt-2">
+          <img [src]="data.photo" style="width:24px;height: 24px">
+          <div class="pt-px text-15"> {{data.name}}</div>
+        </td>
+        <td>
+          <a (click)="openProfile(data.appUserId,data.email)">Edit</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a (click)="addUser()">Add</a>
+  </ng-template>
+</div>

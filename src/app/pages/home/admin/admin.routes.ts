@@ -8,5 +8,12 @@ export const adminRoutes: Routes = [
     loadComponent : ()=>import("./db-compile/db-compile.component").then(value => value.DbCompileComponent),
     canActivate:[authGuard],
     data: { roles: ['ADMIN'] }
+  },
+
+  {
+    path: 'settings',
+    loadComponent : ()=>import("./settings/settings.component").then(value => value.SettingsComponent),
+    canActivate:[authGuard],
+    //data: { roles: ['ADMIN']   }
   }
 ];

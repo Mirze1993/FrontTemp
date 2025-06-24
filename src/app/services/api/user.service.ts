@@ -41,7 +41,7 @@ export class UserService {
 
 
   setClaim(req: SetClaimReq): Promise<Result<number>> {
-    let r = this.httpservice.post<SetClaimReq, Result<number>>({ path: 'auth/SetClaim', }, req);
+    let r = this.httpservice.post<SetClaimReq, Result<number>>({ path: 'user/SetClaim', }, req);
     return firstValueFrom(r);
   }
 
@@ -59,7 +59,7 @@ export class UserService {
   getRoleValue(): Promise<Result<RoleValue[]>> {
 
     const r = this.httpservice.get<Result<RoleValue[]>>({
-      path: "auth/GetRoleValue"
+      path: "user/GetRoleValue"
     });
     return firstValueFrom(r);
   }
@@ -100,7 +100,7 @@ export class UserService {
 
   getNotif(): Promise<Result<NotifResp[]>> {
     const r = this.httpservice.get<Result<NotifResp[]>>({
-      path: "auth/GetNotif",
+      path: "user/GetNotif",
     });
     return firstValueFrom(r);
   }
@@ -177,7 +177,7 @@ export class UserService {
   }
 
   getRoles(claims: UserClaim[]): string[] {
-    return claims.filter(mm => mm.type === ClaimType.Role).map(mm=>mm.value);
+    return claims?.filter(mm => mm.type === ClaimType.Role)?.map(mm=>mm.value);
   }
   getImg(claims: UserClaim[]): string {
     return this.getFilePath(claims.find(mm => mm.type === ClaimType.ProfilPictur)?.value);

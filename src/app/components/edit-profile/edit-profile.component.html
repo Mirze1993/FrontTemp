@@ -1,0 +1,60 @@
+<div>
+  <label class="hoverable" for="fileInput">
+    <img [src]="picture ? picture : 'https://www.w3schools.com/howto/img_avatar.png'">
+    <div class="hover-text">Choose file</div>
+    <div class="background"></div>
+  </label>
+  <br />
+
+  <button nz-button [nzType]="'primary'" (click)="showModal()" id="fileInput"><span></span></button>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="Edit image" [nzFooter]="null" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+      <app-image-upload requiredFileType="image/png, image/jpeg, imgae/gif"
+                        (imgUrl)="uploadImage($event)"></app-image-upload>
+    </ng-container>
+  </nz-modal>
+</div>
+
+
+
+<nz-descriptions [nzColumn]="2" nzTitle="Personal">
+  <nz-descriptions-item nzTitle="Full Name" [nzSpan]="1">{{userName}}</nz-descriptions-item>
+  <nz-descriptions-item nzTitle="Email" [nzSpan]="1">{{email}}</nz-descriptions-item>
+</nz-descriptions>
+<nz-divider></nz-divider>
+
+
+<div class="flex flex-col m-3 ...">
+
+  <div>
+    Position
+  </div>
+  <div>
+    <app-position [positionValue]="position" [dropDown]="true"></app-position>
+  </div>
+  <div class="m-3">
+    <button class="mr-5" nz-button nzType="primary" (click)="positionShowConfirm()">Confirm</button>
+    <button class="mr-5" nz-button nzType="dashed" (click)="positionShowDeleteConfirm()">Cancel</button>
+  </div>
+</div>
+<nz-divider></nz-divider>
+
+<div class="flex flex-col m-3 ...">
+  <div>
+    Role
+  </div>
+  <div>
+    <nz-select class="w-5/6" nzMode="multiple" nzPlaceHolder="Inserted are removed role" [(ngModel)]="listOfUserRole">
+      <nz-option *ngFor="let option of listOfRole" [nzLabel]="option" nzAllowClear [nzValue]="option"
+                 [nzHide]="!isNotSelected(option)"></nz-option>
+    </nz-select>
+  </div>
+  <div class="m-3">
+    <button class="mr-5" nz-button nzType="primary" (click)="showConfirm()">Confirm</button>
+    <button class="mr-5" nz-button nzType="dashed" (click)="showDeleteConfirm()">Cancel</button>
+  </div>
+</div>
+
+
+
+<nz-divider></nz-divider>

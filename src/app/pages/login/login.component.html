@@ -1,60 +1,104 @@
-
 <section class="h-screen">
-    <div class="container h-full px-6 py-24">
-      <div
-        class="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
-        <!-- Left column container with background-->
-        <div class="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
-          <img
-            src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-            class="w-full"
-            alt="Phone image" />
-        </div>
-  
-        <!-- Right column container with form -->
-        <div class="md:w-8/12 lg:ml-6 lg:w-5/12">
-          <form  [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
-            <!-- Email input -->
-            <div class="relative mb-6" data-te-input-wrapper-init>
-                <label
-                for="exampleFormControlInput3"
-                >Email address
-              </label>
-              <input nz-input formControlName="email"
-                type="text"
-                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                id="exampleFormControlInput3"
-                placeholder="Email address" />
-              
+  <div class="container h-full px-6 py-24">
+    <div class="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
+      <!-- Left column container with background-->
+      <div class="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+        <img
+          src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+          class="w-full"
+          alt="Phone image" />
+      </div>
+
+      <!-- Right column container with forms -->
+      <div class="md:w-8/12 lg:ml-6 lg:w-5/12">
+        <!-- Login Form -->
+        <form *ngIf="isLoginMode" [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+          <h2 class="mb-6 text-xl font-semibold">Giriş</h2>
+          <div class="relative mb-6">
+            <label for="email">Email address</label>
+            <input nz-input formControlName="email"
+                   type="text"
+                   id="email"
+                   placeholder="Email address"
+                   class="peer block w-full rounded border-0 bg-transparent px-3 py-2 leading-[2.15] outline-none transition-all dark:text-neutral-200" />
+          </div>
+
+          <div class="relative mb-6">
+            <label for="password">Password</label>
+            <input nz-input formControlName="password"
+                   type="password"
+                   id="password"
+                   placeholder="Password"
+                   class="peer block w-full rounded border-0 bg-transparent px-3 py-2 leading-[2.15] outline-none transition-all dark:text-neutral-200" />
+          </div>
+
+          <button type="submit"
+                  class="w-full rounded bg-blue-600 px-6 py-3 text-sm font-semibold uppercase text-white shadow-md transition hover:bg-blue-700">
+            Giriş
+          </button>
+
+          <p class="mt-4 text-sm">Hesabınız yoxdur?
+            <a href="#" (click)="isLoginMode = false" class="text-blue-600 hover:underline">Qeydiyyat</a>
+          </p>
+        </form>
+
+        <!-- Register Form -->
+        <form *ngIf="!isLoginMode" [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
+          <h2 class="mb-6 text-xl font-semibold">Qeydiyyat</h2>
+          <div class="relative mb-6">
+            <label for="name">Ad</label>
+            <input nz-input formControlName="name"
+                   type="text"
+                   id="name"
+                   placeholder="Adınız"
+                   class="peer block w-full rounded border-0 bg-transparent px-3 py-2 leading-[2.15] outline-none transition-all dark:text-neutral-200" />
+          </div>
+
+
+          <div class="relative mb-6">
+            <label for="reg-email">Email</label>
+            <input nz-input formControlName="email"
+                   type="email"
+                   id="reg-email"
+                   placeholder="Email"
+                   class="peer block w-full rounded border-0 bg-transparent px-3 py-2 leading-[2.15] outline-none transition-all dark:text-neutral-200" />
+            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+              Zəhmət olmasa düzgün email daxil edin.
             </div>
-  
-            <!-- Password input -->
-            <div class="relative mb-6" data-te-input-wrapper-init>
-                <label
-                for="exampleFormControlInput33"               
-                >Password
-              </label>
-              <input  nz-input formControlName="password" 
-                type="password"
-                class="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                id="exampleFormControlInput33"
-                placeholder="Password" />
-              
+          </div>
+
+          <div class="relative mb-6">
+            <label for="reg-password">Şifrə</label>
+            <input nz-input formControlName="password"
+                   type="password"
+                   id="reg-password"
+                   placeholder="Şifrə"
+                   class="peer block w-full rounded border-0 bg-transparent px-3 py-2 leading-[2.15] outline-none transition-all dark:text-neutral-200" />
+          </div>
+
+          <div class="relative mb-6">
+            <label for="tryPassword">Şifrəni təkrar daxil edin</label>
+            <input nz-input formControlName="tryPassword"
+                   type="password"
+                   id="tryPassword"
+                   placeholder="Təkrar şifrə"
+                   class="peer block w-full rounded border-0 bg-transparent px-3 py-2 leading-[2.15] outline-none transition-all dark:text-neutral-200" />
+            <div *ngIf="registerForm.get('tryPassword')?.touched && registerForm.errors?.['passwordMismatch']" class="text-red-500 text-sm mt-1">
+              Şifreler bərəabər deyil
             </div>
-  
+          </div>
 
-  
-            <!-- Submit button -->
-            <button
-              type="submit"
-              class="w-full rounded bg-blue-600 px-6 py-3 text-sm font-semibold uppercase text-white shadow-md transition hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-300"
-              >
-              Sign in
-            </button>
+          <button type="submit"
+                  class="w-full rounded bg-green-600 px-6 py-3 text-sm font-semibold uppercase text-white shadow-md transition hover:bg-green-700">
+            Qeydiyyatdan keç
+          </button>
 
-
-          </form>
-        </div>
+          <p class="mt-4 text-sm">Artıq hesabınız var?
+            <button (click)="isLoginMode = true" class="text-blue-600 hover:underline">Giriş</button>
+          </p>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+

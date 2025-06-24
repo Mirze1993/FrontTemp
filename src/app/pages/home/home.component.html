@@ -1,24 +1,22 @@
 <nz-layout>
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzTheme]="'light'">
     <div class="logo">MyTemp</div>
+
     <ul nz-menu nzTheme="light" nzMode="inline">
-      <li nz-submenu nzTitle="Admin" nzIcon="user">
+
+      <li *accessControl="['user']; op: 'or'" nz-submenu nzTitle="DB" nzIcon="database">
         <ul>
           <li nz-menu-item [routerLink]="['admin/db-compile']"> DbCompiles</li>
           <li nz-menu-item>DbTables</li>
         </ul>
       </li>
-      <li nz-submenu nzTitle="Team" nzIcon="team">
+      <li  nz-submenu nzTitle="Settings" nzIcon="setting">
         <ul>
-          <li nz-menu-item>Team 1</li>
-          <li nz-menu-item>Team 2</li>
+          <li nz-menu-item [routerLink]="['admin/settings']">User setting</li>
         </ul>
       </li>
-      <li nz-menu-item>
-        <nz-icon nzType="file"></nz-icon>
-        <span>File</span>
-      </li>
     </ul>
+
   </nz-sider>
   <nz-layout>
     <nz-header>
@@ -36,8 +34,8 @@
             <li nz-menu-item>Nav 2</li>
             <li nz-menu-item>Nav 3</li>
           </ul>
-
           <ul nz-menu nzTheme="light" nzMode="horizontal" class="right-menu">
+            <li nz-menu-item><app-notif></app-notif></li>
             <li nz-submenu nzPlacement="bottomRight">
             <span title>
               <nz-avatar
@@ -49,7 +47,7 @@
               {{ user?.name || 'User' }}
             </span>
               <ul class="custom-submenu">
-                <li nz-menu-item [routerLink]="['user/profile']" >
+                <li nz-menu-item [routerLink]="['user/profile']">
                   <nz-icon nzType="idcard" class="menu-icon"></nz-icon>
                   Profile
                 </li>

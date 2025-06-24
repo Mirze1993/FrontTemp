@@ -11,10 +11,12 @@ import {AuthStore} from '../../stores/auth/auth.store';
 import {AuthState, ClaimType} from '../../models/AppUser';
 import {NzAvatarComponent} from 'ng-zorro-antd/avatar';
 import {environment} from '../../../environments/environment';
+import {AccessControlDirective} from '../../directives/access-control.directive';
+import {NotifComponent} from '../../components/notif/notif.component';
 
 @Component({
   selector: 'app-home',
-  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule, NzAvatarComponent],
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule, NzAvatarComponent, AccessControlDirective, NotifComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -44,8 +46,8 @@ export class HomeComponent implements OnInit {
 
   logout() {
     this.authService.exit();
-    this.router.navigate(['/login']).then(() => {
-
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/login']);
     });
 
   }

@@ -1,0 +1,23 @@
+<button (click)="open()">
+  <nz-badge [nzCount]="unreadCount">
+    <i class="text-xl text-white" nz-icon nzType="bell" [nzTheme]="'twotone'">
+    </i></nz-badge>
+
+</button>
+
+
+<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="left" nzTitle="Notification" (nzOnClose)="close()">
+  <ng-container *nzDrawerContent>
+    <nz-comment *ngFor="let item of notifs"   [nzDatetime]="item.createDate |date:'medium'"  [nzAuthor]="item.title"
+                [ngStyle]="{'background-color': item.isRead ? 'rgb(255 255 255)' : 'rgb(21 128 61)'}">
+
+      <nz-comment-content>
+        <p>
+          {{item.body}}
+        </p>
+      </nz-comment-content>
+
+    </nz-comment>
+
+  </ng-container>
+</nz-drawer>

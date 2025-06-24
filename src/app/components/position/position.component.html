@@ -1,0 +1,75 @@
+<button  *ngIf="!dropDown" (click)="showModal(null)">
+  <span nz-icon nzType="plus-circle" nzTheme="twotone" [nzTwotoneColor]="'#52c41a'"></span>
+</button>
+<nz-tree nzTreeNodeIndentLine  *ngIf="!dropDown" [nzData]="nodes"  [nzTreeTemplate]="nzTreeTemplate"  nzBlockNode   nzExpandAll="true"></nz-tree>
+
+<ng-template #nzTreeTemplate let-node let-origin="origin">
+    <span class="custom-node">
+      <span *ngIf="!node.isLeaf" >
+        <span class="p-2 text-center">{{ node.title }}</span>
+        <button (click)="showModal(node)">
+            <span nz-icon class="p-2" nzType="plus-circle" nzTheme="twotone" [nzTwotoneColor]="'#52c41a'"></span>
+        </button>
+        <button  nz-popover  nzPopoverContent="{{node.origin.description}}">
+            <span nz-icon class="p-2" nzType="info-circle" nzTheme="twotone"></span>
+        </button>
+
+      </span>
+      <span *ngIf="node.isLeaf">
+        <span class="p-2 text-center">{{ node.title }}</span>
+        <button (click)="showDeleteConfirm(node.key)">
+            <span class="p-2"  nz-icon nzType="delete" nzTheme="twotone" [nzTwotoneColor]="'#eb2f96'"></span>
+        </button>
+
+        <button (click)="showModal(node)">
+            <span nz-icon class="p-2" nzType="plus-circle" nzTheme="twotone" [nzTwotoneColor]="'#52c41a'"></span>
+        </button>
+        <button nz-popover  [nzPopoverContent]="node.origin.description">
+            <span nz-icon  class="p-2" nzType="info-circle" nzTheme="twotone"></span>
+        </button>
+
+      </span>
+    </span>
+</ng-template>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="addForm" >
+      {{selectedNode?.title}}
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid name!">
+          <input nz-input formControlName="name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="description">Description</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Description!">
+          <input nz-input formControlName="description" id="description" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+
+
+
+<nz-tree-select *ngIf="dropDown"  [nzTreeTemplate]="nzSelTreeTemplate"
+                style="width: 250px"
+                [nzNodes]="nodes"
+                nzShowSearch
+                nzPlaceHolder="Please select"
+                [formControl]="positionValue"
+></nz-tree-select>
+
+<ng-template #nzSelTreeTemplate let-node let-origin="origin">
+    <span class="custom-node">
+      <span  >
+        <span class="p-2 text-center">{{ node.title }}</span>
+        <button  nz-popover  nzPopoverContent="{{node.origin.description}}">
+            <span nz-icon class="p-2" nzType="info-circle" nzTheme="twotone"></span>
+        </button>
+      </span>
+    </span>
+</ng-template>

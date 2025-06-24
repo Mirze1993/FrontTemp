@@ -1,0 +1,40 @@
+<ng-container>
+  <form nz-form [formGroup]="addForm">
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid name!">
+        <input nz-input formControlName="name" id="name" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Email</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid email!">
+        <input nz-input formControlName="email" id="description" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">Password</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Password!">
+        <input nz-input formControlName="password" id="Password" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <div class="m-3">
+        <button class="mr-5" nz-button nzType="primary" (click)="showModal()" >Confirm</button>
+      </div>
+    </nz-form-item>
+  </form>
+</ng-container>
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzTitle="Modal Title"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+
+  <p *nzModalContent>{{addForm.value.name}} adli user yaradilsin?</p>
+</nz-modal>
