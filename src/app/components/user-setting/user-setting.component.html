@@ -6,7 +6,7 @@
       <tbody>
       <tr *ngFor="let data of basicTable.data">
         <td class="flex items-center mt-2">
-          <img [src]="data.photo" style="width:24px;height: 24px">
+          <img [src]="userService.getImgFullPath(data.photo)" style="width:24px;height: 24px">
           <div class="pt-px text-15"> {{data.name}}</div>
         </td>
         <td>

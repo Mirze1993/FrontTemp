@@ -23,7 +23,7 @@ export class UserSettingComponent implements OnInit {
 
   users: SearchUserResp[];
 
-  constructor(private userService: UserService,private drawerService: NzDrawerService) { }
+  constructor(protected userService: UserService, private drawerService: NzDrawerService) { }
 
   ngOnInit(): void {
     this.serachUser('');

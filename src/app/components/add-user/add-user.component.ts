@@ -7,7 +7,6 @@ import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabe
 import {NzColDirective} from 'ng-zorro-antd/grid';
 import {NzInputDirective} from 'ng-zorro-antd/input';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {PositionComponent} from '../position/position.component';
 
 @Component({
   selector: 'app-add-user',
@@ -21,8 +20,7 @@ import {PositionComponent} from '../position/position.component';
     NzFormControlComponent,
     NzColDirective,
     NzInputDirective,
-    NzButtonComponent,
-    PositionComponent
+    NzButtonComponent
   ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'

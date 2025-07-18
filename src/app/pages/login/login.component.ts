@@ -7,12 +7,11 @@ import {AuthService} from '../../stores/auth/auth.service';
 import {Router} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {GlobalStore} from '../../stores/auth/global.store';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, NzInputModule, NgIf, NzSpinComponent],
+  imports: [ReactiveFormsModule, NzInputModule, NgIf,],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

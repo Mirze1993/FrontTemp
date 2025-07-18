@@ -24,7 +24,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    this.token = this._store.currentStateValue.token;
+    this.token = this._store?.currentStateValue?.token;
 
     if (this.token) {
       return next.handle(this.copyReq(req, this.token)).pipe(map(event => {

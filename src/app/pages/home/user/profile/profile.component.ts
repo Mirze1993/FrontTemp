@@ -12,7 +12,6 @@ import {Router} from '@angular/router';
 import {AuthStore} from '../../../../stores/auth/auth.store';
 import {NzImageModule} from 'ng-zorro-antd/image';
 import {ImageUploadComponent} from '../../../../components/image-upload/image-upload.component';
-import {NzDescriptionsComponent, NzDescriptionsItemComponent} from 'ng-zorro-antd/descriptions';
 import {NzDividerComponent} from 'ng-zorro-antd/divider';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {AuthState, ClaimType, EditType} from '../../../../models/AppUser';
@@ -39,8 +38,6 @@ import {AuthService} from '../../../../stores/auth/auth.service';
     NzInputModule,
     NzImageModule,
     ImageUploadComponent,
-    NzDescriptionsComponent,
-    NzDescriptionsItemComponent,
     NzDividerComponent,
     NzModalModule
   ],

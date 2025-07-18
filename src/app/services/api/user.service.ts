@@ -4,6 +4,7 @@ import { delay, first, firstValueFrom, map, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { Result, SimpleResult } from '../../models/Result';
 import { LoginByRefTokReq, LoginUserReq, UpdateProfilReq, SetClaimReq, Register, RoleValue, UserClaim, SearchUserResp, NotifResp, intList, position, UserInfoResp, ClaimType, Session } from '../../models/AppUser';
+import {environment} from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -181,6 +182,10 @@ export class UserService {
   }
   getImg(claims: UserClaim[]): string {
     return this.getFilePath(claims.find(mm => mm.type === ClaimType.ProfilPictur)?.value);
+  }
+
+  getImgFullPath(path: string): string {
+    return path?environment.fileUrl+path:'https://www.w3schools.com/howto/img_avatar.png';
   }
 
   getPosition(claims: UserClaim[]): string {

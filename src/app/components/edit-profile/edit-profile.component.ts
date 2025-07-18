@@ -73,7 +73,7 @@ export class EditProfileComponent implements OnChanges {
   }
 
 
-  constructor(private userService: UserService, private notification: NzNotificationService, private modal: NzModalService) { }
+  constructor(protected userService: UserService, private notification: NzNotificationService, private modal: NzModalService) { }
   ngOnChanges(changes: SimpleChanges): void {
     this.getUserProfil();
   }
@@ -83,7 +83,7 @@ export class EditProfileComponent implements OnChanges {
     this.userService.getProfileById(this.userId).then(mm => {
       this.userClaims = mm.value;
       this.userName = this.userService.getName(this.userClaims);
-      this.picture = environment.fileUrl+this.userService.getImg(this.userClaims);
+      this.picture = this.userService.getImg(this.userClaims);
       this.listOfUserRole = this.userClaims.filter(c => c.type == ClaimType.Role).map(map => map.value);
       this.positionOld = Number(this.userService.getPosition(this.userClaims));
       if (this.positionOld )

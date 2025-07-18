@@ -1,6 +1,6 @@
 <div>
   <label class="hoverable" for="fileInput">
-    <img [src]="picture ? picture : 'https://www.w3schools.com/howto/img_avatar.png'">
+    <img [src]="userService.getImgFullPath( picture)">
     <div class="hover-text">Choose file</div>
     <div class="background"></div>
   </label>
