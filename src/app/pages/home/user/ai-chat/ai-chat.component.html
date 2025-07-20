@@ -1,0 +1,92 @@
+<nz-layout class="layout">
+  <nz-sider>
+    <button
+      class="mb-4 w-full bg-blue-500 text-white py-2 px-4 rounded"
+      (click)="createNewSession()"
+    >
+      Yeni Söhbət
+    </button>
+    <ul nz-menu nzTheme="light"  nzMode="horizontal">
+      <li  class=" leading-normal whitespace-normal cursor-pointer p-2 rounded hover:bg-blue-100" nz-menu-item *ngFor="let session of  sessions"
+      (click)="selectSession(session)"
+      >
+       <div>
+         <strong>{{
+             session.history.length > 0
+               ? session.history[0].content.substring(0,20)+'...'
+               :('Söhbət ' + session.id).substring(0,20)
+           }}</strong><br />
+         <small>{{ session.createDate | date: 'short' }}</small>
+       </div>
+
+      </li>
+
+    </ul>
+  </nz-sider>
+  <nz-layout class="right-layout">
+    <nz-content>
+      <div class="inner-content">
+        <div class="max-w-2xl mx-auto p-4 space-y-4">
+
+          <div
+            #chatContainer
+            class="h-[500px] overflow-y-auto border border-gray-300 rounded-xl p-4 bg-white shadow"
+          >
+            <ng-container *ngFor="let msg of activeSession.history">
+              <div
+                class="mb-3"
+                [ngClass]="{
+        'text-right': msg.role === 'user',
+        'text-left': msg.role === 'assistant'
+      }"
+              >
+                <nz-tag
+                  [nzColor]="msg.role === 'user' ? 'blue' : 'green'"
+                  class="mb-1 inline-block"
+                >
+                  {{ msg.role === 'user' ? 'Siz' : 'GPT' }}
+                </nz-tag>
+                <div
+                  class="inline-block max-w-[80%] p-3 rounded-2xl shadow-md"
+                  [ngClass]="{
+          'bg-blue-100 text-gray-800': msg.role === 'user',
+          'bg-green-100 text-gray-900': msg.role === 'assistant'
+        }"
+                >
+                  {{ msg.content }}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- ChatGPT stilində input -->
+          <div class="relative">
+    <textarea
+      [(ngModel)]="inputMessage"
+      (keydown)="handleKeyDown($event)"
+      placeholder="Mesajınızı yazın..."
+      rows="1"
+      class="w-full resize-none p-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow"
+    ></textarea>
+
+            <!--    <button-->
+            <!--      (click)="sendMessage()"-->
+            <!--      nz-button-->
+            <!--      nzType="primary"-->
+            <!--      class="absolute bottom-2 right-2 rounded-full px-4"-->
+            <!--    >-->
+            <!--      Göndər-->
+            <!--    </button>-->
+          </div>
+        </div>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+
+
+
+
+
+
+

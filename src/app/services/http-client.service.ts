@@ -46,6 +46,22 @@ export class HttpClientService {
     return this.httpClient.post<R>(url, body, { headers: requestParameter.headers });
   }
 
+  postSimple<R>(
+    requestParameter: Partial<RequestParametr>,
+
+    successCallBack?:()=>void,
+    errorCallBack?:(errorMsg:string)=>void
+  ): Observable<R> {
+
+    let url: string = "";
+    if (requestParameter.fullPath)
+      url = requestParameter.fullPath;
+    else
+      url = `${this.getUrl(requestParameter)}${requestParameter.queryString ? `?${requestParameter.queryString}` : ""}`
+
+    return this.httpClient.post<R>(url, { headers: requestParameter.headers });
+  }
+
   postRouter<T>(reqParam: Partial<RequestParametr>, id: number): Observable<T> {
     let url: string = "";
     if (reqParam.fullPath)
