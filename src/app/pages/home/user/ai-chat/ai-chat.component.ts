@@ -88,6 +88,9 @@ export class AiChatComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectSession(session: ChatSession) {
     this.activeSession = session;
+    // this.chatService.getSessionById(session.id).then(session => {
+    //   this.activeSession=session.value;
+    // })
   }
 
   createNewSession(){

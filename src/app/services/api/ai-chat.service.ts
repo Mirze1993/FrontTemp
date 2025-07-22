@@ -20,6 +20,12 @@ export class AiChatService {
     });
     return firstValueFrom(r);
   }
+  getSessionById(id:string): Promise<Result<ChatSession>> {
+    const r = this.httpService.get<Result<ChatSession>>({
+      path: "ChatHistory/GetSessionById"
+    });
+    return firstValueFrom(r);
+  }
 
 
   createSession(): Promise<Result<ChatSession>> {
