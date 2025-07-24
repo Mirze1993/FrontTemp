@@ -1,33 +1,14 @@
-.layout {
-  min-height: 100vh;
+
+nz-splitter {
+  height: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-nz-sider {
-  overflow: auto;
-  position: absolute;
-  height: 50%;
+.box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.right-layout {
-  margin-left: 200px;
-}
-
-nz-header {
-  background: #fff;
-  padding: 0;
-}
-
-nz-content {
-  margin: 24px 16px 0;
-  overflow: initial;
-}
-
-.inner-content {
-  padding: 24px;
-  background: #fff;
-  text-align: center;
-}
-
-nz-footer {
-  text-align: center;
-}

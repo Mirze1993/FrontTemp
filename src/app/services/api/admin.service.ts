@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Result} from '../../models/Result';
 import {RoleValue} from '../../models/AppUser';
 import {firstValueFrom} from 'rxjs';
@@ -10,8 +10,8 @@ import {CompileLog} from '../../models/Admin';
 })
 export class AdminService {
 
-  constructor(private httpService: HttpClientService) {
-
+  constructor(private httpService: HttpClientService, @Inject("authApiUrl") public baseUrl: string) {
+      this.httpService.baseUrl=baseUrl;
   }
 
   GetDistinctList(): Promise<Result<string[]>> {

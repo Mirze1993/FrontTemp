@@ -1,6 +1,6 @@
 <nz-layout>
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzTheme]="'light'">
-    <div class="logo">MyTemp</div>
+    <div class="logo"  [routerLink]="['']">MyTemp</div>
 
     <ul nz-menu nzTheme="light" nzMode="inline">
 
@@ -15,8 +15,11 @@
           <li nz-menu-item [routerLink]="['admin/settings']">User setting</li>
         </ul>
       </li>
+      <li nz-menu-item  [routerLink]="['user/ai-chat']">
+        <nz-icon nzType="wechat-work" />
+        <span>Chat</span>
+      </li>
     </ul>
-
   </nz-sider>
   <nz-layout>
     <nz-header>

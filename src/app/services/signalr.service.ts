@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
 export class SignalrService {
 
   token:string;
-  constructor( private authStore: AuthStore, @Inject("baseUrl") private baseUrl) {
+  constructor( private authStore: AuthStore, @Inject("aiApiUrl") private baseUrl) {
     authStore.state$.subscribe((state) => {
       this.token= state.token;
     })

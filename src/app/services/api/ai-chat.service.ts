@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {AddChatHistoryReq, ChatMessage, ChatSession} from '../../models/ai-chat';
 import {HttpClientService} from '../http-client.service';
 import {Result, SimpleResult} from '../../models/Result';
@@ -10,8 +10,8 @@ import {position} from '../../models/AppUser';
 })
 export class AiChatService {
 
-  constructor(private httpService: HttpClientService) {
-
+  constructor(private httpService: HttpClientService, @Inject("aiApiUrl") public baseUrl: string) {
+    this.httpService.baseUrl=baseUrl;
   }
 
   getSessions(): Promise<Result<ChatSession[]>> {

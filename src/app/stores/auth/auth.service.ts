@@ -8,9 +8,8 @@ import { UserService } from '../../services/api/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl: string;
   constructor(private _http: HttpClient, private _store: AuthStore,private userService:UserService) {
-    this.baseUrl = environment.apiUrl;
+
   }
 
   login(session: Session) {

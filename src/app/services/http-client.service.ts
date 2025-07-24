@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class HttpClientService {
 
-  constructor(private httpClient: HttpClient, @Inject("baseUrl") private baseUrl: string) {
+  public baseUrl: string
+  constructor(private httpClient: HttpClient) {
 
   }
 

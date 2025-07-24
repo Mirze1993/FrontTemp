@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DatePipe, NgClass, NgForOf} from '@angular/common';
 import { NzTagModule} from 'ng-zorro-antd/tag';
@@ -13,11 +13,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu'
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzSplitterModule } from 'ng-zorro-antd/splitter';
 
 @Component({
   selector: 'app-ai-chat',
   imports: [
-    FormsModule,NzIconModule,NzLayoutModule,NzMenuModule,
+    FormsModule,NzIconModule,NzLayoutModule,NzMenuModule,NzSplitterModule,
     NgClass,
     NzTagModule,
     NgForOf,
@@ -31,7 +32,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   templateUrl: './ai-chat.component.html',
   styleUrl: './ai-chat.component.scss'
 })
-export class AiChatComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AiChatComponent implements OnInit, AfterViewInit, OnDestroy,AfterViewChecked {
 
   inputMessage: string = '';
 

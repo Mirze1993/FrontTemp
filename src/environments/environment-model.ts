@@ -1,6 +1,6 @@
 export interface EnvironmentModel {
     production: boolean;
-    apiUrl: string;
-    port :number;
+    authApiUrl: string;
+    aiApiUrl: string;
     fileUrl:string;
   }

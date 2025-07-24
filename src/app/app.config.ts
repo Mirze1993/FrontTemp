@@ -16,11 +16,9 @@ import {environment} from '../environments/environment';
 
 registerLocaleData(en);
 
-const baseUrl = typeof window !== 'undefined'
-  ? `${location.protocol}//${location.hostname}:${environment.port}`
-  : 'http://localhost:'+environment.port;
+const authUrl = environment.authApiUrl;
 
-
+const aiUrl = environment.aiApiUrl;
 
 
 export const appConfig: ApplicationConfig = {
@@ -34,8 +32,12 @@ export const appConfig: ApplicationConfig = {
     { provide: NZ_ICONS, useValue: icons },
     httpInterceptorProviders,
     {
-      provide: 'baseUrl',
-      useValue: baseUrl
+      provide: 'authApiUrl',
+      useValue: authUrl
+    },
+    {
+      provide: 'aiApiUrl',
+      useValue: aiUrl
     }
   ]
 };
