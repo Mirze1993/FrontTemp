@@ -1,4 +1,4 @@
-<div nz-row [nzGutter]="16">
+<div nz-row [nzGutter]="16" xmlns="http://www.w3.org/1999/html">
   <div nz-col class="gutter-row" [nzSpan]="6">
 
 
@@ -175,7 +175,9 @@
           </div>
 
           <div *ngIf="countdown > 0" class="record-message">
-            Zəhmət olmasa, düz baxın və təbəssüm edin 🙂
+            Zəhmət olmasa, düz baxın və təbəssüm edin 🙂..
+            Və aşağdakı mətni oxuyunş <br>
+            {{recordingText}}
           </div>
         </div>
         <div class="captured-section" *ngIf="capturedImage">

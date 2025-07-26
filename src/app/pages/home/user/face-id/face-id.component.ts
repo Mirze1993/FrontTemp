@@ -45,6 +45,7 @@ export class FaceIdComponent {
 
   asanFinanceResp: asanFinanceResp ;
   pin:string
+  recordingText:string=''
 
   similarityResult :number;
 
@@ -56,13 +57,22 @@ export class FaceIdComponent {
     // const Human =await import('../../../../../assets/models/human.esm.js');
     this.human = new H.Human({
       modelBasePath: 'assets/models/',
-      face: { enabled: true, detector: { rotation: true }, mesh: { enabled: true }, emotion: { enabled: true } },
+      face: { enabled: true,
+        detector: { rotation: true },
+        mesh: { enabled: true },
+        emotion: { enabled: true } ,
+        liveness: { enabled: true },   // <-- BUNU ƏLAVƏ ET
+        antispoof: { enabled: true }
+      },
       body: { enabled: false },
       hand: { enabled: false },
       gesture: { enabled: false },
       object: { enabled: false },
+      segmentation: { enabled: true },
       debug: false,
-      filter: { enabled: true },
+      filter: {
+        enabled: true,
+      },
     });
 
 
@@ -75,6 +85,7 @@ export class FaceIdComponent {
         this.asanFinanceResp=result.value;
         this.pin="";
         this.getEmbeddingFromBase64();
+        this.recordingText='Mən '+ this.asanFinanceResp.fullName + ' bu çəkilişin aparilmasına razıyam.'
       }
     })
   }
@@ -307,57 +318,72 @@ export class FaceIdComponent {
       if(this.asanFinanceResp&&this.emb){
         simPer= this.human.match.similarity(result.face[0].embedding,this.emb)
       }
+      let drawOptions = {
+        faceLabels: `face
+                    similarity: ${simPer}%
+                    confidence: [score]%
+                    [gender] [genderScore]%
+                    age: [age] years
+                    distance: [distance]cm
+                    real: [real]%
+                    live: [live]%
+                    [emotions]
+                    roll: [roll]° yaw:[yaw]° pitch:[pitch]°
+                    gaze: [gaze]°`,
 
+      };
 
-      for (const face of result.face) {
-        const [x, y, w, h] = face.box;
+      this.human.draw.all(canvas, this.human.result, drawOptions);
 
-        // ✅ 1. Box çək
-        ctx.strokeStyle = 'lime';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, w, h);
-
-        // ✅ 2. Mesh varsa çək
-        if (face.mesh) {
-          ctx.strokeStyle = 'magenta';
-          ctx.beginPath();
-          for (const point of face.mesh) {
-            ctx.moveTo(point[0], point[1]);
-            ctx.arc(point[0], point[1], 1.5, 0, 2 * Math.PI);
-          }
-          ctx.stroke();
-        }
-
-        let emotionsText = '';
-
-        if (face.emotion && Object.keys(face.emotion).length > 0) {
-          const keysToShow = ['happy', 'sad', 'neutral','angry'];
-
-          emotionsText = keysToShow
-            .map((key) => {
-              const score = face.emotion.find(ee=>ee.emotion==key)?.score ?? 0;
-              return `${key}: ${(score * 100).toFixed(1)}%`;
-            })
-            .join(' | ');
-
-        }
-
-        const infoText = [
-          `Age: ${face.age?.toFixed(1)} years`,
-          `Gender: ${face.gender} (${face.genderScore?.toFixed(2)})`,
-          `Emotion: ${emotionsText}`,
-          `Confidence: ${(face.score * 100).toFixed(1)}%`,
-          `SimPer: ${simPer}`,
-        ];
-
-        ctx.fillStyle = 'black';
-        ctx.font = '14px Arial';
-        let offset = 0;
-        for (const line of infoText) {
-          ctx.fillText(line, x, y - 10 - offset);
-          offset += 16;
-        }
-      }
+      // for (const face of result.face) {
+      //   const [x, y, w, h] = face.box;
+      //
+      //   // ✅ 1. Box çək
+      //   ctx.strokeStyle = 'lime';
+      //   ctx.lineWidth = 2;
+      //   ctx.strokeRect(x, y, w, h);
+      //
+      //   // ✅ 2. Mesh varsa çək
+      //   if (face.mesh) {
+      //     ctx.strokeStyle = 'magenta';
+      //     ctx.beginPath();
+      //     for (const point of face.mesh) {
+      //       ctx.moveTo(point[0], point[1]);
+      //       ctx.arc(point[0], point[1], 1.5, 0, 2 * Math.PI);
+      //     }
+      //     ctx.stroke();
+      //   }
+      //
+      //   let emotionsText = '';
+      //
+      //   if (face.emotion && Object.keys(face.emotion).length > 0) {
+      //     const keysToShow = ['happy', 'sad', 'neutral','angry'];
+      //
+      //     emotionsText = keysToShow
+      //       .map((key) => {
+      //         const score = face.emotion.find(ee=>ee.emotion==key)?.score ?? 0;
+      //         return `${key}: ${(score * 100).toFixed(1)}%`;
+      //       })
+      //       .join(' | ');
+      //
+      //   }
+      //
+      //   const infoText = [
+      //     `Age: ${face.age?.toFixed(1)} years`,
+      //     `Gender: ${face.gender} (${face.genderScore?.toFixed(2)})`,
+      //     `Emotion: ${emotionsText}`,
+      //     `Confidence: ${(face.score * 100).toFixed(1)}%`,
+      //     `SimPer: ${simPer}`,
+      //   ];
+      //
+      //   ctx.fillStyle = 'black';
+      //   ctx.font = '14px Arial';
+      //   let offset = 0;
+      //   for (const line of infoText) {
+      //     ctx.fillText(line, x, y - 10 - offset);
+      //     offset += 16;
+      //   }
+      // }
     }
 
     requestAnimationFrame(() => this.detectLoop());
