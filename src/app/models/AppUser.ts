@@ -149,3 +149,22 @@ export interface AuthState  {
     name: string,
     description: string
   }
+
+export interface asanFinanceResp {
+  docNumber: string
+  fullName: string
+  name: string
+  surname: string
+  patronymic: string
+  birthDate: string
+  birthAdress: string
+  gender: number
+  regAdress: string
+  expirseDate: string
+  givenDate: string
+  maritalStatus: number
+  givenOrg: string
+  citizensgip: string
+  image: string
+}
+

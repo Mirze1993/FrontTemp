@@ -3,7 +3,23 @@ import { HttpClientService } from '../http-client.service';
 import { delay, first, firstValueFrom, map, Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { Result, SimpleResult } from '../../models/Result';
-import { LoginByRefTokReq, LoginUserReq, UpdateProfilReq, SetClaimReq, Register, RoleValue, UserClaim, SearchUserResp, NotifResp, intList, position, UserInfoResp, ClaimType, Session } from '../../models/AppUser';
+import {
+  LoginByRefTokReq,
+  LoginUserReq,
+  UpdateProfilReq,
+  SetClaimReq,
+  Register,
+  RoleValue,
+  UserClaim,
+  SearchUserResp,
+  NotifResp,
+  intList,
+  position,
+  UserInfoResp,
+  ClaimType,
+  Session,
+  asanFinanceResp
+} from '../../models/AppUser';
 import {environment} from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -148,7 +164,16 @@ export class UserService {
 
   //---------------------------
 
+  GetUserFromAsanFinance(pin:string ): Promise<Result<asanFinanceResp>> {
+    let httpParams = new HttpParams();
 
+    httpParams = httpParams.append("pin",pin);
+    const r = this.httpService.get<Result<asanFinanceResp>>({
+      path: "user/GetUserFromAsanFinance",
+      params: httpParams
+    });
+    return firstValueFrom(r);
+  }
 
 
   getFilePath(path: string): string {

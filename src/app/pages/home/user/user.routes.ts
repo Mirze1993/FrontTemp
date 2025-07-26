@@ -13,5 +13,11 @@ export const userRoutes: Routes = [
     loadComponent : ()=>import("./ai-chat/ai-chat.component").then(value => value.AiChatComponent),
     canActivate:[authGuard],
     data: { roles: ['user'] }
+  },
+  {
+    path: 'face-id',
+    loadComponent : ()=>import("./face-id/face-id.component").then(value => value.FaceIdComponent),
+    canActivate:[authGuard],
+    data: { roles: ['user'] }
   }
 ];

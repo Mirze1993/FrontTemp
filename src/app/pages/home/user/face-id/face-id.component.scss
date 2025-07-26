@@ -1,0 +1,126 @@
+.controls {
+  margin-bottom: 10px;
+}
+
+.video-container {
+  position: relative;
+}
+
+video, canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+canvas {
+  z-index: 1;
+}
+
+.captured-section {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.captured-section img {
+  max-width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.btn-play {
+  background-color: #52c41a !important; /* yaşıl */
+  border-color: #52c41a !important;
+  color: #fff !important;
+}
+.btn-stop {
+  background-color: #f5222d !important; /* qırmızı */
+  border-color: #f5222d !important;
+  color: #fff !important;
+}
+
+.btn-capture {
+  background-color: #1890ff !important; /* mavi */
+  border-color: #1890ff !important;
+  color: #fff !important;
+}
+.btn-kyc {
+  background-color: #074ed1 !important; /* mavi */
+  border-color: #074ed1 !important;
+  color: #fff !important;
+}
+.btn-record {
+  background-color: #fa8c16 !important; /* narıncı */
+  border-color: #fa8c16 !important;
+  color: #fff !important;
+}
+.countdown-timer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+}
+
+.blinking-dot {
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.record-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.btn-cancel {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+}
+
+.btn-try-again {
+  background-color: #1890ff;
+  color: white;
+  border: none;
+}
+.record-message {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px black;
+  z-index: 4;
+  animation: moveUp 10s linear forwards;
+}
+
+@keyframes moveUp {
+  from {
+    bottom: -40px;
+    opacity: 1;
+  }
+  to {
+    bottom: 120%;
+    opacity: 0;
+  }
+}

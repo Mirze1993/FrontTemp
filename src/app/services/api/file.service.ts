@@ -28,6 +28,20 @@ export class FileService {
 
   }
 
+  getImgSimilarity(file1: File,file2: File): Observable<HttpEvent<Result<number>>> {
+
+    const formData = new FormData();
+
+    formData.append("file1", file1);
+    formData.append("file2", file2);
+
+    return  this.httpService.postEvent<FormData, Result<number>>({
+      fullPath: environment.fileUrl + "/File/GetImgSimilarity"
+    }, formData);
+
+
+  }
+
   fileDelete(url: string): Promise<SimpleResult> {
     let e = this.httpService.delete<SimpleResult>({
       fullPath: environment.fileUrl + "/File/Delete?PhotoUrl=" + url

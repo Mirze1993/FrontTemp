@@ -1,0 +1,203 @@
+<div nz-row [nzGutter]="16">
+  <div nz-col class="gutter-row" [nzSpan]="6">
+
+
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="input search text" [(ngModel)]="pin"/>
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" nzSearch>
+        <nz-icon nzType="search" (click)="getUserFromAsanFinance()"/>
+      </button>
+    </ng-template>
+
+
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6" *ngIf="asanFinanceResp">
+    <nz-card style="width: 500px" [nzLoading]="!asanFinanceResp">
+      <ng-template #avatarTemplate>
+        <nz-avatar [nzSize]="64"  [nzSrc]="'data:image/png;base64,'+asanFinanceResp?.image"></nz-avatar>
+      </ng-template>
+
+      <div style="display: flex; align-items: flex-start;">
+        <ng-container *ngTemplateOutlet="avatarTemplate"></ng-container>
+        <div style="display: flex; flex-direction: column;">
+          <div><strong>{{asanFinanceResp.fullName}}</strong></div>
+          <div>BirthDate: {{ asanFinanceResp.birthDate | date:'dd.MM.yyyy' }}</div>
+          <div>Address: {{ asanFinanceResp.regAdress }}</div>
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</div>
+
+
+<div >
+  <nz-divider nzOrientation="left" nzText="KYC"></nz-divider>
+
+  <div nz-row [nzGutter]="16">
+    <div nz-col class="gutter-row" [nzSpan]="24">
+      <div class="inner-box">
+
+
+        <div class="controls">
+          <div class="controls">
+            <!-- Start düyməsi: Yaşıl ton -->
+            <button
+              nz-button
+              nzType="primary"
+              nzShape="round"
+              (click)="startCamera()"
+              *ngIf="!running"
+              class="btn-play"
+            >
+              <nz-icon nzType="play-circle"/>
+              Play
+            </button>
+
+            <!-- Stop düyməsi: Qırmızı ton -->
+            <button
+              nz-button
+              nzType="primary"
+              nzShape="round"
+              (click)="stopCamera()"
+              *ngIf="running"
+              class="btn-stop"
+            >
+              <nz-icon nzType="pause-circle" nzTheme="outline" nzTwotoneColor="#ffffff"/>
+              Stop
+            </button>
+
+            <button
+              nz-button
+              nzType="primary"
+              nzShape="round"
+              (click)="checkKyc()"
+              *ngIf="running"
+              class="btn-kyc"
+            >
+              <nz-icon nzType="check" nzTheme="outline" />
+              Kyc {{this.similarityResult}}
+            </button>
+
+            <!-- Take Picture düyməsi: Mavi ton -->
+            <button
+              nz-button
+              nzType="primary"
+              nzShape="round"
+              (click)="takePicture()"
+              *ngIf="running"
+              class="btn-capture"
+            >
+              <nz-icon nzType="camera" nzTheme="outline"/>
+              Take Picture
+            </button>
+            <button
+              nz-button
+              nzType="primary"
+              nzShape="round"
+              (click)="recordVideo()"
+              *ngIf="running"
+              class="btn-record"
+            >
+              <nz-icon nzType="video-camera"/>
+              Record Video {{ countdown > 0 ? '(' + countdown + ' sec)' : '' }}
+            </button>
+
+            <button *ngIf="countdown>0"
+                    nz-button
+                    nzType="default"
+                    nzShape="round"
+                    (click)="cancelRecording()"
+                    class="btn-cancel">
+              Cancel Recording
+            </button>
+
+            <button *ngIf="recordedVideoUrl"
+                    nz-button
+                    nzType="primary"
+                    nzShape="round"
+                    (click)="tryRecordingAgain()"
+                    class="btn-try-again">
+              Try Recording Again
+            </button>
+
+            <button
+              nz-button
+              nzType="default"
+              nzShape="round"
+              (click)="uploadImageToServer()"
+              *ngIf="capturedImage"
+              class="btn-upload-image"
+            >
+              <nz-icon nzType="upload"/>
+              Upload Image
+            </button>
+
+            <!-- Videonu Backendə Göndər -->
+            <button
+              nz-button
+              nzType="default"
+              nzShape="round"
+              (click)="uploadVideoToServer()"
+              *ngIf="recordedVideoUrl"
+              class="btn-upload-video"
+            >
+              <nz-icon nzType="cloud-upload"/>
+              Upload Video
+            </button>
+
+          </div>
+
+
+        </div>
+        <div class="progress" *ngIf="uploadProgress">
+          <nz-progress [nzPercent]="uploadProgress" nzStatus="active" *ngIf="uploadProgress"></nz-progress>
+          <!--
+          <mat-icon class="cancel-upload" (click)="cancelUpload()" *ngIf="uploadProgress">delete_forever</mat-icon> -->
+        </div>
+
+        <!-- face.component.html -->
+        <div style="position: relative; width: 640px; height: 480px;" [hidden]="!running">
+          <video #video autoplay muted playsinline [hidden]="!running"
+                 style="position: absolute; top: 0; left: 0; width: 640px; height: 480px; z-index: 1;"></video>
+          <canvas #canvas
+                  width="640" height="480" [hidden]="!running"
+                  style="position: absolute; top: 0; left: 0; z-index: 2;"></canvas>
+          <!-- YANIB-SÖNƏN RECORDING GÖSTƏRİCİ -->
+          <div
+            *ngIf="countdown > 0"
+            class="countdown-timer"
+            style="z-index: 3;"
+          >
+            <span class="blinking-dot"></span>
+            Recording... {{ countdown }}s
+          </div>
+
+          <div *ngIf="countdown > 0" class="record-message">
+            Zəhmət olmasa, düz baxın və təbəssüm edin 🙂
+          </div>
+        </div>
+        <div class="captured-section" *ngIf="capturedImage">
+          <h3>Captured Image:</h3>
+          <img [src]="capturedImage" alt="Captured photo"/>
+        </div>
+        <div style="position: relative; width: 640px; height: 480px;">
+          <div *ngIf="recordedVideoUrl">
+            <h3>Recorded Video:</h3>
+            <video
+              [src]="recordedVideoUrl"
+              controls
+              autoplay>
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
