@@ -2,15 +2,14 @@ import { HttpClient, HttpEvent, HttpParams, HttpHeaders } from '@angular/common/
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+
 export class HttpClientService {
 
-  public baseUrl: string
-  constructor(private httpClient: HttpClient) {
+
+  constructor(private httpClient: HttpClient,private baseUrl: string) {
 
   }
+
 
   private getUrl(requestParameter: RequestParametr): string {
 

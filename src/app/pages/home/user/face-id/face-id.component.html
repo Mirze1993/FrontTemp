@@ -16,13 +16,13 @@
   <div nz-col class="gutter-row" [nzSpan]="6" *ngIf="asanFinanceResp">
     <nz-card style="width: 500px" [nzLoading]="!asanFinanceResp">
       <ng-template #avatarTemplate>
-        <nz-avatar [nzSize]="64"  [nzSrc]="'data:image/png;base64,'+asanFinanceResp?.image"></nz-avatar>
+        <nz-avatar [nzSize]="64" [nzSrc]="'data:image/png;base64,'+asanFinanceResp?.image"></nz-avatar>
       </ng-template>
 
       <div style="display: flex; align-items: flex-start;">
         <ng-container *ngTemplateOutlet="avatarTemplate"></ng-container>
         <div style="display: flex; flex-direction: column;">
-          <div><strong>{{asanFinanceResp.fullName}}</strong></div>
+          <div><strong>{{ asanFinanceResp.fullName }}</strong></div>
           <div>BirthDate: {{ asanFinanceResp.birthDate | date:'dd.MM.yyyy' }}</div>
           <div>Address: {{ asanFinanceResp.regAdress }}</div>
         </div>
@@ -32,7 +32,7 @@
 </div>
 
 
-<div >
+<div>
   <nz-divider nzOrientation="left" nzText="KYC"></nz-divider>
 
   <div nz-row [nzGutter]="16">
@@ -72,12 +72,12 @@
               nz-button
               nzType="primary"
               nzShape="round"
-              (click)="checkKyc()"
+              (click)="startKyc()"
               *ngIf="running"
               class="btn-kyc"
             >
-              <nz-icon nzType="check" nzTheme="outline" />
-              Kyc {{this.similarityResult}}
+              <nz-icon nzType="check" nzTheme="outline"/>
+              Start Kyc
             </button>
 
             <!-- Take Picture düyməsi: Mavi ton -->
@@ -85,7 +85,7 @@
               nz-button
               nzType="primary"
               nzShape="round"
-              (click)="takePicture()"
+
               *ngIf="running"
               class="btn-capture"
             >
@@ -160,10 +160,10 @@
         <!-- face.component.html -->
         <div style="position: relative; width: 640px; height: 480px;" [hidden]="!running">
           <video #video autoplay muted playsinline [hidden]="!running"
-                 style="position: absolute; top: 0; left: 0; width: 640px; height: 480px; z-index: 1;"></video>
+                 style="transform: scaleX(-1); position: absolute; top: 0; left: 0; width: 640px; height: 480px; z-index: 1;"></video>
           <canvas #canvas
                   width="640" height="480" [hidden]="!running"
-                  style="position: absolute; top: 0; left: 0; z-index: 2;"></canvas>
+                  style="  position: absolute; top: 0; left: 0; z-index: 2;"></canvas>
           <!-- YANIB-SÖNƏN RECORDING GÖSTƏRİCİ -->
           <div
             *ngIf="countdown > 0"
@@ -181,6 +181,14 @@
         <div class="captured-section" *ngIf="capturedImage">
           <h3>Captured Image:</h3>
           <img [src]="capturedImage" alt="Captured photo"/>
+        </div>
+        <div class="captured-section" *ngIf="kycImage1">
+          <h3>Captured Image:</h3>
+          <img [src]="kycImage1" alt="Captured photo"/>
+        </div>
+        <div class="captured-section" *ngIf="kycImage2">
+          <h3>Captured Image:</h3>
+          <img [src]="kycImage2" alt="Captured photo"/>
         </div>
         <div style="position: relative; width: 640px; height: 480px;">
           <div *ngIf="recordedVideoUrl">

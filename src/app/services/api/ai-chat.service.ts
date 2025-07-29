@@ -4,14 +4,15 @@ import {HttpClientService} from '../http-client.service';
 import {Result, SimpleResult} from '../../models/Result';
 import {firstValueFrom} from 'rxjs';
 import {position} from '../../models/AppUser';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AiChatService {
-
-  constructor(private httpService: HttpClientService, @Inject("aiApiUrl") public baseUrl: string) {
-    this.httpService.baseUrl=baseUrl;
+  httpService: HttpClientService
+  constructor(private httpClient: HttpClient, @Inject("aiApiUrl") public baseUrl: string) {
+    this.httpService=new HttpClientService(httpClient,baseUrl);
   }
 
   getSessions(): Promise<Result<ChatSession[]>> {

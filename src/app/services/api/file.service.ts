@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import { HttpClientService } from '../http-client.service';
-import { HttpEvent } from '@angular/common/http';
+import {HttpClient, HttpEvent} from '@angular/common/http';
 import { Observable, firstValueFrom } from 'rxjs';
 import {Result, SimpleResult} from '../../models/Result';
 import {environment} from '../../../environments/environment';
@@ -11,9 +11,10 @@ import {environment} from '../../../environments/environment';
 })
 export class FileService {
 
-  constructor(private httpService: HttpClientService) {
+  httpService: HttpClientService
+  constructor(private httpClient: HttpClient) {
 
-
+    this.httpService=new HttpClientService(httpClient,environment.fileUrl);
   }
 
   fileUpload(file: File): Observable<HttpEvent<Result<string>>> {

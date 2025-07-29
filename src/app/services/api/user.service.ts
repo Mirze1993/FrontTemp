@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { delay, first, firstValueFrom, map, Observable } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Result, SimpleResult } from '../../models/Result';
 import {
   LoginByRefTokReq,
@@ -25,9 +25,9 @@ import {environment} from '../../../environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-
-  constructor(private httpService: HttpClientService, @Inject("authApiUrl") public baseUrl: string) {
-    this.httpService.baseUrl=baseUrl;
+  httpService: HttpClientService
+  constructor( @Inject("authApiUrl") public baseUrl: string,private httpClient: HttpClient) {
+    this.httpService=new HttpClientService(httpClient,baseUrl);
   }
 
   loginByRefreshToken(refToken: string, id: number) {
