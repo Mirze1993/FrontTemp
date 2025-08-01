@@ -2,8 +2,8 @@
   <div nz-col class="gutter-row" [nzSpan]="6">
 
 
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" nz-input placeholder="input search text" [(ngModel)]="pin"/>
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" >
+      <input style="min-width: 160px" type="text" nz-input placeholder="input search text" [(ngModel)]="pin"/>
     </nz-input-group>
     <ng-template #suffixIconButton>
       <button nz-button nzType="primary" nzSearch>
@@ -158,18 +158,12 @@
         </div>
 
         <!-- face.component.html -->
-        <div style="position: relative; width: 640px; height: 480px;" [hidden]="!running">
-          <video #video autoplay muted playsinline [hidden]="!running"
-                 style="transform: scaleX(-1); position: absolute; top: 0; left: 0; width: 640px; height: 480px; z-index: 1;"></video>
-          <canvas #canvas
-                  width="640" height="480" [hidden]="!running"
-                  style="  position: absolute; top: 0; left: 0; z-index: 2;"></canvas>
+        <div class="video-wrapper" [hidden]="!running">
+          <video #video autoplay muted playsinline [hidden]="!running"></video>
+          <canvas #canvas [hidden]="!running"></canvas>
+
           <!-- YANIB-SÖNƏN RECORDING GÖSTƏRİCİ -->
-          <div
-            *ngIf="countdown > 0"
-            class="countdown-timer"
-            style="z-index: 3;"
-          >
+          <div *ngIf="countdown > 0" class="countdown-timer">
             <span class="blinking-dot"></span>
             Recording... {{ countdown }}s
           </div>
@@ -178,28 +172,27 @@
             Zəhmət olmasa, düz baxın və təbəssüm edin 🙂
           </div>
         </div>
+
         <div class="captured-section" *ngIf="capturedImage">
           <h3>Captured Image:</h3>
-          <img [src]="capturedImage" alt="Captured photo"/>
+          <img [src]="capturedImage" alt="Captured photo" />
         </div>
+
         <div class="captured-section" *ngIf="kycImage1">
           <h3>Captured Image:</h3>
-          <img [src]="kycImage1" alt="Captured photo"/>
+          <img [src]="kycImage1" alt="Captured photo" />
         </div>
+
         <div class="captured-section" *ngIf="kycImage2">
           <h3>Captured Image:</h3>
-          <img [src]="kycImage2" alt="Captured photo"/>
+          <img [src]="kycImage2" alt="Captured photo" />
         </div>
-        <div style="position: relative; width: 640px; height: 480px;">
-          <div *ngIf="recordedVideoUrl">
-            <h3>Recorded Video:</h3>
-            <video
-              [src]="recordedVideoUrl"
-              controls
-              autoplay>
-            </video>
-          </div>
+
+        <div class="video-preview" *ngIf="recordedVideoUrl">
+          <h3>Recorded Video:</h3>
+          <video [src]="recordedVideoUrl" controls autoplay style="transform: scaleX(1)"></video>
         </div>
+
 
       </div>
     </div>

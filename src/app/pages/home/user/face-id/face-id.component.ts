@@ -97,7 +97,8 @@ export class FaceIdComponent {
     this.running = true;
     const video = this.videoRef.nativeElement;
     this.ctx = this.canvasRef.nativeElement.getContext('2d')!;
-
+    this.canvasRef.nativeElement.width = video.videoWidth;
+    this.canvasRef.nativeElement.height = video.videoHeight;
     // Kamera açılır
     this.stream = await navigator.mediaDevices.getUserMedia({video: true});
     video.srcObject = this.stream;

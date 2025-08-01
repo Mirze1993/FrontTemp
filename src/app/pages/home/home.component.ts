@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavigationComponent} from "../../components/navigation/navigation.component";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
-import {NzMenuModule} from 'ng-zorro-antd/menu';
+import {NzMenuModule, NzSubMenuTitleComponent} from 'ng-zorro-antd/menu';
 import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb'
 import {AuthService} from '../../stores/auth/auth.service';
 import {UserService} from '../../services/api/user.service';
@@ -16,7 +16,7 @@ import {NotifComponent} from '../../components/notif/notif.component';
 
 @Component({
   selector: 'app-home',
-  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule, NzAvatarComponent, AccessControlDirective, NotifComponent],
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule, NzAvatarComponent, AccessControlDirective, NotifComponent, NzSubMenuTitleComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

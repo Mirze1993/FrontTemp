@@ -1,82 +1,53 @@
-<nz-layout>
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" [nzTheme]="'light'">
-    <div class="logo"  [routerLink]="['']">MyTemp</div>
-
-    <ul nz-menu nzTheme="light" nzMode="inline">
-
+<nz-layout class="layout">
+  <nz-sider [nzTheme]="'light'"   nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+    <ul nz-menu [nzTheme]="'light'" nzMode="inline" class="menu-flex">
+      <li nz-submenu>
+           <span title>
+             <app-notif style="margin-right: 12px"></app-notif>
+              <nz-avatar
+                [nzSrc]="picture"
+                nzSize="small"
+                [nzAlt]="user?.name"
+              ></nz-avatar>
+             {{ user?.name || 'User' }}
+            </span>
+        <ul>
+          <li nz-menu-item [routerLink]="['user/profile']">
+            <nz-icon nzType="idcard" class="menu-icon"></nz-icon>
+            Profile
+          </li>
+          <li nz-menu-item (click)="logout()">
+            <nz-icon nzType="logout" class="menu-icon"></nz-icon>
+            Logout
+          </li>
+        </ul>
+      </li>
       <li *accessControl="['user']; op: 'or'" nz-submenu nzTitle="DB" nzIcon="database">
         <ul>
           <li nz-menu-item [routerLink]="['admin/db-compile']"> DbCompiles</li>
           <li nz-menu-item>DbTables</li>
         </ul>
       </li>
-      <li  nz-submenu nzTitle="Settings" nzIcon="setting">
+      <li nz-submenu nzTitle="Settings" nzIcon="setting">
         <ul>
           <li nz-menu-item [routerLink]="['admin/settings']">User setting</li>
         </ul>
       </li>
-      <li nz-menu-item  [routerLink]="['user/ai-chat']">
+      <li nz-menu-item [routerLink]="['user/ai-chat']">
         <nz-icon nzType="wechat-work" />
         <span>Chat</span>
       </li>
-      <li nz-menu-item  [routerLink]="['user/face-id']">
+      <li nz-menu-item [routerLink]="['user/face-id']">
         <nz-icon nzType="smile" />
         <span>face id</span>
       </li>
     </ul>
   </nz-sider>
-  <nz-layout>
-    <nz-header>
-      <ul nz-menu nzTheme="light" nzMode="horizontal" class="header-menu">
-        <li nz-menu-item nzSelected>
-          <nz-icon
-            class="trigger"
-            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            (click)="isCollapsed = !isCollapsed"
-          ></nz-icon>
-        </li>
-        <div style="display: flex; justify-content: space-between; width: 100%;">
-          <ul nz-menu nzTheme="light" nzMode="horizontal" class="left-menu">
-            <li nz-menu-item>Nav 1</li>
-            <li nz-menu-item>Nav 2</li>
-            <li nz-menu-item>Nav 3</li>
-          </ul>
-          <ul nz-menu nzTheme="light" nzMode="horizontal" class="right-menu">
-            <li nz-menu-item><app-notif></app-notif></li>
-            <li nz-submenu nzPlacement="bottomRight">
-            <span title>
-              <nz-avatar
-                [nzSrc]="picture"
-                nzSize="small"
-                [nzAlt]="user?.name"
-                style="margin-right: 8px;"
-              ></nz-avatar>
-              {{ user?.name || 'User' }}
-            </span>
-              <ul class="custom-submenu">
-                <li nz-menu-item [routerLink]="['user/profile']">
-                  <nz-icon nzType="idcard" class="menu-icon"></nz-icon>
-                  Profile
-                </li>
-                <li nz-menu-item>
-                  <nz-icon nzType="setting" class="menu-icon"></nz-icon>
-                  Settings
-                </li>
-                <li nz-menu-item (click)="logout()">
-                  <nz-icon nzType="logout" class="menu-icon"></nz-icon>
-                  Logout
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-
-      </ul>
-
-    </nz-header>
-    <nz-content class="m-6 p-6 min-h-[280px] bg-white rounded shadow">
+  <nz-layout class="right-layout">
+    <nz-content>
       <router-outlet></router-outlet>
-    </nz-content>
+      </nz-content>
     <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
   </nz-layout>
 </nz-layout>
+
