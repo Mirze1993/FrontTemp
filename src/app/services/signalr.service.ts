@@ -2,7 +2,6 @@ import {Inject, Injectable} from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import {AuthStore} from '../stores/auth/auth.store';
 import {HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

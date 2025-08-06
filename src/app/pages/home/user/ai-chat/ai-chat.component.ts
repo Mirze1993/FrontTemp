@@ -24,10 +24,7 @@ import { NzSplitterModule } from 'ng-zorro-antd/splitter';
     NgForOf,
     NzButtonModule,
     DatePipe,
-    NzGridModule,
-    NzLayoutComponent,
-    NzSiderComponent,
-    NzMenuDirective
+    NzGridModule
   ],
   templateUrl: './ai-chat.component.html',
   styleUrl: './ai-chat.component.scss'

@@ -16,7 +16,9 @@ import {NotifComponent} from '../../components/notif/notif.component';
 
 @Component({
   selector: 'app-home',
-  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule, NzAvatarComponent, AccessControlDirective, NotifComponent, NzSubMenuTitleComponent],
+  imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule,
+    NzAvatarComponent, AccessControlDirective, NotifComponent,
+    ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

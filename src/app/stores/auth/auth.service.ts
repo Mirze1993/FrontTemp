@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { AuthStore } from './auth.store';
 import { Session, Token_Decode } from '../../models/AppUser';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from '../../../environments/environment';
 import { UserService } from '../../services/api/user.service';
 
 @Injectable({ providedIn: 'root' })
