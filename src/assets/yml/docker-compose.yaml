@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  s_task_management_ui:
+    container_name: c_front-temp-ui
+    image: mirze1993/front-temp-ui:B${BUILD_NUMBER}
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    # build:
+    #   context: ./../../
+    #   dockerfile: FileApi/Dockerfile
+    ports:
+      - 4204:80
+    networks:
+      - web
+    healthcheck:
+      test: curl -sS http://localhost:80 || exit 1
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+
+
+networks:
+  web:
+    name: shared-web
