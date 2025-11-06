@@ -74,6 +74,7 @@ export interface AuthState  {
     photo?:string;
     appUserId?:number;
     email?:string
+    isActive:boolean
   }
 
   export class UpdateProfilReq{

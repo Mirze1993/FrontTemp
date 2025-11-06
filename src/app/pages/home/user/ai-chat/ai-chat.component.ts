@@ -52,8 +52,8 @@ export class AiChatComponent implements OnInit, AfterViewInit, OnDestroy,AfterVi
 
   currentStreamMessage: string = '';
   ngAfterViewInit(): void {
-    this.signalRService.startConnection();
-    this.signalRService.ReceiveMessage((msg,isEnd) => {
+    this.signalRService.startAiConnection();
+    this.signalRService.ReceiveAiMessage((msg,isEnd) => {
 
       if(isEnd)
       {
@@ -105,7 +105,7 @@ export class AiChatComponent implements OnInit, AfterViewInit, OnDestroy,AfterVi
 
     this.activeSession.history.push({ role: 'user', content: trimmed });
     const userInput = this.inputMessage;
-    this.signalRService.sendMessage(userInput, this.activeSession.id);
+    this.signalRService.sendAiMessage(userInput, this.activeSession.id);
     this.inputMessage = '';
 
     // setTimeout(() => {

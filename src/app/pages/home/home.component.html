@@ -41,6 +41,10 @@
         <nz-icon nzType="smile" />
         <span>face id</span>
       </li>
+      <li nz-menu-item [routerLink]="['user/contact']">
+        <nz-icon nzType="smile" />
+        <span>Contacts</span>
+      </li>
     </ul>
   </nz-sider>
   <nz-layout class="right-layout">
@@ -51,3 +55,13 @@
   </nz-layout>
 </nz-layout>
 
+
+<nz-modal [(nzVisible)]="isVideoCallOfferCome" nzTitle="Call" (nzOnCancel)="handleCallOfferCancel()" (nzOnOk)="handleCallOfferOk()">
+  <ng-container *nzModalContent>
+    <p>callerName</p>
+    <nz-avatar
+      [nzSrc]="userService.getImgFullPath(callerPhoto)"
+      [nzSize]="50">
+    </nz-avatar>
+  </ng-container>
+</nz-modal>

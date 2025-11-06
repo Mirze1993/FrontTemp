@@ -8,25 +8,34 @@ import {HttpErrorResponse} from '@angular/common/http';
 })
 export class SignalrService {
 
-  token:string;
-  constructor( private authStore: AuthStore, @Inject("aiApiUrl") private baseUrl) {
+  token: string;
+
+  constructor(
+    private authStore: AuthStore,
+    @Inject("aiApiUrl") private aiBaseUrl,
+    @Inject("authApiUrl") private authApiUrl) {
     authStore.state$.subscribe((state) => {
-      this.token= state.token;
+      this.token = state.token;
     })
   }
 
-  private hubConnection: signalR.HubConnection;
+  private hubAiChatConnection: signalR.HubConnection;
+  private callHubConnection: signalR.HubConnection;
 
-  public startConnection = () => {
-    this.hubConnection = new signalR.HubConnectionBuilder()
+  public startAiConnection = () => {
+    this.hubAiChatConnection = new signalR.HubConnectionBuilder()
       .withAutomaticReconnect()
-      .withUrl(this.baseUrl+ "/chat"
-        , { accessTokenFactory: () => { return this.token } }
+      .withUrl(this.aiBaseUrl + "/chat"
+        , {
+          accessTokenFactory: () => {
+            return this.token
+          }
+        }
       )
       .build();
 
 
-    this.hubConnection.start()
+    this.hubAiChatConnection.start()
       .then(() => console.log('Connection started'))
       .catch(error => {
         if (error as HttpErrorResponse) {
@@ -39,14 +48,54 @@ export class SignalrService {
   }
 
 
-  public ReceiveMessage = (fn: (data: string,isEnd:boolean) => void) => {
-    this.hubConnection.on("ReceiveMessage", (data: string,isEnd:boolean) => {
-      fn(data,isEnd);
+  public ReceiveAiMessage = (fn: (data: string, isEnd: boolean) => void) => {
+    this.hubAiChatConnection.on("ReceiveMessage", (data: string, isEnd: boolean) => {
+      fn(data, isEnd);
     });
   }
 
-  sendMessage(message: string,sessionId:string): void {
-    this.hubConnection.invoke('sendMessageAi', {Content: message, sessionId: sessionId});
+  sendAiMessage(message: string, sessionId: string): void {
+    this.hubAiChatConnection.invoke('sendMessageAi', {Content: message, sessionId: sessionId});
+  }
+
+
+  public startCallConnection = () => {
+    this.callHubConnection = new signalR.HubConnectionBuilder()
+      .withAutomaticReconnect()
+      .withUrl(this.authApiUrl + "/callChat"
+        , {
+          accessTokenFactory: () => {
+            return this.token
+          }
+        }
+      )
+      .build();
+
+
+    this.callHubConnection.start()
+      .then(() => console.log('Connection started'))
+      .catch(error => {
+        if (error as HttpErrorResponse) {
+          if (error.status === '401') {
+            console.log('-----------');
+          }
+        }
+        console.log('Error while starting connection: ' + error)
+      })
+  }
+  public stopCallConnection = ()=>{
+    this.callHubConnection.stop();
+    this.callHubConnection = null;
+  }
+
+  public videoCallOfferCome = (fn: (name: string, picture: string) => void) => {
+    this.callHubConnection.on("VideoCallOfferCome", (name: string, picture: string) => {
+      fn(name, picture);
+    });
+  }
+
+  startOfferVideoCall(userId: string): void {
+    this.callHubConnection.invoke('StartOfferVideoCall', {userId: userId});
   }
 
 }
