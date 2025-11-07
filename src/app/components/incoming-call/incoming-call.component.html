@@ -1,0 +1,53 @@
+<div
+  style="
+    text-align: center;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <img
+    [src]="photo"
+    alt="Caller photo"
+    width="100"
+    height="100"
+    style="border-radius: 50%; margin-bottom: 16px;"
+  />
+
+  <div style="font-size: 22px; font-weight: 500;">
+    {{ isRinging ? '📞 Gələn zəng' : '⛔ Zəng bitdi' }}
+  </div>
+
+  <div style="margin: 10px 0; color: gray;">
+    <ng-container *ngIf="isRinging; else ended">
+      {{ callerName }} zəng edir... ({{ remainingSeconds }} saniyə qaldı)
+    </ng-container>
+    <ng-template #ended> Zəng bitdi. </ng-template>
+  </div>
+
+  <div *ngIf="isRinging; else retryBtn" style="display: flex; gap: 10px; margin-top: 10px;">
+    <button
+      nz-button
+      nzType="primary"
+      (click)="acceptCall()"
+      style="background-color: #4caf50; border-color: #4caf50;"
+    >
+      <i nz-icon nzType="phone" nzTheme="outline" style="margin-right: 6px;"></i>
+      Cavab ver
+    </button>
+
+    <button nz-button nzType="default" nzDanger (click)="rejectCall()">
+      <i nz-icon nzType="close-circle" style="margin-right: 6px;"></i>
+      Rədd et
+    </button>
+  </div>
+
+  <ng-template #retryBtn>
+    <button nz-button nzType="primary" (click)="startRinging()">
+      <i nz-icon nzType="redo" style="margin-right: 6px;"></i>
+      Yenidən çağır
+    </button>
+  </ng-template>
+</div>

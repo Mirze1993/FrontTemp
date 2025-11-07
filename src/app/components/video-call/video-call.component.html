@@ -1,1 +1,53 @@
-<p>video-call works!</p>
+<div
+  style="
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <!-- 👤 Şəkil -->
+  <img
+    [ngSrc]="userService.getImgFullPath(photo)"
+    alt="Contact avatar"
+    width="80"
+    height="80"
+    style="border-radius: 50%; margin-bottom: 16px;"
+  />
+  <!-- 📞 Başlıq -->
+  <div style="font-size: 22px; font-weight: 500;">
+    {{ isStartCalling ? '📞 Zəng edilir...' : '⛔ Zəng dayandırıldı' }}
+  </div>
+
+  <!-- ℹ️ Alt yazı -->
+  <div style="margin:10px 0; color:gray;">
+    <ng-container *ngIf="isStartCalling; else stopped">
+      Zəng davam edir... {{ remainingSeconds }} saniyə qaldı
+    </ng-container>
+    <ng-template #stopped>
+      Zəng ləğv edildi.
+    </ng-template>
+  </div>
+
+  <!-- 🔘 Düymələr -->
+  <button
+    *ngIf="isStartCalling; else retryBtn"
+    nz-button
+    nzType="default"
+    nzDanger
+    (click)="cancelOffer()"
+  >
+    <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
+    Zəngi ləğv et
+  </button>
+
+  <ng-template #retryBtn>
+    <button nz-button nzType="primary" (click)="retryCallOffer()">
+      <i nz-icon nzType="phone" style="margin-right:6px;"></i>
+      Yenidən zəng et
+    </button>
+  </ng-template>
+</div>
+

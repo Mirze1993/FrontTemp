@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewContainerRef} from '@angular/core';
 import {NavigationComponent} from "../../components/navigation/navigation.component";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
@@ -14,7 +14,9 @@ import {environment} from '../../../environments/environment';
 import {AccessControlDirective} from '../../directives/access-control.directive';
 import {NotifComponent} from '../../components/notif/notif.component';
 import {SignalrService} from '../../services/signalr.service';
-import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzModalModule, NzModalService} from 'ng-zorro-antd/modal';
+import {VideoCallComponent} from '../../components/video-call/video-call.component';
+import {IncomingCallComponent} from '../../components/incoming-call/incoming-call.component';
 
 @Component({
   selector: 'app-home',
@@ -32,10 +34,12 @@ export class HomeComponent implements OnInit,AfterViewInit {
 
   constructor(
     private authService: AuthService,
+    private modalService: NzModalService,
     private router: Router,
     protected userService: UserService,
     private authStore: AuthStore,
-    private signalRService:SignalrService
+    private signalRService:SignalrService,
+    private viewContainerRef: ViewContainerRef
   ) {
   }
 
@@ -48,10 +52,23 @@ export class HomeComponent implements OnInit,AfterViewInit {
   }
   ngAfterViewInit() {
     this.signalRService.startCallConnection();
-    this.signalRService.videoCallOfferCome((userName,photo) => {
-      this.isVideoCallOfferCome=true;
-      this.callerName=userName;
-      this.callerPhoto=photo;
+    this.signalRService.videoCallOfferCome((callerName,callerPhoto,callerId,guid) => {
+       this.modalService.create({
+        nzTitle: null,
+        nzFooter: null,
+        nzClosable: true,
+        nzMaskClosable: true,
+        nzCentered: true,
+        nzContent: IncomingCallComponent,
+        nzViewContainerRef: this.viewContainerRef,
+        nzData: {
+          callerId: callerId,
+          callerName: callerName,
+          callerPhoto: callerPhoto,
+          guid: guid,
+        }
+      });
+
     });
   }
   callerName:string;

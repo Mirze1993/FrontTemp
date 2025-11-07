@@ -15,8 +15,8 @@
           <div class="pt-px text-15"> {{data.name}}</div>
         </td>
         <td>
-          <button nz-button nzType="primary"  nzShape="round" (click)="sendOffer(data.appUserId.toString())">
-            <nz-icon nzType="download" />
+          <button nz-button nzType="default"  nzShape="round" (click)="sendOffer(data.appUserId.toString(),data.photo)">
+            <nz-icon nzType="video-camera"   nzTheme="twotone" nzTwotoneColor="#52c41a"/>
           </button>
         </td>
       </tr>
@@ -24,3 +24,7 @@
     </nz-table>
   </nz-card>
 </div>
+
+
+
+
