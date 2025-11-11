@@ -1,7 +1,7 @@
 services:
   s_task_management_ui:
     container_name: c_front-temp-ui
-    image: mirze1993/front-temp-ui:B${BUILD_NUMBER}
+    image: mirze1993/front-temp-ui:latest
     restart: unless-stopped
     deploy:
       resources:
