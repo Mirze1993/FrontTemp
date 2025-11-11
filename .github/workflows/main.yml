@@ -3,13 +3,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ main ]
-    paths:
-      - 'src/**'   
+    branches: [ master ]  
   pull_request:
-    branches: [ main ]
-    paths:
-      - 'src/**' 
+    branches: [ master ] 
 env:
   IMAGE_TAG: ${{ github.run_number }}  
 jobs:
