@@ -88,24 +88,44 @@ export class SignalrService {
     this.callHubConnection = null;
   }
 
+
+
+  startOfferVideoCall(userId: string,guid :string): void {
+    this.callHubConnection.invoke('startOfferVideoCall', userId,guid);
+  }
   public videoCallOfferCome = (fn: (name: string, callerPhoto: string,callerId :string,guid:string) => void) => {
     this.callHubConnection.on("videoCallOfferCome", (callerName: string, callerPhoto: string,callerId :string,guid:string) => {
       fn(callerName, callerPhoto,callerId,guid);
     });
   }
 
-  public videoCallOfferEnd = (fn: () => void) => {
-    this.callHubConnection.on("videoCallOfferEnd", () => {
+
+
+  endOfferVideoCall (guid:string): void {
+    this.callHubConnection.invoke('endOfferVideoCall', guid);
+  }
+  public endOfferVideoCallHandle = (fn: () => void) => {
+    this.callHubConnection.on("endOfferVideoCallHandle", () => {
       fn();
     });
   }
 
-  startOfferVideoCall(userId: string,guid :string): void {
-    this.callHubConnection.invoke('startOfferVideoCall', userId,guid);
+  acceptVideoCall(guid:string): void {
+    this.callHubConnection.invoke('acceptVideoCall', guid);
   }
 
-  endOfferVideoCall (guid:string): void {
-    this.callHubConnection.invoke('endOfferVideoCall', guid);
+  acceptVideoCallHandle(fn:()=>void): void {
+    this.callHubConnection.on("acceptVideoCallHandle", fn);
+  }
+
+  rtcSignal(guid:string,payload:any){
+    this.callHubConnection.invoke('rtcSignal', guid,payload);
+  }
+
+  rtcSignalHandler(fn:(data:any) => void) {
+    this.callHubConnection.on("rtcSignalHandle", (data:any) => {
+      console.log(data);
+      fn(data)});
   }
 
 }

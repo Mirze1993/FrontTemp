@@ -2,7 +2,7 @@ import { EnvironmentModel } from "./environment-model";
 
 export const environment: EnvironmentModel = {
     production: false,
-    authApiUrl: 'http://localhost:5197' ,
-    aiApiUrl: 'http://localhost:5007' ,
-    fileUrl:"http://localhost:5163",
+    authApiUrl: 'http://192.168.31.146:5197' ,
+    aiApiUrl: 'http://192.168.31.146:5007' ,
+    fileUrl:"http://192.168.31.146:5163",
   };

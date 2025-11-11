@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core';
 import {NZ_MODAL_DATA, NzModalRef} from 'ng-zorro-antd/modal';
 import {SignalrService} from '../../services/signalr.service';
 import {UserService} from '../../services/api/user.service';
@@ -6,16 +6,17 @@ import {NgIf, NgOptimizedImage} from '@angular/common';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzWaveDirective} from 'ng-zorro-antd/core/wave';
+import {CallRctService} from '../../services/call-rct.service';
 
 @Component({
   selector: 'app-incoming-call',
-  imports:[NgIf, NzButtonComponent, NzIconDirective, NzWaveDirective, NgOptimizedImage],
+  imports: [NgIf, NzButtonComponent, NzIconDirective, NzWaveDirective],
   templateUrl: './incoming-call.component.html',
   styleUrl: './incoming-call.component.scss'
 })
-export class IncomingCallComponent {
+export class IncomingCallComponent implements OnDestroy {
   readonly #modal = inject(NzModalRef);
-  readonly nzData: any = inject(NZ_MODAL_DATA, { optional: true });
+  readonly nzData: any = inject(NZ_MODAL_DATA, {optional: true});
 
   readonly callerId: number = this.nzData?.callerId;
   readonly guid: string = this.nzData?.guid;
@@ -28,16 +29,33 @@ export class IncomingCallComponent {
   private autoCancelTimer?: any;
   private countdownTimer?: any;
 
+  @ViewChild('remoteVideo') remoteVideo: ElementRef;
+
   constructor(
     private signalRService: SignalrService,
-    protected userService: UserService
+    protected userService: UserService,
+    private callRctService: CallRctService
   ) {
     this.startRinging();
     this.#modal.afterClose.subscribe(() => this.clearTimers());
-    this.signalRService.videoCallOfferEnd(()=>{
+    this.signalRService.endOfferVideoCallHandle(() => {
       this.#modal.close();
     })
+
+    this.signalRService.rtcSignalHandler(data => {
+      this.callRctService.guid = this.guid;
+      console.log(data)
+        if (data.type == 'offer') {
+          this.callRctService.handleOffer(data.offer, this.remoteVideo).then(()=>{})
+        }else if(data.type == 'candidate') {
+          this.callRctService.handleCandidate(data.candidate).then(()=>{});
+          console.log(data.candidate);
+         // this.remoteVideo.nativeElement.play()
+        }
+      }
+    )
   }
+
 
   /** 🔔 Zəng başladıqda */
   startRinging(): void {
@@ -59,26 +77,15 @@ export class IncomingCallComponent {
   acceptCall(): void {
     this.clearTimers();
     this.isRinging = false;
-
-    // SignalR vasitəsilə cavabı göndər
-    // this.signalRService.acceptVideoCall(this.callerId);
-
-    // Modalı bağla və nəticə qaytar
-    this.#modal.close('accepted');
+    this.signalRService.acceptVideoCall(this.guid);
   }
 
   /** ❌ Rədd et */
   rejectCall(): void {
     if (!this.isRinging) return;
     this.signalRService.endOfferVideoCall(this.guid);
-    console.log('📵 Zəng rədd edildi və ya vaxt bitdi');
     this.clearTimers();
     this.isRinging = false;
-
-    // SignalR vasitəsilə rədd siqnalı göndər
-    // this.signalRService.rejectVideoCall(this.callerId);
-
-    // Modal bağlanır
     this.#modal.close('rejected');
   }
 
@@ -89,6 +96,6 @@ export class IncomingCallComponent {
   }
 
   ngOnDestroy(): void {
-    this.clearTimers();
+    this.rejectCall();
   }
 }
