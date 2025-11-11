@@ -34,6 +34,6 @@ jobs:
           context: .
           file: ./src/Dockerfile
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/fronttemp:latest, ${{ vars.DOCKERHUB_USERNAME }}/fronttemp:${{ github.run_number }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/front-temp-ui:latest, ${{ vars.DOCKERHUB_USERNAME }}/front-temp-ui:${{ github.run_number }}
           cache-from: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/tempauthapi:latest
           cache-to: type=inline
