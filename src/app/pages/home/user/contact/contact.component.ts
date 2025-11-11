@@ -26,7 +26,7 @@ export class ContactComponent implements OnInit {
 
   users: SearchUserResp[];
   private modalRef?: NzModalRef;
-
+//asdasd
   constructor(protected userService: UserService,
               private signalRService: SignalrService,
               private modalService: NzModalService,
