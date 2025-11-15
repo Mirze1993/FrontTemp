@@ -17,17 +17,43 @@
   />
 
   <div style="font-size: 22px; font-weight: 500;">
-    {{ isRinging ? '📞 Gələn zəng' : '⛔ Zəng bitdi' }}
+    {{ getCallStatusText(callStatus) }}
   </div>
 
-  <div style="margin: 10px 0; color: gray;">
-    <ng-container *ngIf="isRinging; else ended">
-      {{ callerName }} zəng edir... ({{ remainingSeconds }} saniyə qaldı)
-    </ng-container>
-    <ng-template #ended> Zəng bitdi. </ng-template>
+  <div style="margin:10px 0; color:gray;" [ngSwitch]="callStatus">
+
+    <div *ngSwitchCase="CallStatus.Calling">
+      📞 Zəng gelir... {{ remainingSeconds }} saniyə qaldı
+    </div>
+
+    <div *ngSwitchCase="CallStatus.Timeout">
+      ⏱️ Zəng vaxtı bitdi
+    </div>
+
+    <div *ngSwitchCase="CallStatus.RejectByReceiver">
+      🚫 Zəngi siz ləğv etdiniz
+    </div>
+
+    <div *ngSwitchCase="CallStatus.RejectByCaller">
+      🚫 Qarşı tərəf zəngi ləğv etdi
+    </div>
+    <div *ngSwitchCase="CallStatus.RejectByReceiver">
+      🚫 Siz zəngi sonlandırdız
+    </div>
+
+    <div *ngSwitchCase="CallStatus.RejectByCaller">
+      🚫 Qarşı tərəf zəngi sonlandırdı
+    </div>
+
+    <div *ngSwitchDefault>
+      ⛔ Zəng dayandırıldı
+    </div>
+
   </div>
 
-  <div *ngIf="isRinging; else retryBtn" style="display: flex; gap: 10px; margin-top: 10px;">
+
+
+  <div *ngIf="callStatus==CallStatus.Calling" style="display: flex; gap: 10px; margin-top: 10px;">
     <button
       nz-button
       nzType="primary"
@@ -38,18 +64,51 @@
       Cavab ver
     </button>
 
-    <button nz-button nzType="default" nzDanger (click)="rejectCall()">
+    <button nz-button nzType="default" nzDanger (click)="rejectCall(CallStatus.RejectByReceiver)">
       <i nz-icon nzType="close-circle" style="margin-right: 6px;"></i>
       Rədd et
     </button>
   </div>
 
-  <ng-template #retryBtn>
-    <button nz-button nzType="primary" (click)="startRinging()">
-      <i nz-icon nzType="redo" style="margin-right: 6px;"></i>
-      Yenidən çağır
-    </button>
-  </ng-template>
 
-  <video #remoteVideo autoplay controls   ></video>
+  <button nz-button nzType="primary" *ngIf="callStatus!=CallStatus.Calling" (click)="rejectCall(CallStatus.EndByReceiver)">
+      Zəngi bitir
+  </button>
+
+
+  <!-- Remote Video (Böyük) -->
+  <div style="position: relative; width: 100%; max-width: 500px;">
+
+    <video
+      #remoteVideo
+      autoplay
+      playsinline
+      style="
+      width: 100%;
+      border-radius: 10px;
+      background: black;
+    "
+    ></video>
+
+    <!-- Local Video (Kiçik — sağ alt künc) -->
+    <video
+      #localVideo
+      autoplay
+      muted
+      playsinline
+      style="
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid white;
+      background: black;
+    "
+    ></video>
+
+  </div>
+
 </div>

@@ -2,15 +2,16 @@ import {Component, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core
 import {NZ_MODAL_DATA, NzModalRef} from 'ng-zorro-antd/modal';
 import {SignalrService} from '../../services/signalr.service';
 import {UserService} from '../../services/api/user.service';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgIf, NgSwitch, NgSwitchCase} from '@angular/common';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzWaveDirective} from 'ng-zorro-antd/core/wave';
 import {CallRctService} from '../../services/call-rct.service';
+import {CallStatus, getCallStatusText} from '../../models/CallStatus';
 
 @Component({
   selector: 'app-incoming-call',
-  imports: [NgIf, NzButtonComponent, NzIconDirective, NzWaveDirective],
+  imports: [NgIf, NzButtonComponent, NzIconDirective, NzWaveDirective, NgSwitchCase, NgSwitch],
   templateUrl: './incoming-call.component.html',
   styleUrl: './incoming-call.component.scss'
 })
@@ -23,13 +24,14 @@ export class IncomingCallComponent implements OnDestroy {
   readonly callerName: string = this.nzData?.callerName ?? 'Naməlum istifadəçi';
   readonly photo: string = this.nzData?.photo ?? 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
 
-  isRinging = true;
+  callStatus: string = CallStatus.Calling;
   remainingSeconds = 60;
 
-  private autoCancelTimer?: any;
+
   private countdownTimer?: any;
 
   @ViewChild('remoteVideo') remoteVideo: ElementRef;
+  @ViewChild('localVideo') localVideo!: ElementRef;
 
   constructor(
     private signalRService: SignalrService,
@@ -38,19 +40,19 @@ export class IncomingCallComponent implements OnDestroy {
   ) {
     this.startRinging();
     this.#modal.afterClose.subscribe(() => this.clearTimers());
-    this.signalRService.endOfferVideoCallHandle(() => {
+    this.signalRService.endOfferVideoCallHandle((result) => {
+      console.log(result);
       this.#modal.close();
     })
 
     this.signalRService.rtcSignalHandler(data => {
-      this.callRctService.guid = this.guid;
-      console.log(data)
+        this.callRctService.guid = this.guid;
         if (data.type == 'offer') {
-          this.callRctService.handleOffer(data.offer, this.remoteVideo).then(()=>{})
-        }else if(data.type == 'candidate') {
-          this.callRctService.handleCandidate(data.candidate).then(()=>{});
-          console.log(data.candidate);
-         // this.remoteVideo.nativeElement.play()
+          this.callRctService.handleOffer(data.offer, this.remoteVideo,this.localVideo).then(() => {
+          })
+        } else if (data.type == 'candidate') {
+          this.callRctService.handleCandidate(data.candidate).then(() => {
+          });
         }
       }
     )
@@ -59,43 +61,73 @@ export class IncomingCallComponent implements OnDestroy {
 
   /** 🔔 Zəng başladıqda */
   startRinging(): void {
-    this.isRinging = true;
+    this.callStatus = CallStatus.Calling;
     this.remainingSeconds = 60;
 
-    // 1 dəqiqə ərzində cavab verilməsə → zəngi bitir
     this.countdownTimer = setInterval(() => {
       this.remainingSeconds--;
-      if (this.remainingSeconds <= 0) this.rejectCall();
+      if (this.remainingSeconds <= 0)
+        this.rejectCall(CallStatus.Timeout);
     }, 1000);
-
-    this.autoCancelTimer = setTimeout(() => {
-      this.rejectCall();
-    }, 60 * 1000);
   }
 
   /** ✅ Cavab ver */
   acceptCall(): void {
     this.clearTimers();
-    this.isRinging = false;
+    this.callStatus = CallStatus.CallAccept;
     this.signalRService.acceptVideoCall(this.guid);
   }
 
   /** ❌ Rədd et */
-  rejectCall(): void {
-    if (!this.isRinging) return;
-    this.signalRService.endOfferVideoCall(this.guid);
+  rejectCall(status: CallStatus): void {
+
+    this.signalRService.endOfferVideoCall(this.guid, status);
+    this.clearProps(status);
+  }
+
+
+  private clearProps(status: CallStatus) {
     this.clearTimers();
-    this.isRinging = false;
-    this.#modal.close('rejected');
+    this.callStatus = status;
+    this.#modal.close(status);
+    this.stopRemoteStream();
+    this.callRctService.stopLocalCamera();
+  }
+
+  private stopRemoteStream() {
+    const videoEl = this.remoteVideo?.nativeElement;
+    if (!videoEl) return;
+
+    const stream = videoEl.srcObject as MediaStream;
+
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+
+    videoEl.srcObject = null;
+    videoEl.pause();
+
+    console.log("Remote video stream stopped");
   }
 
   /** 🧹 Timer-ləri təmizlə */
   clearTimers(): void {
-    if (this.autoCancelTimer) clearTimeout(this.autoCancelTimer);
-    if (this.countdownTimer) clearInterval(this.countdownTimer);
+    if (this.countdownTimer)
+      clearInterval(this.countdownTimer);
   }
 
+  isDestroyed: boolean = false;
   ngOnDestroy(): void {
-    this.rejectCall();
+    if(this.isDestroyed)
+      return;
+    if (this.callStatus != CallStatus.Calling)
+      this.rejectCall(CallStatus.EndByReceiver);
+    else
+      this.rejectCall(CallStatus.RejectByReceiver);
+    this.isDestroyed = true;
+    window.location.reload();
   }
+
+  protected readonly getCallStatusText = getCallStatusText;
+  protected readonly CallStatus = CallStatus;
 }

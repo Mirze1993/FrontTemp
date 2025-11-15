@@ -93,20 +93,20 @@ export class SignalrService {
   startOfferVideoCall(userId: string,guid :string): void {
     this.callHubConnection.invoke('startOfferVideoCall', userId,guid);
   }
-  public videoCallOfferCome = (fn: (name: string, callerPhoto: string,callerId :string,guid:string) => void) => {
-    this.callHubConnection.on("videoCallOfferCome", (callerName: string, callerPhoto: string,callerId :string,guid:string) => {
+  public startOfferVideoCallHandle = (fn: (name: string, callerPhoto: string,callerId :string,guid:string) => void) => {
+    this.callHubConnection.on("startOfferVideoCallHandle", (callerName: string, callerPhoto: string,callerId :string,guid:string) => {
       fn(callerName, callerPhoto,callerId,guid);
     });
   }
 
 
 
-  endOfferVideoCall (guid:string): void {
-    this.callHubConnection.invoke('endOfferVideoCall', guid);
+  endOfferVideoCall (guid:string,result:string): void {
+    this.callHubConnection.invoke('endOfferVideoCall', guid,result);
   }
-  public endOfferVideoCallHandle = (fn: () => void) => {
-    this.callHubConnection.on("endOfferVideoCallHandle", () => {
-      fn();
+  public endOfferVideoCallHandle = (fn: (result:string) => void) => {
+    this.callHubConnection.on("endOfferVideoCallHandle", (result) => {
+      fn(result);
     });
   }
 

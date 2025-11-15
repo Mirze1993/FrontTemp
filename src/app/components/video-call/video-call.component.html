@@ -18,37 +18,149 @@
   />
   <!-- 📞 Başlıq -->
   <div style="font-size: 22px; font-weight: 500;">
-    {{ isStartCalling ? '📞 Zəng edilir...' : '⛔ Zəng dayandırıldı' }}
+    {{ getCallStatusText(callStatus) }}
   </div>
 
   <!-- ℹ️ Alt yazı -->
-  <div style="margin:10px 0; color:gray;">
-    <ng-container *ngIf="isStartCalling; else stopped">
-      Zəng davam edir... {{ remainingSeconds }} saniyə qaldı
-    </ng-container>
-    <ng-template #stopped>
-      Zəng ləğv edildi.
-    </ng-template>
+
+  <div style="margin:10px 0; color:gray;" [ngSwitch]="callStatus">
+
+    <div *ngSwitchCase="CallStatus.Calling">
+      📞 Zəng edilir... {{ remainingSeconds }} saniyə qaldı
+    </div>
+
+    <div *ngSwitchCase="CallStatus.Timeout">
+      ⏱️ Zəng vaxtı bitdi
+    </div>
+
+    <div *ngSwitchCase="CallStatus.RejectByCaller">
+      🚫 Zəngi siz ləğv etdiniz
+    </div>
+
+    <div *ngSwitchCase="CallStatus.RejectByReceiver">
+      🚫 Qarşı tərəf zəngi ləğv etdi
+    </div>
+    <div *ngSwitchCase="CallStatus.EndByCaller">
+      🚫 Siz zəngi sonlandırdız
+    </div>
+
+    <div *ngSwitchCase="CallStatus.EndByReceiver">
+      🚫 Qarşı tərəf zəngi sonlandırdı
+    </div>
+    <div *ngSwitchCase="CallStatus.NotActive">
+      🚫 Qarşı tərəf aktiv deyil
+    </div>
+
   </div>
 
-  <!-- 🔘 Düymələr -->
-  <button
-    *ngIf="isStartCalling; else retryBtn"
-    nz-button
-    nzType="default"
-    nzDanger
-    (click)="cancelOffer()"
-  >
-    <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
-    Zəngi ləğv et
-  </button>
 
-  <ng-template #retryBtn>
-    <button nz-button nzType="primary" (click)="retryCallOffer()">
+  <!-- 🔘 Düymələr -->
+  <div [ngSwitch]="callStatus">
+
+    <!-- 📞 Zəng edilir -->
+    <button
+      *ngSwitchCase="CallStatus.Calling"
+      nz-button
+      nzType="default"
+      nzDanger
+      (click)="cancelOffer(CallStatus.RejectByCaller)"
+    >
+      <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
+      Zəngi ləğv et
+    </button>
+
+    <!-- 📞 Zəng edilir -->
+    <button
+      *ngSwitchCase="CallStatus.CallAccept"
+      nz-button
+      nzType="default"
+      nzDanger
+      (click)="cancelOffer(CallStatus.EndByCaller)"
+    >
+      <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
+      Zəngi sonlandır
+    </button>
+
+    <!-- 🔁 Yenidən zəng et (Cancel/Reject/Timeout hallarının hamısı üçün) -->
+    <button
+      *ngSwitchDefault
+      nz-button
+      nzType="primary"
+      (click)="retryCallOffer()"
+    >
       <i nz-icon nzType="phone" style="margin-right:6px;"></i>
       Yenidən zəng et
     </button>
-  </ng-template>
-  <video #remoteVideo autoplay controls   ></video>
+
+  </div>
+
+  <!-- Remote Video (Böyük) -->
+  <div style="position: relative; width: 100%; max-width: 500px;">
+
+    <video
+      #remoteVideo
+      autoplay
+      playsinline
+      style="
+      width: 100%;
+      border-radius: 10px;
+      background: black;
+    "
+    ></video>
+
+    <!-- 🔵 Control Buttons (Mute / Stop Video) -->
+    <div
+      style="
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: flex;
+      gap: 10px;
+    "
+    >
+      <!-- 🔇 Səsi bağlama düyməsi -->
+      <button
+        nz-button
+        nzShape="circle"
+        nzType="default"
+        (click)="toggleMute()"
+        style="background: rgba(0,0,0,0.6); color: white; border: none;"
+      >
+        <i nz-icon [nzType]="isMuted ? 'sound' : 'audio-muted'"></i>
+      </button>
+
+      <!-- 🎥 Kameranı dayandır düyməsi -->
+      <button
+        nz-button
+        nzShape="circle"
+        nzType="default"
+        (click)="toggleVideo()"
+        style="background: rgba(0,0,0,0.6); color: white; border: none;"
+      >
+        <i nz-icon [nzType]="isVideoStopped ? 'video-camera' : 'video-camera'"></i>
+      </button>
+    </div>
+
+    <!-- Local Video (Kiçik — sağ alt künc) -->
+    <video
+      #localVideo1
+      autoplay
+      muted
+      playsinline
+      style="
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid white;
+      background: black;
+    "
+    ></video>
+
+  </div>
+
 </div>
 

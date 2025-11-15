@@ -41,8 +41,8 @@ export class CallRctService {
   constructor(private signalRService: SignalrService) {
   }
 
-  async makeCall(remoteVideo: ElementRef) {
-    await this._initConnection(remoteVideo)
+  async makeCall(remoteVideo: ElementRef,localVideo: ElementRef) {
+    await this._initConnection(remoteVideo,localVideo)
     const offer = await this.connection.createOffer();
     await this.connection.setLocalDescription(offer);
     this.signalRService.rtcSignal(this.guid, {type: 'offer', offer});
@@ -52,9 +52,10 @@ export class CallRctService {
 
   public async handleOffer(
     offer: RTCSessionDescription,
-    remoteVideo: ElementRef
+    remoteVideo: ElementRef,
+    localVideo: ElementRef
   ): Promise<void> {
-    await this._initConnection(remoteVideo);
+    await this._initConnection(remoteVideo,localVideo);
 
     console.log('handle offler', offer);
     await this.connection.setRemoteDescription(
@@ -93,10 +94,10 @@ export class CallRctService {
   }
 
 
-  private async _initConnection(remoteVideo: ElementRef): Promise<void> {
+  private async _initConnection(remoteVideo: ElementRef,localVideo:ElementRef): Promise<void> {
     this.connection = new RTCPeerConnection(this.configuration);
 
-    await this._getStreams(remoteVideo);
+    await this._getStreams(remoteVideo,localVideo);
 
     this._registerConnectionListeners();
   }
@@ -141,12 +142,16 @@ export class CallRctService {
 
   }
 
-
-  private async _getStreams(remoteVideo: ElementRef): Promise<void> {
+  localStream!: MediaStream | null;
+  private async _getStreams(remoteVideo: ElementRef,localVideo:ElementRef): Promise<void> {
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
+
+    this.localStream = stream;
+
+
     const remoteStream = new MediaStream();
 
     remoteVideo.nativeElement.srcObject = remoteStream;
@@ -160,26 +165,14 @@ export class CallRctService {
     stream.getTracks().forEach((track) => {
       this.connection.addTrack(track, stream);
     });
+
+    localVideo.nativeElement.srcObject =  this.localStream ;
   }
+  stopLocalCamera() {
+    if (!this.localStream) return;
 
-  public async _handleMessage(data: any, remoteVideo: ElementRef): Promise<void> {
-    console.log(data)
-    switch (data.type) {
-      case 'offer':
-        await this.handleOffer(data.offer, remoteVideo);
-        break;
-
-      case 'answer':
-        await this.handleAnswer(data.answer);
-        break;
-
-      case 'candidate':
-        this.handleCandidate(data.candidate);
-        break;
-
-      default:
-        break;
-    }
+    this.localStream.getTracks().forEach(t => t.stop());
+    this.localStream = null;
   }
 
 }

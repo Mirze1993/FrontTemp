@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit,AfterViewInit {
   }
   ngAfterViewInit() {
     this.signalRService.startCallConnection();
-    this.signalRService.videoCallOfferCome((callerName,callerPhoto,callerId,guid) => {
+    this.signalRService.startOfferVideoCallHandle((callerName,callerPhoto,callerId,guid) => {
        this.modalService.create({
         nzTitle: null,
         nzFooter: null,
