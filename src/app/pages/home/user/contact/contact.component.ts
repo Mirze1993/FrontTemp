@@ -13,6 +13,8 @@ import {NzButtonModule} from 'ng-zorro-antd/button';
 import {SignalrService} from '../../../../services/signalr.service';
 import {NzModalModule, NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {VideoCallComponent} from '../../../../components/video-call/video-call.component';
+import {RtcChatComponent} from '../../../../components/rtc-chat/rtc-chat.component';
+import {ChatPageStatus} from '../../../../models/ChatPageStatus';
 
 @Component({
   selector: 'app-contact',
@@ -59,6 +61,28 @@ export class ContactComponent implements OnInit {
       nzData: {
         userId: userId,
         photo: photo
+      }
+    });
+
+  }
+
+  sendChatOffer(userId: string,photo: string): void {
+    this.openChatModal(userId,photo)
+  }
+  openChatModal(userId: string,photo: string) {
+
+    this.modalRef = this.modalService.create({
+      nzTitle: null,
+      nzFooter: null,
+      nzClosable: true,
+      nzMaskClosable: true,
+      nzCentered: true,
+      nzContent: RtcChatComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzData: {
+        userId: userId,
+        photo: photo,
+        pageStatus:ChatPageStatus.OfferComing
       }
     });
 

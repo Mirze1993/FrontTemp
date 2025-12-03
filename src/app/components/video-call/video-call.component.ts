@@ -12,7 +12,6 @@ import {CallStatus, getCallStatusText, parseCallStatus} from '../../models/CallS
 @Component({
   selector: 'app-video-call',
   imports: [
-    NgIf,
     NzButtonComponent,
     NzIconDirective,
     NzWaveDirective,

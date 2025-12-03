@@ -2,7 +2,7 @@ import {Component, ElementRef, inject, OnDestroy, ViewChild} from '@angular/core
 import {NZ_MODAL_DATA, NzModalRef} from 'ng-zorro-antd/modal';
 import {SignalrService} from '../../services/signalr.service';
 import {UserService} from '../../services/api/user.service';
-import {NgIf, NgSwitch, NgSwitchCase} from '@angular/common';
+import {NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzWaveDirective} from 'ng-zorro-antd/core/wave';
@@ -11,7 +11,7 @@ import {CallStatus, getCallStatusText} from '../../models/CallStatus';
 
 @Component({
   selector: 'app-incoming-call',
-  imports: [NgIf, NzButtonComponent, NzIconDirective, NzWaveDirective, NgSwitchCase, NgSwitch],
+  imports: [NgIf, NzButtonComponent, NzIconDirective, NzWaveDirective, NgSwitchCase, NgSwitch, NgSwitchDefault],
   templateUrl: './incoming-call.component.html',
   styleUrl: './incoming-call.component.scss'
 })
