@@ -59,18 +59,17 @@ export class VideoCallComponent implements OnDestroy, AfterViewInit {
 
     this.signalRService.acceptVideoCallHandle( async () => {
       this.clearTimers()
-      this.callRctService.makeCall(this.remoteVideo,this.localVideo1).then(mm => {
+      this.callRctService.makeVideoCall(this.remoteVideo,this.localVideo1).then(mm => {
       })
     })
 
-    this.signalRService.rtcSignalHandler(data => {
+    this.signalRService.videoRtcSignalHandler(data => {
       if (data.type == 'answer') {
         this.callRctService.handleAnswer(data.answer).then(() => {
         })
       } else if (data.type == 'candidate') {
         this.callRctService.handleCandidate(data.candidate).then(() => {
         });
-
       }
     })
   }

@@ -82,7 +82,7 @@ export class ContactComponent implements OnInit {
       nzData: {
         userId: userId,
         photo: photo,
-        pageStatus:ChatPageStatus.OfferComing
+        pageStatus:ChatPageStatus.OfferSend
       }
     });
 

@@ -45,10 +45,10 @@ export class IncomingCallComponent implements OnDestroy {
       this.#modal.close();
     })
 
-    this.signalRService.rtcSignalHandler(data => {
+    this.signalRService.videoRtcSignalHandler(data => {
         this.callRctService.guid = this.guid;
         if (data.type == 'offer') {
-          this.callRctService.handleOffer(data.offer, this.remoteVideo,this.localVideo).then(() => {
+          this.callRctService.handleVideoOffer(data.offer, this.remoteVideo,this.localVideo).then(() => {
           })
         } else if (data.type == 'candidate') {
           this.callRctService.handleCandidate(data.candidate).then(() => {

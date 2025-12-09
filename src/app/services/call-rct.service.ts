@@ -38,26 +38,30 @@ export class CallRctService {
   connection: RTCPeerConnection;
   guid: string;
 
+  callType: 'chat' | 'video';
+
+
+  dataChannel!: RTCDataChannel;
+
   constructor(private signalRService: SignalrService) {
   }
 
-  async makeCall(remoteVideo: ElementRef,localVideo: ElementRef) {
-    await this._initConnection(remoteVideo,localVideo)
+  //#region Video Call Operations
+  async makeVideoCall(remoteVideo: ElementRef, localVideo: ElementRef) {
+    this.callType = 'video';
+    await this._initVideoConnection(remoteVideo, localVideo)
     const offer = await this.connection.createOffer();
     await this.connection.setLocalDescription(offer);
-    this.signalRService.rtcSignal(this.guid, {type: 'offer', offer});
-    console.log(offer);
-
+    this.signalRService.videoRtcSignal(this.guid, {type: 'offer', offer});
   }
 
-  public async handleOffer(
+
+  public async handleVideoOffer(
     offer: RTCSessionDescription,
     remoteVideo: ElementRef,
     localVideo: ElementRef
   ): Promise<void> {
-    await this._initConnection(remoteVideo,localVideo);
-
-    console.log('handle offler', offer);
+    await this._initVideoConnection(remoteVideo, localVideo);
     await this.connection.setRemoteDescription(
       new RTCSessionDescription(offer)
     );
@@ -66,13 +70,132 @@ export class CallRctService {
 
     await this.connection.setLocalDescription(answer);
 
-    this.signalRService.rtcSignal(this.guid, {type: 'answer', answer});
-    if(this.pendingCandidates){
+    this.signalRService.videoRtcSignal(this.guid, {type: 'answer', answer});
+    if (this.pendingCandidates) {
       for (const c of this.pendingCandidates) {
         await this.connection.addIceCandidate(c).catch(console.error);
       }
     }
   }
+
+
+  private async _initVideoConnection(remoteVideo: ElementRef, localVideo: ElementRef): Promise<void> {
+    this.connection = new RTCPeerConnection(this.configuration);
+
+    await this._getVideoStreams(remoteVideo, localVideo);
+
+    this._registerConnectionListeners();
+  }
+
+  localStream!: MediaStream | null;
+
+  private async _getVideoStreams(remoteVideo: ElementRef, localVideo: ElementRef): Promise<void> {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+
+    this.localStream = stream;
+
+
+    const remoteStream = new MediaStream();
+
+    remoteVideo.nativeElement.srcObject = remoteStream;
+
+    this.connection.ontrack = (event) => {
+      event.streams[0].getTracks().forEach((track) => {
+        remoteStream.addTrack(track);
+      });
+    };
+
+    stream.getTracks().forEach((track) => {
+      this.connection.addTrack(track, stream);
+    });
+
+    localVideo.nativeElement.srcObject = this.localStream;
+  }
+
+  stopLocalCamera() {
+    if (!this.localStream) return;
+
+    this.localStream.getTracks().forEach(t => t.stop());
+    this.localStream = null;
+  }
+
+  //#endregion
+
+  //#region Chat Call Operations
+  async makeChatConnection(onMessageCallback: (msg: string) => void) {
+    this.callType = 'chat';
+
+    this.connection = new RTCPeerConnection(this.configuration);
+
+    // Chat üçün DataChannel açılır
+    this.dataChannel = this.connection.createDataChannel("chat");
+    this._setupDataChannel(onMessageCallback);
+
+    this._registerConnectionListeners();
+
+    const offer = await this.connection.createOffer();
+    await this.connection.setLocalDescription(offer);
+
+    this.signalRService.chatRtcSignal(this.guid, {type: 'offer', offer});
+  }
+
+  async handleChatOffer(offer: RTCSessionDescription,onMessageCallback: (msg: string) => void) {
+    this.callType = 'chat';
+
+    this.connection = new RTCPeerConnection(this.configuration);
+
+    // Qarşı tərəf dataChannel-i burda alacaq
+    this.connection.ondatachannel = (event) => {
+      this.dataChannel = event.channel;
+      this._setupDataChannel(onMessageCallback);
+    };
+
+    this._registerConnectionListeners();
+
+    await this.connection.setRemoteDescription(new RTCSessionDescription(offer));
+
+    const answer = await this.connection.createAnswer();
+    await this.connection.setLocalDescription(answer);
+
+    this.signalRService.chatRtcSignal(this.guid, {type: 'answer', answer});
+
+    if (this.pendingCandidates.length) {
+      for (const c of this.pendingCandidates) {
+        await this.connection.addIceCandidate(c);
+      }
+    }
+  }
+
+  private _setupDataChannel(onMessageCallback: (msg: string) => void) {
+    this.dataChannel.onopen = () => {
+      console.log("🟢 DataChannel OPEN (Chat hazırdır)");
+    };
+
+    this.dataChannel.onclose = () => {
+      console.log("🔴 DataChannel bağlandı");
+    };
+
+    this.dataChannel.onerror = (err) => {
+      console.error("DataChannel Error:", err);
+    };
+
+    this.dataChannel.onmessage = (event) => {
+      if (onMessageCallback)
+        onMessageCallback(event.data);
+    };
+  }
+
+  sendChatMessage(message: string) {
+    if (this.dataChannel && this.dataChannel.readyState === "open") {
+      this.dataChannel.send(message);
+    } else {
+      console.warn("DataChannel hazır deyil");
+    }
+  }
+  //#endregion
 
   public async handleAnswer(answer: RTCSessionDescription): Promise<void> {
     await this.connection.setRemoteDescription(
@@ -84,22 +207,11 @@ export class CallRctService {
 
   public async handleCandidate(candidate: RTCIceCandidate): Promise<void> {
     if (candidate) {
-      console.log('handleCandidate', candidate);
-      console.log('handleCandidate remoteDescription', this.connection.remoteDescription);
       if (this.connection.remoteDescription)
         await this.connection.addIceCandidate(new RTCIceCandidate(candidate));
       else
         this.pendingCandidates.push(new RTCIceCandidate(candidate));
     }
-  }
-
-
-  private async _initConnection(remoteVideo: ElementRef,localVideo:ElementRef): Promise<void> {
-    this.connection = new RTCPeerConnection(this.configuration);
-
-    await this._getStreams(remoteVideo,localVideo);
-
-    this._registerConnectionListeners();
   }
 
   private _registerConnectionListeners(): void {
@@ -136,43 +248,14 @@ export class CallRctService {
           type: 'candidate',
           candidate: event.candidate.toJSON(),
         };
-        this.signalRService.rtcSignal(this.guid, payload);
+        if (this.callType == "chat")
+          this.signalRService.chatRtcSignal(this.guid, payload);
+        else if (this.callType == "video")
+          this.signalRService.videoRtcSignal(this.guid, payload);
       }
     };
 
   }
 
-  localStream!: MediaStream | null;
-  private async _getStreams(remoteVideo: ElementRef,localVideo:ElementRef): Promise<void> {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-
-    this.localStream = stream;
-
-
-    const remoteStream = new MediaStream();
-
-    remoteVideo.nativeElement.srcObject = remoteStream;
-
-    this.connection.ontrack = (event) => {
-      event.streams[0].getTracks().forEach((track) => {
-        remoteStream.addTrack(track);
-      });
-    };
-
-    stream.getTracks().forEach((track) => {
-      this.connection.addTrack(track, stream);
-    });
-
-    localVideo.nativeElement.srcObject =  this.localStream ;
-  }
-  stopLocalCamera() {
-    if (!this.localStream) return;
-
-    this.localStream.getTracks().forEach(t => t.stop());
-    this.localStream = null;
-  }
 
 }

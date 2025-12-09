@@ -1,3 +1,4 @@
+<!--ChatPageStatus.OfferSend-->
 <div *ngIf="pageStatus==ChatPageStatus.OfferSend">
   <div
     style="
@@ -50,6 +51,7 @@
 
 </div>
 
+<!--ChatPageStatus.OfferComing-->
 <div *ngIf="pageStatus==ChatPageStatus.OfferComing">
   <div
     style="
@@ -99,6 +101,7 @@
 
 </div>
 
+<!--ChatPageStatus.CallAccept-->
 <div *ngIf="pageStatus==ChatPageStatus.CallAccept">
   <nz-splitter style="height: 600px">
     <nz-splitter-panel [nzCollapsible]="true" nzDefaultSize="20%" nzMin="10%" nzMax="70%">
@@ -170,5 +173,166 @@
   </nz-splitter>
 </div>
 
+<!--ChatPageStatus.EndByCaller-->
+<div *ngIf="pageStatus==ChatPageStatus.EndByCaller">
+  <div
+    style="
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+  >
+    <!-- 👤 Şəkil -->
+    <img
+      [ngSrc]="userService.getImgFullPath(photo)"
+      alt="Contact avatar"
+      width="80"
+      height="80"
+      style="border-radius: 50%; margin-bottom: 16px;"
+    />
+    <!-- 📞 Başlıq -->
+    <div style="font-size: 22px; font-weight: 500;">
+      Levğ edildi
+    </div>
+
+    <!-- ℹ️ Alt yazı -->
+
+    <div style="margin:10px 0; color:gray;">
+      ⏱️ Levğ edildi...
+    </div>
+
+    <!-- 🔘 Düymələr -->
+    <div>
+
+    </div>
+
+  </div>
 
 
+</div>
+
+<!--ChatPageStatus.RejectByCaller-->
+<div *ngIf="pageStatus==ChatPageStatus.RejectByCaller">
+  <div
+    style="
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+  >
+    <!-- 👤 Şəkil -->
+    <img
+      [ngSrc]="userService.getImgFullPath(photo)"
+      alt="Contact avatar"
+      width="80"
+      height="80"
+      style="border-radius: 50%; margin-bottom: 16px;"
+    />
+    <!-- 📞 Başlıq -->
+    <div style="font-size: 22px; font-weight: 500;">
+      Levğ edildi
+    </div>
+
+    <!-- ℹ️ Alt yazı -->
+
+    <div style="margin:10px 0; color:gray;">
+      ⏱️ Levğ edildi...
+    </div>
+
+    <!-- 🔘 Düymələr -->
+    <div>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+<!--ChatPageStatus.RejectByReceiver-->
+<div *ngIf="pageStatus==ChatPageStatus.RejectByReceiver">
+  <div
+    style="
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+  >
+    <!-- 👤 Şəkil -->
+    <img
+      [ngSrc]="userService.getImgFullPath(photo)"
+      alt="Contact avatar"
+      width="80"
+      height="80"
+      style="border-radius: 50%; margin-bottom: 16px;"
+    />
+    <!-- 📞 Başlıq -->
+    <div style="font-size: 22px; font-weight: 500;">
+      Levğ edildi
+    </div>
+
+    <!-- ℹ️ Alt yazı -->
+
+    <div style="margin:10px 0; color:gray;">
+      ⏱️ Levğ edildi...
+    </div>
+
+    <!-- 🔘 Düymələr -->
+    <div>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+<!--ChatPageStatus.RejectByReceiver-->
+<div *ngIf="pageStatus==ChatPageStatus.NotActive">
+  <div
+    style="
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  "
+  >
+    <!-- 👤 Şəkil -->
+    <img
+      [ngSrc]="userService.getImgFullPath(photo)"
+      alt="Contact avatar"
+      width="80"
+      height="80"
+      style="border-radius: 50%; margin-bottom: 16px;"
+    />
+    <!-- 📞 Başlıq -->
+    <div style="font-size: 22px; font-weight: 500;">
+     İstifadəçi aktiv deyil
+    </div>
+
+    <!-- ℹ️ Alt yazı -->
+
+    <div style="margin:10px 0; color:gray;">
+      ⏱️ Bir qədər sonra cəhd edin...
+    </div>
+
+    <!-- 🔘 Düymələr -->
+    <div>
+
+    </div>
+
+  </div>
+
+
+</div>
