@@ -12,7 +12,7 @@
   >
     <!-- 👤 Şəkil -->
     <img
-      [ngSrc]="userService.getImgFullPath(photo)"
+      [ngSrc]="photo"
       alt="Contact avatar"
       width="80"
       height="80"
@@ -26,7 +26,7 @@
     <!-- ℹ️ Alt yazı -->
 
     <div style="margin:10px 0; color:gray;">
-      ⏱️ Gozləyir...
+      ⏱️ Gozləyir... {{ remainingSeconds }} saniyə qaldı
     </div>
 
 
@@ -38,6 +38,7 @@
         nz-button
         nzType="default"
         nzDanger
+        (click)="cancelOffer(ChatPageStatus.RejectByCaller)"
       >
         <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
         Ləğv et
@@ -75,24 +76,23 @@
       Söhbət təklifi mövcuddur
     </div>
 
-    <div style="margin:10px 0; color:gray;" >
-        ⏱️ Söhbət təklifi cavablanmaq üçün gözləyor
+    <div style="margin:10px 0; color:gray;">
+      ⏱️ Söhbət təklifi cavablanmaq üçün gözləyor
     </div>
 
 
-
-    <div  style="display: flex; gap: 10px; margin-top: 10px;">
+    <div style="display: flex; gap: 10px; margin-top: 10px;">
       <button
         nz-button
         nzType="primary"
-
+        (click)="acceptOffer()"
         style="background-color: #4caf50; border-color: #4caf50;"
       >
         <i nz-icon nzType="phone" nzTheme="outline" style="margin-right: 6px;"></i>
         Cavab ver
       </button>
 
-      <button nz-button nzType="default" nzDanger >
+      <button nz-button nzType="default" nzDanger (click)="cancelOffer(ChatPageStatus.RejectByReceiver)">
         <i nz-icon nzType="close-circle" style="margin-right: 6px;"></i>
         Rədd et
       </button>
@@ -119,25 +119,31 @@
               <div
                 class="mb-3"
                 [ngClass]="{
-        'text-right': msg.role === 'user',
-        'text-left': msg.role === 'assistant'
+        'text-right': msg.type === 'sent',
+        'text-left': msg.type === 'received'
       }"
               >
                 <nz-tag
-                  [nzColor]="msg.role === 'user' ? 'blue' : 'green'"
+                  [nzColor]="msg.type === 'sent' ? 'blue' : 'green'"
                   class="mb-1 inline-block"
                 >
-                  {{ msg.role === 'user' ? 'Siz' : 'GPT' }}
+                  {{ msg.type === 'sent' ? 'Siz' : 'Gondərn' }}
                 </nz-tag>
                 <div
                   class="inline-block max-w-[80%] p-3 rounded-2xl shadow-md"
                   [ngClass]="{
-          'bg-blue-100 text-gray-800': msg.role === 'user',
-          'bg-green-100 text-gray-900': msg.role === 'assistant'
+          'bg-blue-100 text-gray-800': msg.type === 'sent',
+          'bg-green-100 text-gray-900': msg.type === 'received'
         }"
                 >
-                  {{ msg.content }}
+                  {{ msg.msg }}
                 </div>
+
+              </div>
+            </ng-container>
+            <ng-container>
+              <div *ngIf="isMsgPrepare" class="text-left mb-2 text-gray-500 italic">
+                yazır...
               </div>
             </ng-container>
           </div>
@@ -242,10 +248,11 @@
     <!-- ℹ️ Alt yazı -->
 
     <div style="margin:10px 0; color:gray;">
-      ⏱️ Levğ edildi...
+      ⏱️ Qarşı tərəf levğ etdi...
     </div>
 
     <!-- 🔘 Düymələr -->
+
     <div>
 
     </div>
@@ -287,6 +294,14 @@
     </div>
 
     <!-- 🔘 Düymələr -->
+    <button
+      nz-button
+      nzType="primary"
+      (click)="startOffer()"
+    >
+      <i nz-icon nzType="phone" style="margin-right:6px;"></i>
+      Yenidən zəng et
+    </button>
     <div>
 
     </div>
@@ -296,7 +311,7 @@
 
 </div>
 
-<!--ChatPageStatus.RejectByReceiver-->
+<!--ChatPageStatus.NotActive-->
 <div *ngIf="pageStatus==ChatPageStatus.NotActive">
   <div
     style="
@@ -318,7 +333,7 @@
     />
     <!-- 📞 Başlıq -->
     <div style="font-size: 22px; font-weight: 500;">
-     İstifadəçi aktiv deyil
+      İstifadəçi aktiv deyil
     </div>
 
     <!-- ℹ️ Alt yazı -->

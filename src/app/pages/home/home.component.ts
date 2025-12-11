@@ -17,6 +17,8 @@ import {SignalrService} from '../../services/signalr.service';
 import {NzModalModule, NzModalService} from 'ng-zorro-antd/modal';
 import {VideoCallComponent} from '../../components/video-call/video-call.component';
 import {IncomingCallComponent} from '../../components/incoming-call/incoming-call.component';
+import {RtcChatComponent} from '../../components/rtc-chat/rtc-chat.component';
+import {ChatPageStatus} from '../../models/ChatPageStatus';
 
 @Component({
   selector: 'app-home',
@@ -66,6 +68,27 @@ export class HomeComponent implements OnInit,AfterViewInit {
           callerName: callerName,
           callerPhoto: callerPhoto,
           guid: guid,
+        }
+      });
+
+    });
+
+    this.signalRService.startOfferRtcChatHandle((callerName,callerPhoto,callerId,guid,publicKey) => {
+      this.modalService.create({
+        nzTitle: null,
+        nzFooter: null,
+        nzClosable: true,
+        nzMaskClosable: true,
+        nzCentered: true,
+        nzContent: RtcChatComponent,
+        nzViewContainerRef: this.viewContainerRef,
+        nzData: {
+          callerId: callerId,
+          callerName: callerName,
+          callerPhoto: callerPhoto,
+          guid: guid,
+          peerPublicKey:publicKey,
+          pageStatus:ChatPageStatus.OfferComing
         }
       });
 

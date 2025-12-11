@@ -120,13 +120,13 @@ export class SignalrService {
   }
 
   //---------------------------------------------------------------
-  startOfferRtcChat(userId: string,guid :string): void {
-    this.callHubConnection.invoke('startOfferRtcChat', userId,guid)
-      .catch(err => console.error("Video call error:", err));
+  startOfferRtcChat(userId: string,guid :string,publicKey:string): void {
+    this.callHubConnection.invoke('startOfferRtcChat', userId,guid,publicKey)
+      .catch(err => console.error(" rtcDhat error:", err));
   }
-  public startOfferRtcChatHandle = (fn: (name: string, callerPhoto: string,callerId :string,guid:string) => void) => {
-    this.callHubConnection.on("startOfferRtcChatHandle", (callerName: string, callerPhoto: string,callerId :string,guid:string) => {
-      fn(callerName, callerPhoto,callerId,guid);
+  public startOfferRtcChatHandle = (fn: (name: string, callerPhoto: string,callerId :string,guid:string,publicKey:string) => void) => {
+    this.callHubConnection.on("startOfferRtcChatHandle", (callerName: string, callerPhoto: string,callerId :string,guid:string,publicKey:string) => {
+      fn(callerName, callerPhoto,callerId,guid,publicKey);
     });
   }
 
@@ -141,12 +141,14 @@ export class SignalrService {
     });
   }
 
-  acceptRtcChat(guid:string): void {
-    this.callHubConnection.invoke('acceptRtcChat', guid);
+  acceptRtcChat(guid:string,publicKey:string): void {
+    this.callHubConnection.invoke('acceptRtcChat', guid,publicKey);
   }
 
-  acceptRtcChatHandle(fn:()=>void): void {
-    this.callHubConnection.on("acceptRtcChatHandle", fn);
+  acceptRtcChatHandle(fn:(publicKey:string)=>void): void {
+    this.callHubConnection.on("acceptRtcChatHandle", publicKey=> {
+      fn(publicKey)
+    });
   }
   //---------------------------------------------------------------
 

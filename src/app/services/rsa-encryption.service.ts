@@ -10,10 +10,10 @@ export class RsaEncryptionService {
   myPrivateKey: CryptoKey;
   myPublicSpkiB64:string;
 
-  peerSpkiB64:string;
 
   //RSA KEY GENERATION (CLIENT
   async generateKeypair() {
+    console.log("Generate keypair");
     const keypair = await crypto.subtle.generateKey(
       {
         name: "RSA-OAEP",
@@ -47,9 +47,9 @@ export class RsaEncryptionService {
   }
 
 
-  async encryptMessage(peerId: string, plaintext: string) {
+  async encryptMessage( plaintext: string,peerSpkiB64 :string) {
 
-    const pubKey = await this.importPeerKey(this.peerSpkiB64);
+    const pubKey = await this.importPeerKey(peerSpkiB64);
     const encoded = new TextEncoder().encode(plaintext);
 
     const encrypted = await crypto.subtle.encrypt(
