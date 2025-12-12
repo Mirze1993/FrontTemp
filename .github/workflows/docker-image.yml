@@ -1,11 +1,10 @@
-
-name: FrontTemp
+name: Front Chat
 
 on:
   push:
-    branches: [ master ]  
+    branches: [ Chat ]  
   pull_request:
-    branches: [ master ] 
+    branches: [ Chat ] 
 env:
   IMAGE_TAG: ${{ github.run_number }}  
 jobs:
@@ -34,6 +33,6 @@ jobs:
           context: .
           file: ./src/Dockerfile
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/front-temp-ui:latest, ${{ vars.DOCKERHUB_USERNAME }}/front-temp-ui:${{ github.run_number }}
-          cache-from: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/tempauthapi:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/front-chat-ui:latest, ${{ vars.DOCKERHUB_USERNAME }}/front-temp-ui:${{ github.run_number }}
+          cache-from: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/front-chat-ui:latest
           cache-to: type=inline
