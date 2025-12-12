@@ -1,5 +1,5 @@
 services:
-  s_task_management_ui:
+  s_front_chat_ui:
     container_name: c_front-chat-ui
     image: mirze1993/front-chat-ui:latest
     restart: unless-stopped
