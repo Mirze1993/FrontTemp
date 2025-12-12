@@ -4,6 +4,7 @@ import {HomeComponent} from './home.component';
 import {userRoutes} from './user/user.routes';
 
 export const homeRoutes: Routes = [
-  {path:"admin",children:adminRoutes},
+  {path: '', redirectTo: 'user', pathMatch: 'full'},
+  //{path:"admin",children:adminRoutes},
   {path:"user",children:userRoutes}
 ];
