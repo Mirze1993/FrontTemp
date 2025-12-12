@@ -1,5 +1,5 @@
 
-name: Docker Image CI
+name: FrontTemp
 
 on:
   push:
