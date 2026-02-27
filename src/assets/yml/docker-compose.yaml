@@ -14,8 +14,10 @@ services:
     # build:
     #   context: ./../../
     #   dockerfile: FileApi/Dockerfile
-    expose:
-      - "80"
+    #expose:
+    #  - "80"
+    ports:
+      - "4240:80"
     networks:
       - shared-web
     healthcheck:
