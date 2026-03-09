@@ -212,7 +212,7 @@ export class UserService {
   }
 
   getImgFullPath(path: string): string {
-    if (path.startsWith('http'))
+    if (path&&path.startsWith('http'))
       return path;
     return path?environment.fileUrl+path:'https://www.w3schools.com/howto/img_avatar.png';
   }

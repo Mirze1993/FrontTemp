@@ -20,12 +20,13 @@ import {IncomingCallComponent} from '../../components/incoming-call/incoming-cal
 import {RtcChatComponent} from '../../components/rtc-chat/rtc-chat.component';
 import {ChatPageStatus} from '../../models/ChatPageStatus';
 import {isPlatformBrowser} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-home',
   imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule,NzModalModule,
-    NzAvatarComponent, AccessControlDirective, NotifComponent,
-    ],
+    NzAvatarComponent, AccessControlDirective, NotifComponent,NzTableModule
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

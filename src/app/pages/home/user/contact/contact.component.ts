@@ -41,6 +41,9 @@ export class ContactComponent implements OnInit {
   searchUser(userName: string) {
     this.userService.searchUser(userName ?? '').then(mm => {
       this.users = mm.value
+      this.users.unshift({
+        isActive: true,name:'admin',appUserId:-1
+      })
     });
   }
 

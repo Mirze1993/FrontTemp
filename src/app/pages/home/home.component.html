@@ -35,15 +35,21 @@
       </li>
       <li nz-menu-item [routerLink]="['user/ai-chat']">
         <nz-icon nzType="wechat-work" />
-        <span>Chat</span>
+        <span>Ai Chat</span>
       </li>
       <li nz-menu-item [routerLink]="['user/face-id']">
         <nz-icon nzType="smile" />
-        <span>face id</span>
+        <span>Face id</span>
       </li>
       <li nz-menu-item [routerLink]="['user/contact']">
         <nz-icon nzType="smile" />
         <span>Contacts</span>
+      </li>
+      <li *accessControl="['user']; op: 'or'" nz-submenu nzTitle="AdminChat" nzIcon="wechat-work">
+        <ul>
+          <li nz-menu-item [routerLink]="['admin/call-to-admin']"> Call</li>
+          <li nz-menu-item>Chat</li>
+        </ul>
       </li>
     </ul>
   </nz-sider>

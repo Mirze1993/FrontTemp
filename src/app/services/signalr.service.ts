@@ -101,6 +101,12 @@ export class SignalrService {
   }
 
 
+  public startOfferAdminVideoCallHandle = (fn: (Guid: string, FromUserId: string,callerId :string,guid:string) => void) => {
+    this.callHubConnection.on("startOfferAdminVideoCallHandle", (callerName: string, callerPhoto: string,callerId :string,guid:string) => {
+      fn(callerName, callerPhoto,callerId,guid);
+    });
+  }
+
 
   endOfferVideoCall (guid:string,result:string): void {
     this.callHubConnection.invoke('endOfferVideoCall', guid,result);
