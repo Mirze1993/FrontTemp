@@ -1,7 +1,8 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {NzDividerModule} from 'ng-zorro-antd/divider';
 import {SignalrService} from '../../../../services/signalr.service';
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-call-to-admin',
@@ -11,13 +12,18 @@ import {SignalrService} from '../../../../services/signalr.service';
 })
 export class CallToAdminComponent implements OnInit, AfterViewInit {
 
-
-  constructor(private signalRService: SignalrService) {
+  listOfData: any[]=[] ;
+  constructor(private signalRService: SignalrService,@Inject(PLATFORM_ID) private platformId: Object) {
   }
 
   ngAfterViewInit(): void {
-    this.signalRService.startOfferVideoCallHandle((callerName, callerPhoto, callerId, guid) => {
-
+    if (!isPlatformBrowser(this.platformId)) {
+      return
+    }
+    this.signalRService.startCallConnection();
+    this.signalRService.offerAdminVideoCallHandle(data => {
+      console.log(data);
+      this.listOfData=[...data];
     });
   }
 
@@ -25,24 +31,5 @@ export class CallToAdminComponent implements OnInit, AfterViewInit {
 
   }
 
-  listOfData: any[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park'
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park'
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park'
-    }
-  ];
+
 }

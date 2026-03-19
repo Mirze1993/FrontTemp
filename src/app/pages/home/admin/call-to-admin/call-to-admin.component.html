@@ -2,19 +2,19 @@
   <thead>
   <tr>
     <th>Name</th>
-    <th>Age</th>
-    <th>Address</th>
+    <th>Email</th>
+    <th>status</th>
     <th>Action</th>
   </tr>
   </thead>
   <tbody>
     @for (data of basicTable.data; track data) {
       <tr>
-        <td>{{ data.name }}</td>
-        <td>{{ data.age }}</td>
-        <td>{{ data.address }}</td>
+        <td>{{ data.fromUserName }}</td>
+        <td>{{ data.fromUserEmail }}</td>
+        <td>{{ data.status }}</td>
         <td>
-          <a>Action 一 {{ data.name }}</a>
+          <a>Action 一 {{ data.fromUserName }}</a>
           <nz-divider nzType="vertical"></nz-divider>
           <a>Delete</a>
         </td>
