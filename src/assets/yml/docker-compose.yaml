@@ -16,6 +16,8 @@ services:
     #   dockerfile: FileApi/Dockerfile
     expose:
       - "80"
+    ports:
+      - "4210:80"
     networks:
       - shared-web
     healthcheck:
