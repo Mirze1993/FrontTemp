@@ -23,76 +23,77 @@
 
   <!-- ℹ️ Alt yazı -->
 
-  <div style="margin:10px 0; color:gray;" [ngSwitch]="callStatus">
-
-    <div *ngSwitchCase="CallStatus.Calling">
-      📞 Zəng edilir... {{ remainingSeconds }} saniyə qaldı
-    </div>
-
-    <div *ngSwitchCase="CallStatus.Timeout">
-      ⏱️ Zəng vaxtı bitdi
-    </div>
-
-    <div *ngSwitchCase="CallStatus.RejectByCaller">
-      🚫 Zəngi siz ləğv etdiniz
-    </div>
-
-    <div *ngSwitchCase="CallStatus.RejectByReceiver">
-      🚫 Qarşı tərəf zəngi ləğv etdi
-    </div>
-    <div *ngSwitchCase="CallStatus.EndByCaller">
-      🚫 Siz zəngi sonlandırdız
-    </div>
-
-    <div *ngSwitchCase="CallStatus.EndByReceiver">
-      🚫 Qarşı tərəf zəngi sonlandırdı
-    </div>
-    <div *ngSwitchCase="CallStatus.NotActive">
-      🚫 Qarşı tərəf aktiv deyil
-    </div>
-
+  <div style="margin:10px 0; color:gray;">
+    @switch (callStatus) {
+      @case (CallStatus.Calling) {
+        <div>📞 Zəng edilir... {{ remainingSeconds }} saniyə qaldı</div>
+      }
+      @case (CallStatus.Timeout) {
+        <div>⏱️ Zəng vaxtı bitdi</div>
+      }
+      @case (CallStatus.RejectByCaller) {
+        <div>🚫 Zəngi siz ləğv etdiniz</div>
+      }
+      @case (CallStatus.RejectByReceiver) {
+        <div>🚫 Qarşı tərəf zəngi ləğv etdi</div>
+      }
+      @case (CallStatus.EndByCaller) {
+        <div>🚫 Siz zəngi sonlandırdız</div>
+      }
+      @case (CallStatus.EndByReceiver) {
+        <div>🚫 Qarşı tərəf zəngi sonlandırdı</div>
+      }
+      @case (CallStatus.NotActive) {
+        <div>🚫 Qarşı tərəf aktiv deyil</div>
+      }
+    }
   </div>
+
 
 
   <!-- 🔘 Düymələr -->
-  <div [ngSwitch]="callStatus">
+  @switch (callStatus) {
 
-    <!-- 📞 Zəng edilir -->
-    <button
-      *ngSwitchCase="CallStatus.Calling"
-      nz-button
-      nzType="default"
-      nzDanger
-      (click)="cancelOffer(CallStatus.RejectByCaller)"
-    >
-      <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
-      Zəngi ləğv et
-    </button>
+    @case (CallStatus.Calling) {
+      <!-- 📞 Zəng edilir -->
+      <button
+        nz-button
+        nzType="default"
+        nzDanger
+        (click)="cancelOffer(CallStatus.RejectByCaller)"
+      >
+        <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
+        Zəngi ləğv et
+      </button>
+    }
 
-    <!-- 📞 Zəng edilir -->
-    <button
-      *ngSwitchCase="CallStatus.CallAccept"
-      nz-button
-      nzType="default"
-      nzDanger
-      (click)="cancelOffer(CallStatus.EndByCaller)"
-    >
-      <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
-      Zəngi sonlandır
-    </button>
+    @case (CallStatus.CallAccept) {
+      <!-- ✅ Zəng qəbul edilib -->
+      <button
+        nz-button
+        nzType="default"
+        nzDanger
+        (click)="cancelOffer(CallStatus.EndByCaller)"
+      >
+        <i nz-icon nzType="close-circle" style="margin-right:6px;"></i>
+        Zəngi sonlandır
+      </button>
+    }
 
-    <!-- 🔁 Yenidən zəng et (Cancel/Reject/Timeout hallarının hamısı üçün) -->
-    <button
-      *ngSwitchDefault
-      nz-button
-      nzType="primary"
-      (click)="retryCallOffer()"
-    >
-      <i nz-icon nzType="phone" style="margin-right:6px;"></i>
-      Yenidən zəng et
-    </button>
+    @default {
+      <!-- 🔁 Yenidən zəng et (Bütün digər hallar üçün) -->
+      <button
+        nz-button
+        nzType="primary"
+        (click)="retryCallOffer()"
+      >
+        <i nz-icon nzType="phone" style="margin-right:6px;"></i>
+        Yenidən zəng et
+      </button>
+    }
 
-  </div>
+  }
+
 
   <!-- Remote Video (Böyük) -->
   <div style="position: relative; width: 100%; max-width: 500px;">

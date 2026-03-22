@@ -59,7 +59,11 @@ export class SignalrService {
   }
 
 
-  public startCallConnection = () => {
+  public startCallConnection = async (): Promise<void> => {
+    if (this.callHubConnection) {
+      return; // artıq var, yenisini yaratma
+    }
+
     this.callHubConnection = new signalR.HubConnectionBuilder()
       .withAutomaticReconnect()
       .withUrl(this.authApiUrl + "/callChat"
@@ -72,20 +76,22 @@ export class SignalrService {
       .build();
 
 
-    this.callHubConnection.start()
-      .then(() => console.log('Connection started'))
-      .catch(error => {
-        if (error as HttpErrorResponse) {
-          if (error.status === '401') {
-            console.log('-----------');
-          }
-        }
-        console.log('Error while starting connection: ' + error)
-      })
+    try {
+      await this.callHubConnection.start();
+      console.log('Connection started');
+    } catch (error: any) {
+      if (error?.status === 401) {
+        console.log('Unauthorized');
+      }
+      console.log('Error while starting connection:', error);
+      throw error;
+    }
   }
-  public stopCallConnection = ()=>{
-    this.callHubConnection.stop();
-    this.callHubConnection = null;
+  public stopCallConnection = async () => {
+    if (this.callHubConnection) {
+      await this.callHubConnection.stop();
+      this.callHubConnection = null;
+    }
   }
 
 
@@ -103,9 +109,13 @@ export class SignalrService {
 
   public offerAdminVideoCallHandle = (fn: (data: any[]) => void) => {
     this.callHubConnection.on("offerAdminVideoCallHandle", (data: any[]) => {
-      console.log(data);
+
       fn(data);
     });
+  }
+
+  refreshOfferAdminVideoCallHandle (): void {
+    this.callHubConnection.invoke('refreshOfferAdminVideoCallHandle');
   }
 
 

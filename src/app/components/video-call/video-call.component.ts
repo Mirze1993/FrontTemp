@@ -15,10 +15,7 @@ import {CallStatus, getCallStatusText, parseCallStatus} from '../../models/CallS
     NzButtonComponent,
     NzIconDirective,
     NzWaveDirective,
-    NgOptimizedImage,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault
+    NgOptimizedImage
   ],
   templateUrl: './video-call.component.html',
   styleUrl: './video-call.component.scss'

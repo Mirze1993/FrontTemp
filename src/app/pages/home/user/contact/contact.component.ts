@@ -27,6 +27,7 @@ import {ChatPageStatus} from '../../../../models/ChatPageStatus';
 export class ContactComponent implements OnInit {
 
   users: SearchUserResp[];
+  admins: SearchUserResp[];
   private modalRef?: NzModalRef;
   constructor(protected userService: UserService,
               private signalRService: SignalrService,
@@ -41,9 +42,7 @@ export class ContactComponent implements OnInit {
   searchUser(userName: string) {
     this.userService.searchUser(userName ?? '').then(mm => {
       this.users = mm.value
-      this.users.unshift({
-        isActive: true,name:'admin',appUserId:-1
-      })
+      this.admins=[{   isActive: true,name:'admin',appUserId:-1   }];
     });
   }
 
