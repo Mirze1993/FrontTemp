@@ -1,12 +1,18 @@
-import { inject } from '@angular/core';
+import {inject, PLATFORM_ID} from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import {AuthStore} from '../stores/auth/auth.store';
 import {UserService} from '../services/api/user.service';
+import {isPlatformBrowser} from '@angular/common';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authQuery = inject(AuthStore);
   const userService = inject(UserService);
   const router = inject(Router);
+
+  const platformId = inject(PLATFORM_ID);
+  const isBrowser = isPlatformBrowser(platformId);
+  // SSR zamanı redirect etmə
+  if (!isBrowser) return true;
 
   const isLoggedIn = authQuery.isLoggedIn;
 

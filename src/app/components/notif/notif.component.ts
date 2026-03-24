@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {afterNextRender, AfterViewInit, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {UserService} from '../../services/api/user.service';
 import {NotifResp} from '../../models/AppUser';
 import {NzBadgeComponent} from 'ng-zorro-antd/badge';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 import { NzCommentModule} from 'ng-zorro-antd/comment';
-import {DatePipe, NgForOf, NgStyle} from '@angular/common';
+import {DatePipe, isPlatformBrowser, NgForOf, NgStyle} from '@angular/common';
 
 @Component({
   selector: 'app-notif',
@@ -21,14 +21,24 @@ import {DatePipe, NgForOf, NgStyle} from '@angular/common';
   templateUrl: './notif.component.html',
   styleUrl: './notif.component.scss'
 })
-export class NotifComponent implements OnInit {
+export class NotifComponent implements OnInit,AfterViewInit {
 
-  constructor(private userService:UserService) { }
+  constructor(private userService:UserService,@Inject(PLATFORM_ID) private platformId: Object) {
+    // afterNextRender(async () => {
+    //   await this.getNotif();
+    // });
+  }
 
   unreadCount:number;
   notifs:NotifResp[];
   async ngOnInit() {
-    await this.getNotif();
+    //await this.getNotif();
+    if (isPlatformBrowser(this.platformId)) {
+     await this.getNotif();
+    }
+  }
+  async ngAfterViewInit() {
+    // await this.getNotif();
   }
 
   visible = false;

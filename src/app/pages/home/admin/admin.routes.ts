@@ -15,5 +15,11 @@ export const adminRoutes: Routes = [
     loadComponent : ()=>import("./settings/settings.component").then(value => value.SettingsComponent),
     canActivate:[authGuard],
     //data: { roles: ['ADMIN']   }
+  },
+  {
+    path: 'call-to-admin',
+    loadComponent : ()=>import("./call-to-admin/call-to-admin.component").then(value => value.CallToAdminComponent),
+    canActivate:[authGuard],
+    //data: { roles: ['ADMIN']   }
   }
 ];

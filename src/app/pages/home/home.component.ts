@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, PLATFORM_ID, ViewContainerRef} from '@angular/core';
 import {NavigationComponent} from "../../components/navigation/navigation.component";
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
@@ -19,12 +19,14 @@ import {VideoCallComponent} from '../../components/video-call/video-call.compone
 import {IncomingCallComponent} from '../../components/incoming-call/incoming-call.component';
 import {RtcChatComponent} from '../../components/rtc-chat/rtc-chat.component';
 import {ChatPageStatus} from '../../models/ChatPageStatus';
+import {isPlatformBrowser} from '@angular/common';
+import {NzTableModule} from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-home',
   imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule,NzModalModule,
-    NzAvatarComponent, AccessControlDirective, NotifComponent,
-    ],
+    NzAvatarComponent, AccessControlDirective, NotifComponent,NzTableModule
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -41,7 +43,7 @@ export class HomeComponent implements OnInit,AfterViewInit {
     protected userService: UserService,
     private authStore: AuthStore,
     private signalRService:SignalrService,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,@Inject(PLATFORM_ID) private platformId: Object
   ) {
   }
 
@@ -53,6 +55,9 @@ export class HomeComponent implements OnInit,AfterViewInit {
     });
   }
   ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) {
+     return
+    }
     this.signalRService.startCallConnection();
     this.signalRService.startOfferVideoCallHandle((callerName,callerPhoto,callerId,guid) => {
        this.modalService.create({

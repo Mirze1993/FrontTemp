@@ -1,0 +1,36 @@
+<nz-table #basicTable [nzData]="listOfData">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>status</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (data of basicTable.data; track data) {
+      <tr>
+        <td>{{ data.fromUserName }}</td>
+        <td>{{ data.fromUserEmail }}</td>
+        <td>{{ data.status }}</td>
+        <td>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="acceptCall(data.guid)"
+            style="background-color: #4caf50; border-color: #4caf50;"
+          >
+            <i nz-icon nzType="phone" nzTheme="outline" style="margin-right: 6px;"></i>
+            Cavab ver
+          </button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" nzDanger (click)="rejectCall(CallStatus.RejectByReceiver,data.guid)">
+            <i nz-icon nzType="close-circle" style="margin-right: 6px;"></i>
+            Rədd et
+          </button>
+
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
