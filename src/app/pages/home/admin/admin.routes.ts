@@ -21,5 +21,23 @@ export const adminRoutes: Routes = [
     loadComponent : ()=>import("./call-to-admin/call-to-admin.component").then(value => value.CallToAdminComponent),
     canActivate:[authGuard],
     //data: { roles: ['ADMIN']   }
+  },
+  {
+    path: 'rrweb-records',
+    loadComponent : ()=>import("./rrweb-records/rrweb-records.component").then(value => value.RrwebRecordsComponent),
+    canActivate:[authGuard],
+    //data: { roles: ['ADMIN']   }
+  },
+  {
+    path: 'rrweb-analytics',
+    loadComponent : ()=>import("./rrweb-analytics/rrweb-analytics.component").then(value => value.RrwebAnalyticsComponent),
+    canActivate:[authGuard],
+    //data: { roles: ['ADMIN']   }
+  },
+  {
+    path: 'rrweb-records/replay/:id',
+    loadComponent : ()=>import("../../../components/rrweb-replay/rrweb-replay.component").then(value => value.RrwebReplayComponent),
+    canActivate:[authGuard],
+    //data: { roles: ['ADMIN']   }
   }
 ];

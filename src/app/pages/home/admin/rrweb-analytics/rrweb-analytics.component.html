@@ -1,0 +1,37 @@
+<div style="padding:24px">
+  <h2>Səhifə Analitikası</h2>
+
+  <div style="display:flex; gap:16px; margin-bottom:24px; flex-wrap:wrap">
+    <nz-card *ngFor="let p of top3" style="flex:1; min-width:200px">
+      <nz-statistic
+        [nzValue]="formatTime(p.totalMs)"
+        [nzTitle]="shortUrl(p.url)"
+        [nzSuffix]="''"
+      />
+      <p style="color:#888; font-size:12px; margin:0">
+        {{ p.visitCount }} ziyarət
+      </p>
+    </nz-card>
+  </div>
+
+  <nz-table [nzData]="list" [nzLoading]="loading">
+    <thead>
+    <tr>
+      <th>Səhifə</th>
+      <th>Ümumi vaxt</th>
+      <th>Ortalama vaxt</th>
+      <th>Ziyarət sayı</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (data of list; track data.url) {
+        <tr>
+          <td>{{ data.url }}</td>
+          <td>{{ formatTime(data.totalMs) }}</td>
+          <td>{{ formatTime(data.totalMs / data.visitCount) }}</td>
+          <td>{{ data.visitCount }}</td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</div>

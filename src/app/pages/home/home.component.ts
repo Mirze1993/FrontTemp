@@ -21,6 +21,8 @@ import {RtcChatComponent} from '../../components/rtc-chat/rtc-chat.component';
 import {ChatPageStatus} from '../../models/ChatPageStatus';
 import {isPlatformBrowser} from '@angular/common';
 import {NzTableModule} from 'ng-zorro-antd/table';
+import {RrWebService} from '../../services/rr-web.service';
+import {NzNotificationService} from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-home',
@@ -38,11 +40,13 @@ export class HomeComponent implements OnInit,AfterViewInit {
 
   constructor(
     private authService: AuthService,
+    private notification: NzNotificationService,
     private modalService: NzModalService,
     private router: Router,
     protected userService: UserService,
     private authStore: AuthStore,
     private signalRService:SignalrService,
+    public rrwebSvc: RrWebService,
     private viewContainerRef: ViewContainerRef,@Inject(PLATFORM_ID) private platformId: Object
   ) {
   }
@@ -120,6 +124,21 @@ export class HomeComponent implements OnInit,AfterViewInit {
       this.router.navigate(['/login']);
     });
 
+  }
+
+  loading = false;
+  lastSavedId = '';
+  toggleRecord(): void {
+    if (this.rrwebSvc.isRecording) {
+      this.rrwebSvc.stopRecording().then((id) => {
+
+       // this.loadSessions();
+      });
+    } else {
+      this.rrwebSvc.startRecording().then(mm=>{
+
+      });
+    }
   }
 
   onProfile() {

@@ -1,0 +1,19 @@
+.replay-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.player-host {
+  width: 100%;
+  box-sizing: border-box;
+
+  ::ng-deep .rr-player {
+    width: 100% !important;
+  }
+}

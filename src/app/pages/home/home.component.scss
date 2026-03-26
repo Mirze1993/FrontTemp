@@ -26,3 +26,30 @@ nz-content {
 nz-footer {
   text-align: center;
 }
+
+
+
+.controls button {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #1677ff;
+  color: white;
+  font-weight: 500;
+}
+
+.controls button.recording {
+  background: #ff4d4f;
+}
+
+.badge {
+  font-size: 12px;
+  color: #faad14;
+}
+
+.saved {
+  font-size: 12px;
+  color: #52c41a;
+}

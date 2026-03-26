@@ -51,6 +51,31 @@
           <li nz-menu-item>Chat</li>
         </ul>
       </li>
+      <li nz-menu-item [routerLink]="['admin/rrweb-records']">
+        <nz-icon nzType="scan" nzTheme="outline" />
+        <span>User screen</span>
+      </li>
+      <li nz-menu-item [routerLink]="['admin/rrweb-analytics']">
+        <nz-icon nzType="scan" nzTheme="outline" />
+        <span>User analytics</span>
+      </li>
+      <!-- BOTTOM CONTROLS -->
+      <div class="controls">
+        <button
+          [class.recording]="rrwebSvc.isRecording"
+          (click)="toggleRecord()"
+        >
+          {{ rrwebSvc.isRecording ? '⏹ Durdur' : '⏺ Kaydı Başlat' }}
+        </button>
+
+        <span *ngIf="rrwebSvc.isRecording" class="badge">
+      Kayıt ediliyor — {{ rrwebSvc.currentSessionId.slice(0, 8) }}…
+    </span>
+
+        <span *ngIf="lastSavedId" class="saved">
+      ✓ Kaydedildi: {{ lastSavedId.slice(0, 8) }}…
+    </span>
+      </div>
     </ul>
   </nz-sider>
   <nz-layout class="right-layout">

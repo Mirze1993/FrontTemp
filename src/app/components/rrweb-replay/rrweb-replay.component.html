@@ -1,0 +1,13 @@
+<div style="padding: 24px">
+  <h2>Replay</h2>
+
+  @if (loading) {
+    <p>Yüklənir...</p>
+  }
+
+  @if (error) {
+    <p style="color: red">{{ error }}</p>
+  }
+
+  <div #playerHost></div>
+</div>

@@ -1,0 +1,31 @@
+<nz-table #basicTable [nzData]="list" [nzScroll]="{ x: '1100px' }">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Started At</th>
+    <th>Ended At</th>
+    <th>Url</th>
+    <th>User Agent</th>
+    <th nzRight>Əməliyyat</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (data of basicTable.data; track data.id) {
+      <tr>
+        <td>{{ data.id }}</td>
+        <td>{{ data.startedAt | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+        <td>{{ data.endedAt | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+        <td>{{ data.url }}</td>
+        <td>{{ data.userAgent }}</td>
+        <td nzRight>
+<!--          <a [routerLink]="['replay', data.id]">Replay</a>-->
+          <a (click)="onReplay(data.id)">Replay</a>
+          <nz-divider nzType="vertical"/>
+          <a (click)="onDelete(data.id)">Sil</a>
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
+
+

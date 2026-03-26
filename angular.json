@@ -46,7 +46,8 @@
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/theme.less",
               "src/styles.scss",
-              "node_modules/highlight.js/styles/github.css"
+              "node_modules/highlight.js/styles/github.css",
+              "node_modules/rrweb-player/dist/style.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
@@ -128,7 +129,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/highlight.js/styles/github.css"
+              "node_modules/highlight.js/styles/github.css",
+              "node_modules/rrweb-player/dist/style.css"
             ],
             "scripts": []
           }
