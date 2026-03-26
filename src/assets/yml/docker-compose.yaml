@@ -1,7 +1,7 @@
 services:
   s_front_chat_ui:
     container_name: c_front-chat-ui
-    image: mirze1993/front-chat-ui:latest
+    image: mirze1993/front-chat-ui:B${BUILD_NUMBER}
     restart: unless-stopped
     deploy:
       resources:
