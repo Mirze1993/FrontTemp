@@ -1,0 +1,92 @@
+<nz-breadcrumb>
+  <nz-breadcrumb-item>
+    <a [routerLink]="['../../']">All Pull Request</a>
+  </nz-breadcrumb-item>
+  <nz-breadcrumb-item>{{id??0}}</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div nz-row [nzGutter]="16">
+  <div nz-col nzXs="24" nzMd="12" class="gutter-row">
+    <div class="inner-box">
+      <strong>Requested By:</strong> {{ detail?.requestedBy }}
+    </div>
+  </div>
+
+  <div nz-col nzXs="24" nzMd="12" class="gutter-row">
+    <div class="inner-box">
+      <strong>Request Date:</strong>
+      {{ detail?.requestDate | date:'dd.MM.yyyy HH:mm:ss' }}
+    </div>
+  </div>
+
+  <div nz-col nzXs="24" nzMd="12" class="gutter-row">
+    <div class="inner-box">
+      <strong>Object Name:</strong> {{ detail?.objectName }}
+    </div>
+  </div>
+
+  <div nz-col nzXs="24" nzMd="12" class="gutter-row">
+    <div class="inner-box">
+      <strong>Object Type:</strong> {{ detail?.objectType }}
+    </div>
+  </div>
+
+  <div nz-col nzXs="24" nzMd="12" class="gutter-row">
+    <div class="inner-box">
+      <strong>Status:</strong> {{ detail?.status }}
+    </div>
+  </div>
+  <div nz-col nzXs="24" nzMd="12" class="gutter-row">
+    <div class="inner-box">
+      <strong>Compile Error:</strong> {{ detail?.compileError }}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="detail?.ddlCurrent&&detail?.ddlBody">
+  <nz-radio-group [(ngModel)]="showType">
+    <label nz-radio nzValue="UnifiedDiff">UnifiedDiff</label>
+    <label nz-radio nzValue="SideBySideDiff">SideBySideDiff</label>
+  </nz-radio-group>
+  <ngx-unified-diff *ngIf="showType=='UnifiedDiff'" class="ngx-diff-dark-theme" [before]="detail?.ddlCurrent"
+                    [after]="detail?.ddlBody" [lineContextSize]="4"/>
+  <ngx-side-by-side-diff *ngIf="showType=='SideBySideDiff'" class="ngx-diff-dark-theme" [before]="detail?.ddlCurrent"
+                         [after]="detail?.ddlBody" [lineContextSize]="4"/>
+
+</div>
+
+
+<nz-divider nzText="Full code"></nz-divider>
+<div>
+  <nz-code-editor class="editor" *ngIf="detail?.ddlCurrent"
+                  [nzEditorMode]="'normal'"
+                  [ngModel]="detail?.ddlCurrent"
+                  [nzEditorOption]="{ language: 'sql',
+                 readOnly: true,
+                 theme: 'vs-dark'}"></nz-code-editor>
+</div>
+
+<div nz-row [nzGutter]="16" style="margin-top: 16px;">
+  <div nz-col nzXs="24" nzMd="12">
+    <button nz-button nzType="primary" nzBlock (click)="compileModal()">
+      Compile
+    </button>
+  </div>
+
+  <div nz-col nzXs="24" nzMd="12">
+    <button nz-button nzType="default" nzDanger nzBlock (click)="compileCancelModal()">
+      Ləğv et
+    </button>
+  </div>
+</div>
+
+<ng-template #compileTpl>
+  <p><b>Kodun düzgünlüyünü yoxlayın</b></p>
+  <textarea nz-input rows="3" [(ngModel)]="compileComment" placeholder="Comment yazın..."></textarea>
+</ng-template>
+
+<ng-template #cancelTpl>
+  <p><b style="color:red;">Kodun düzgünlüyünü yoxlayın</b></p>
+  <textarea nz-input rows="3" [(ngModel)]="cancelComment" placeholder="Ləğv səbəbini yazın..."></textarea>
+</ng-template>
+

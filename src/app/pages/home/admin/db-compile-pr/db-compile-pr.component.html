@@ -1,0 +1,32 @@
+<nz-table #basicTable [nzData]="list" [nzScroll]="{ x: '1100px' }">
+  <thead>
+  <tr>
+    <th>Request by</th>
+    <th>Request date</th>
+    <th>Object name</th>
+    <th>Object Type</th>
+    <th>Reviewed by</th>
+    <th>Reviewed date</th>
+    <th>Status</th>
+    <th nzRight>Operations</th>
+  </tr>
+  </thead>
+  <tbody>
+    @for (data of basicTable.data; track data.id) {
+      <tr>
+        <td>{{ data.requestedBy }}</td>
+        <td>{{ data.requestDate | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+        <td>{{ data.objectName }}</td>
+        <td>{{ data.objectType }}</td>
+        <td>{{ data.reviewedBy }}</td>
+        <td>{{ data.reviewDate | date:'dd.MM.yyyy HH:mm:ss' }}</td>
+        <td>{{ data.status }}</td>
+        <td nzRight>
+          <a [routerLink]="['detail', data.requestId]">View</a>
+           <nz-divider nzType="vertical"/>
+          <a (click)="openModal(data.requestedBy)">Sil</a>
+        </td>
+      </tr>
+    }
+  </tbody>
+</nz-table>
