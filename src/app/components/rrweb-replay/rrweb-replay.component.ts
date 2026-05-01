@@ -3,12 +3,11 @@ import rrwebPlayer from 'rrweb-player';
 import {ActivatedRoute} from '@angular/router';
 import {RrWebService} from '../../services/rr-web.service';
 import {NZ_MODAL_DATA, NzModalRef} from 'ng-zorro-antd/modal';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
 
 @Component({
   selector: 'app-rrweb-replay',
   imports: [
-    NzSpinComponent
+
   ],
   templateUrl: './rrweb-replay.component.html',
   styleUrl: './rrweb-replay.component.scss',

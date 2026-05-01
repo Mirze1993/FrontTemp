@@ -25,7 +25,7 @@
       <li *accessControl="['user']; op: 'or'" nz-submenu nzTitle="DB" nzIcon="database">
         <ul>
           <li nz-menu-item [routerLink]="['admin/db-compile']"> DbCompiles</li>
-          <li nz-menu-item>DbTables</li>
+          <li nz-menu-item [routerLink]="['admin/db-compile-pr']">DbCompiles PR</li>
         </ul>
       </li>
       <li nz-submenu nzTitle="Settings" nzIcon="setting">

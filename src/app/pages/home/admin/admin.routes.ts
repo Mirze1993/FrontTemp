@@ -7,9 +7,20 @@ export const adminRoutes: Routes = [
     path: 'db-compile',
     loadComponent : ()=>import("./db-compile/db-compile.component").then(value => value.DbCompileComponent),
     canActivate:[authGuard],
-    data: { roles: ['ADMIN'] }
+  //  data: { roles: ['ADMIN'] }
   },
-
+  {
+    path: 'db-compile-pr',
+    loadComponent : ()=>import("./db-compile-pr/db-compile-pr.component").then(value => value.DbCompilePrComponent),
+    canActivate:[authGuard],
+    //  data: { roles: ['ADMIN'] }
+  },
+  {
+    path: 'db-compile-pr/detail/:id',
+    loadComponent : ()=>import("./db-compile-pr-detail/db-compile-pr-detail.component").then(value => value.DbCompilePrDetailComponent),
+    canActivate:[authGuard],
+    //data: { roles: ['ADMIN']   }
+  },
   {
     path: 'settings',
     loadComponent : ()=>import("./settings/settings.component").then(value => value.SettingsComponent),

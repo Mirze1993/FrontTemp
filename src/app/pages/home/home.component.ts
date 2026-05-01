@@ -19,7 +19,7 @@ import {VideoCallComponent} from '../../components/video-call/video-call.compone
 import {IncomingCallComponent} from '../../components/incoming-call/incoming-call.component';
 import {RtcChatComponent} from '../../components/rtc-chat/rtc-chat.component';
 import {ChatPageStatus} from '../../models/ChatPageStatus';
-import {isPlatformBrowser} from '@angular/common';
+import {isPlatformBrowser, NgIf} from '@angular/common';
 import {NzTableModule} from 'ng-zorro-antd/table';
 import {RrWebService} from '../../services/rr-web.service';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
@@ -27,7 +27,7 @@ import {NzNotificationService} from 'ng-zorro-antd/notification';
 @Component({
   selector: 'app-home',
   imports: [NzBreadCrumbModule, NzIconModule, NzMenuModule, NzLayoutModule, RouterModule,NzModalModule,
-    NzAvatarComponent, AccessControlDirective, NotifComponent,NzTableModule
+    NzAvatarComponent, AccessControlDirective, NotifComponent,NzTableModule,NgIf
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
